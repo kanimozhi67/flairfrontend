@@ -1,0 +1,116 @@
+/* ----------------- Container ----------------- */
+.shape-container {
+  width: 180px;   /* increased size */
+  height: 180px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: text;
+}
+
+/* Input wrapper to center input */
+.shape-input-wrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60%;
+  height: 60%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+}
+
+/* Input styling */
+.shape-input {
+  width: 100%;
+  height: 100%;
+  font-size: 35px;  /* larger font */
+  text-align: center;
+  border: 2px solid  gold ;
+ 
+  background: transparent;
+  color: black;
+  z-index: 2;
+}
+
+/* ----------------- STAR ----------------- */
+.shape-star::before,
+.shape-star::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-right: 60px solid transparent;   /* scaled up */
+  border-bottom: 42px solid gold;        /* scaled up */
+  border-left: 60px solid transparent;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+}
+
+.shape-star::before {
+  top: 30px;  /* shift down for input centering */
+}
+
+.shape-star::after {
+  top: 72px;  /* shift down for input centering */
+  transform: translateX(-50%) rotate(180deg);
+}
+
+/* ----------------- CLOUD ----------------- */
+.shape-cloud {
+  position: relative;
+  width: 220px;   /* scaled up */
+  height: 140px;
+}
+
+.shape-cloud::before,
+.shape-cloud::after {
+  content: "";
+  position: absolute;
+  background: #d0e8ff;
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  top: -45px;
+  z-index: 1;
+}
+
+.shape-cloud::before {
+  left: 20px;
+}
+
+.shape-cloud::after {
+  right: 20px;
+}
+
+/* ----------------- HEART ----------------- */
+.shape-heart {
+  position: relative;
+  width: 180px;   /* scaled up */
+  height: 150px;
+}
+
+.shape-heart::before,
+.shape-heart::after {
+  content: "";
+  position: absolute;
+  width: 90px;
+  height: 140px;
+  background: pink;
+  border-radius: 50px 50px 0 0;
+  z-index: 1;
+}
+
+.shape-heart::before {
+  left: 0;
+  transform: rotate(-45deg);
+}
+
+.shape-heart::after {
+  right: 0;
+  transform: rotate(45deg);
+}

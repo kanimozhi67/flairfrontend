@@ -6,6 +6,7 @@ import { useParams, useOutletContext } from "react-router-dom";
 import api from "../api/axiosClient";
 import LevelSelection from "./LevelSelection.js";
 import QuizCard from "./QuizCard.js";
+
 import SortingQuizCard from "./SortingQuizCard.js";
 import MotivationScreen from "./MotivationScreen.js";
 import ResultModal from "./ResultModal.js";
@@ -14,6 +15,7 @@ import FlyingSticker from "./FlyingSticker.js";
 import GiftBox from "./GiftBox.js";
 import NoGiftBox from "./NoGiftBox.js";
 import Basket from "./Basket.js";
+import QuizWithTimer from "./QuizWithTimer.js";
 
 const QuizPage = ({ user, setUser }) => {
   const { category } = useParams();
@@ -192,12 +194,21 @@ const allStickers = [ "🍰", "🍫", "🦅", "🤖", "🦄", "🎁", "🎈", "�
         else res = await api.get("/quiz/mullevel3");
         console.log(`mul : ${res.data}`)
       }
+        else if (category === "math") {
+         console.log(`add sub category`)
+        if (selectedLevel === 1) res = await api.get("/quiz/math");
+        else if (selectedLevel === 2) res = await api.get("/quiz/math");
+       // else res = await api.get("/quiz/mullevel3");
+        console.log(`addsub : ${res.data}`)
+      }
 
        else {
         res = await api.get(`/quiz/math?level=${selectedLevel}`);
       }
       setQuestions(res.data.questions || []);
-      setAnswers({});
+      //setAnswers({});
+       setAnswers(Array((res.data.questions || []).length).fill(null));
+  
     } catch (err) {
       console.error("fetchQuiz error:", err);
       setQuestions([]);
@@ -355,33 +366,69 @@ const feedback = score === questions.length ? perfectScoreAdviceList
   };
 
   // Sticker click: persist sticker and animate
-  const onStickerClicked = async (emoji, event) => {
-    if (!user || !user._id) {
-      message.error("Not logged in");
-      return;
-    }
+  // const onStickerClicked = async (emoji, event) => {
+  //   if (!user || !user._id) {
+  //     message.error("Not logged in");
+  //     return;
+  //   }
 
-    const rect = event.currentTarget.getBoundingClientRect();
-    const start = { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 };
-    const basketTarget = { x: window.innerWidth - 100, y: window.innerHeight - 100 };
-    setFlyData({ emoji, start, target: basketTarget });
+  //   const rect = event.currentTarget.getBoundingClientRect();
+  //   const start = { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 };
+  //   const basketTarget = { x: window.innerWidth - 100, y: window.innerHeight - 100 };
+  //   setFlyData({ emoji, start, target: basketTarget });
 
-    try {
-      await api.post(`/users/${user._id}/stickers`, { sticker: [emoji] });
-      setUser((prev) => ({ ...(prev || {}), sticker: [...((prev && prev.sticker) || []), emoji] }));
-    } catch (err) {
-      console.error("Failed to save sticker", err);
-      message.error("Failed to save sticker.");
-    }
+  //   try {
+  //     await api.post(`/users/${user._id}/stickers`, { sticker: [emoji] });
+  //     setUser((prev) => ({ ...(prev || {}), sticker: [...((prev && prev.sticker) || []), emoji] }));
+  //   } catch (err) {
+  //     console.error("Failed to save sticker", err);
+  //     message.error("Failed to save sticker.");
+  //   }
 
-    setTimeout(() => {
-      setBasket((prev) => [...prev, emoji]);
-      setSelectedStickers((prev) => prev.filter((s) => s !== emoji));
-      setFlyData(null);
-      setShowStickerModal(false);
-      setShowResultModal(true);
-    }, 720);
-  };
+  //   setTimeout(() => {
+  //     setBasket((prev) => [...prev, emoji]);
+  //     setSelectedStickers((prev) => prev.filter((s) => s !== emoji));
+  //     setFlyData(null);
+  //     setShowStickerModal(false);
+  //     setShowResultModal(true);
+  //   }, 720);
+  // };
+const onStickerClicked = async (emoji, event) => {
+  if (!user || !user._id) {
+    message.error("Not logged in");
+    return;
+  }
+
+  // Only check selectedStickers (stickers available to collect)
+  if (!selectedStickers.includes(emoji)) {
+    message.info("You've already collected this sticker!");
+    return;
+  }
+
+  const rect = event.currentTarget.getBoundingClientRect();
+  const start = { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 };
+  const basketTarget = { x: window.innerWidth - 100, y: window.innerHeight - 100 };
+  setFlyData({ emoji, start, target: basketTarget });
+
+  try {
+    await api.post(`/users/${user._id}/stickers`, { sticker: [emoji] });
+    setUser((prev) => ({
+      ...(prev || {}),
+      sticker: [...((prev && prev.sticker) || []), emoji],
+    }));
+  } catch (err) {
+    console.error("Failed to save sticker", err);
+    message.error("Failed to save sticker.");
+  }
+
+  setTimeout(() => {
+    setBasket((prev) => [...prev, emoji]);
+    setSelectedStickers((prev) => prev.filter((s) => s !== emoji)); // remove from modal
+    setFlyData(null);
+    setShowStickerModal(false);
+    setShowResultModal(true);
+  }, 720);
+};
 
   // Render flows
   if (!selectedLevel) {
@@ -431,9 +478,32 @@ const feedback = score === questions.length ? perfectScoreAdviceList
               buttonStyle={buttonStyle}
               playAgainButtonStyle={playAgainButtonStyle}
             />
-          ) : (
+          ) : (category === "math" && selectedLevel === 2 ) ? (
+
+
+     <QuizWithTimer
+            
+              questions={questions}
+              answers={answers}
+              setAnswers={setAnswers}
+              submitQuiz={submitQuiz}
+              submitted={submitted}
+              results={results}
+              loading={loading}
+              fetchQuiz={fetchQuiz}
+              firstInputRef={firstInputRef}
+              titleStyle={titleStyle}
+              numberStyle={numberStyle}
+              buttonStyle={buttonStyle}
+              playAgainButtonStyle={playAgainButtonStyle}
+              speakLine={speakLine}
+          />
+ 
+
+       
+          ): (
             <QuizCard
-           
+           selectedLevel={selectedLevel}
               questions={questions}
               answers={answers}
               setAnswers={setAnswers}
@@ -449,6 +519,7 @@ const feedback = score === questions.length ? perfectScoreAdviceList
               playAgainButtonStyle={playAgainButtonStyle}
               speakLine={speakLine}
             />
+     
           )}
         </div>
       </div>

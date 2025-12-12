@@ -213,7 +213,7 @@ const HomePage = ({ user, setUser }) => {
             gap: 20,
           }}
         >
-          {["👧✨", "🎓"].map((emoji, i) => (
+          {["👶✨", "🎓"].map((emoji, i) => (
             <div key={i} style={{ fontSize: 100, textAlign: "center" }}>
               {emoji}
             </div>

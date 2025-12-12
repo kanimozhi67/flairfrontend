@@ -39,7 +39,12 @@ const QuizWithTimer = ({ questions, answers, setAnswers, speakLine }) => {
       id: q.id,
       text: `${q.a} ${q.operator} ${q.b} = ?`,
       options: generateOptions(q),
-      correct: q.operator === "+" ? q.a + q.b : q.operator === "-" ? q.a - q.b : q.a * q.b,
+      correct:
+        q.operator === "+"
+          ? q.a + q.b
+          : q.operator === "-"
+          ? q.a - q.b
+          : q.a * q.b,
     }));
 
     setOptionsList(built);
@@ -75,7 +80,10 @@ const QuizWithTimer = ({ questions, answers, setAnswers, speakLine }) => {
       setCurrentIndex((i) => i + 1);
     } else {
       setQuizCompleted(true);
-      speakLine && speakLine("Great job! You finished all questions.");
+      speakLine &&
+        speakLine(
+          "Great job! You finished all questions. Keep exploring. Your passion will guide you forward."
+        );
       setShowConfetti(true);
       setTimeout(() => setShowConfetti(false), 3000); // show confetti for 3s
     }
@@ -107,7 +115,8 @@ const QuizWithTimer = ({ questions, answers, setAnswers, speakLine }) => {
   // ---------------------------------------
   // Loading states
   // ---------------------------------------
-  if (!questions || questions.length === 0) return <Text>Loading questions...</Text>;
+  if (!questions || questions.length === 0)
+    return <Text>Loading questions...</Text>;
   if (optionsList.length === 0) return <Text>Preparing questions...</Text>;
 
   // ---------------------------------------
@@ -174,7 +183,9 @@ const QuizWithTimer = ({ questions, answers, setAnswers, speakLine }) => {
                   {!isCorrect && (
                     <>
                       <br />
-                      <Text style={{ fontSize: 20, color: "blue", fontWeight: 600 }}>
+                      <Text
+                        style={{ fontSize: 20, color: "blue", fontWeight: 600 }}
+                      >
                         Correct answer: {q.correct}
                       </Text>
                     </>
@@ -244,19 +255,20 @@ const QuizWithTimer = ({ questions, answers, setAnswers, speakLine }) => {
               fontSize: 22,
               padding: "12px 24px",
               borderRadius: 12,
-              backgroundColor:
-                selectedOption === opt ? "#ff9d2f" : "#fff",
+              backgroundColor: selectedOption === opt ? "#ff9d2f" : "#fff",
               color: selectedOption === opt ? "#fff" : "#000",
               boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
               transition: "0.2s",
               cursor: "pointer",
             }}
             onMouseEnter={(e) => {
-              if (selectedOption !== opt) e.target.style.backgroundColor = "#ffe680";
+              if (selectedOption !== opt)
+                e.target.style.backgroundColor = "#ffe680";
             }}
             onMouseLeave={(e) => {
-              if (selectedOption !== opt) e.target.style.backgroundColor =
-                selectedOption === opt ? "#ff9d2f" : "#fff";
+              if (selectedOption !== opt)
+                e.target.style.backgroundColor =
+                  selectedOption === opt ? "#ff9d2f" : "#fff";
             }}
           >
             {opt}

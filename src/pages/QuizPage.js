@@ -45,12 +45,6 @@ const QuizPage = ({ user, setUser }) => {
   const [showGift, setShowGift] = useState(false);
   const [showNoGift, setShowNoGift] = useState(false);
 
-
-
-       
-    
-
-
   // --- Default style objects (passed to children so they won't be undefined) ---
   const titleStyle = {
     fontSize: width < 480 ? 20 : width < 768 ? 24 : 28,
@@ -93,7 +87,8 @@ const QuizPage = ({ user, setUser }) => {
       utter.pitch = 1.8;
       utter.rate = 1.05;
       const voices = window.speechSynthesis.getVoices();
-      utter.voice = voices.find((v) => /zira|female|child/i.test(v.name)) || voices[0];
+      utter.voice =
+        voices.find((v) => /zira|female|child/i.test(v.name)) || voices[0];
       window.speechSynthesis.speak(utter);
     } catch (e) {
       // ignore speech errors
@@ -124,52 +119,78 @@ const QuizPage = ({ user, setUser }) => {
     margin: width < 768 ? "20px 0" : "0 20px",
   };
 
-const allStickers = [ "🍰", "🍫", "🦅", "🤖", "🦄", "🎁", "🎈", "🐶", "🚀", "⭐", "🌈", "🐱", "🦊", 
-  "🐵", "🐼", "🐨", "🍩", "🍕", "🍓", "🌟", "👸", "🍦", "🐰", 
-  "💕", "🐤","🐧" ]; 
-  
-  const guideList = [ "you can do it! ✏️ Keep practicing a little every day. If you struggle, join 🏫 FLAIR OLYMPIAD class 🧑‍🎓.", ];
-   const adviceList = [ "Awesome! Try challenging yourself with harder problems next time.", 
-    "Nice work! Remember, accuracy is more important than speed.", 
-    "Fantastic! Math gets easier the more you play with it.",
-     "You're doing great! Stay curious and keep learning.", 
-     "Super effort! Don’t forget to check your answers carefully.",
-      "Well done! Practice makes progress, not perfection.", 
-       "Nice work! Take things one step at a time. Progress is still progress.",
-  "Super effort! Believe in yourself. You’re more capable than you realize.",
-  "Nice work! Stay open-minded. Every experience teaches you something.",
-  "Super effort! Don't be afraid to ask questions.curiosity is your superpower.",
-  "Nice work! Keep showing up, even on the tough days.You’re growing.",
-  "Super effort! Trust the process.Good things take time.",
-  "Well done!Nice work! Celebrate your small wins.They lead to big success.",
-  "Well done! Stay kind to yourself. Growth isn’t always linear.",
-  "Well done! Keep exploring. Your passion will guide you forward."
-    ]; 
-    
-    const perfectScoreAdviceList = [ "I know you can win! You are unstoppable!", 
-      "You are such a talented kid! Truly amazing!",
-       "I have never seen such a knowledgeable person like you!",
-        "Your brain shines like a superstar! 🌟", 
-        "Brilliant! You solved everything perfectly!", 
-        "You are a genius in the making!", 
-        "Wow! You didn’t miss a single one — outstanding!", 
-        "You are extraordinary! Keep shining bright! ✨", 
-        "you are outstanding. I think, you are a magician.",
-        "you are doing Gorgeous.you might be an Angel.",
-          "Your light makes the world better—keep glowing! ✨",
-  "You’re doing amazing, even on the days you doubt it! 🌟",
-  "Your energy is magnetic—never dim it! ✨",
-  "You are capable, powerful, and unstoppable! 💫",
-  "Keep rising—your brilliance inspires others! ✨",
-  "You’re a spark of magic in this world! 🔥✨",
-  "Believe in your shine—it's one of a kind! 🌟",
-  "You’re making progress, even if you don’t see it yet! ✨",
-  "Your heart, your mind, your presence—they matter. 💛✨",
-  "Keep going—your story is unfolding beautifully! 🌙✨"
-      ]; 
-      
-      
+  const allStickers = [
+    "🍰",
+    "🍫",
+    "🦅",
+    "🤖",
+    "🦄",
+    "🎁",
+    "🎈",
+    "🐶",
+    "🚀",
+    "⭐",
+    "🌈",
+    "🐱",
+    "🦊",
+    "🐵",
+    "🐼",
+    "🐨",
+    "🍩",
+    "🍕",
+    "🍓",
+    "🌟",
+    "👸",
+    "🍦",
+    "🐰",
+    "💕",
+    "🐤",
+    "🐧",
+  ];
 
+  const guideList = [
+    "you can do it! ✏️ Keep practicing a little every day. If you struggle, join 🏫 FLAIR OLYMPIAD class 🧑‍🎓.",
+  ];
+  const adviceList = [
+    "Awesome! Try challenging yourself with harder problems next time.",
+    "Nice work! Remember, accuracy is more important than speed.",
+    "Fantastic! Math gets easier the more you play with it.",
+    "You're doing great! Stay curious and keep learning.",
+    "Super effort! Don’t forget to check your answers carefully.",
+    "Well done! Practice makes progress, not perfection.",
+    "Nice work! Take things one step at a time. Progress is still progress.",
+    "Super effort! Believe in yourself. You’re more capable than you realize.",
+    "Nice work! Stay open-minded. Every experience teaches you something.",
+    "Super effort! Don't be afraid to ask questions.curiosity is your superpower.",
+    "Nice work! Keep showing up, even on the tough days.You’re growing.",
+    "Super effort! Trust the process.Good things take time.",
+    "Well done!Nice work! Celebrate your small wins.They lead to big success.",
+    "Well done! Stay kind to yourself. Growth isn’t always linear.",
+    "Well done! Keep exploring. Your passion will guide you forward.",
+  ];
+
+  const perfectScoreAdviceList = [
+    "I know you can win! You are unstoppable!",
+    "You are such a talented kid! Truly amazing!",
+    "I have never seen such a knowledgeable person like you!",
+    "Your brain shines like a superstar! 🌟",
+    "Brilliant! You solved everything perfectly!",
+    "You are a genius in the making!",
+    "Wow! You didn’t miss a single one — outstanding!",
+    "You are extraordinary! Keep shining bright! ✨",
+    "you are outstanding. I think, you are a magician.",
+    "you are doing Gorgeous.you might be an Angel.",
+    "Your light makes the world better—keep glowing! ✨",
+    "You’re doing amazing, even on the days you doubt it! 🌟",
+    "Your energy is magnetic—never dim it! ✨",
+    "You are capable, powerful, and unstoppable! 💫",
+    "Keep rising—your brilliance inspires others! ✨",
+    "You’re a spark of magic in this world! 🔥✨",
+    "Believe in your shine—it's one of a kind! 🌟",
+    "You’re making progress, even if you don’t see it yet! ✨",
+    "Your heart, your mind, your presence—they matter. 💛✨",
+    "Keep going—your story is unfolding beautifully! 🌙✨",
+  ];
 
   // Fetch quiz questions
   const fetchQuiz = async () => {
@@ -182,33 +203,28 @@ const allStickers = [ "🍰", "🍫", "🦅", "🤖", "🦄", "🎁", "🎈", "�
     try {
       let res;
       if (category === "sorting") {
-         console.log(`sorting category`)
+        console.log(`sorting category`);
         if (selectedLevel === 1) res = await api.get("/quiz/sort");
         else if (selectedLevel === 2) res = await api.get("/quiz/sortlevel2");
         else res = await api.get("/quiz/sortlevel3");
-      }
-      else if (category === "multiplication") {
-         console.log(`mul category`)
+      } else if (category === "multiplication") {
+        console.log(`mul category`);
         if (selectedLevel === 1) res = await api.get("/quiz/mul");
         else if (selectedLevel === 2) res = await api.get("/quiz/mullevel2");
         else res = await api.get("/quiz/mullevel3");
-        console.log(`mul : ${res.data}`)
-      }
-        else if (category === "math") {
-         console.log(`add sub category`)
+        console.log(`mul : ${res.data}`);
+      } else if (category === "math") {
+        console.log(`add sub category`);
         if (selectedLevel === 1) res = await api.get("/quiz/math");
         else if (selectedLevel === 2) res = await api.get("/quiz/math");
-       // else res = await api.get("/quiz/mullevel3");
-        console.log(`addsub : ${res.data}`)
-      }
-
-       else {
+        else res = await api.get("/quiz/mathlevel3");
+        console.log(`addsub : ${res.data}`);
+      } else {
         res = await api.get(`/quiz/math?level=${selectedLevel}`);
       }
       setQuestions(res.data.questions || []);
       //setAnswers({});
-       setAnswers(Array((res.data.questions || []).length).fill(null));
-  
+      setAnswers(Array((res.data.questions || []).length).fill(null));
     } catch (err) {
       console.error("fetchQuiz error:", err);
       setQuestions([]);
@@ -278,7 +294,11 @@ const allStickers = [ "🍰", "🍫", "🦅", "🤖", "🦄", "🎁", "🎈", "�
     // Sorting quiz
     if (category === "sorting") {
       const allAnswered = questions.every((q) =>
-        q.numbers.every((_, idx) => answers[`${q.id}-${idx}`] !== undefined && answers[`${q.id}-${idx}`] !== "")
+        q.numbers.every(
+          (_, idx) =>
+            answers[`${q.id}-${idx}`] !== undefined &&
+            answers[`${q.id}-${idx}`] !== ""
+        )
       );
       if (!allAnswered) {
         setFeedbackMessage("⚠️ Please answer all questions before submitting!");
@@ -306,18 +326,23 @@ const allStickers = [ "🍰", "🍫", "🦅", "🤖", "🦄", "🎁", "🎈", "�
         questions.forEach((q) => {
           q.numbers.forEach((_, idx) => {
             const key = `${q.id}-${idx}`;
-            resResults[key] = Number(answers[key]) === res.data.correctAnswers[q.id][idx];
+            resResults[key] =
+              Number(answers[key]) === res.data.correctAnswers[q.id][idx];
           });
         });
         setResults(resResults);
 
-const feedback = score === questions.length ? perfectScoreAdviceList
-[ Math.floor(Math.random() * perfectScoreAdviceList.length) ] 
-: score >= 2 ? adviceList[Math.floor(Math.random() * adviceList.length)] : guideList;
+        const feedback =
+          score === questions.length
+            ? perfectScoreAdviceList[
+                Math.floor(Math.random() * perfectScoreAdviceList.length)
+              ]
+            : score >= 2
+            ? adviceList[Math.floor(Math.random() * adviceList.length)]
+            : guideList;
 
-
-     setFeedbackMessage(`🎉 You scored ${score} points! ${feedback}`);
-     //   setFeedbackMessage(score === questions.length ? "🎉 Perfect! All correct!" : "Keep practicing!");
+        setFeedbackMessage(`🎉 You scored ${score} points! ${feedback}`);
+        //   setFeedbackMessage(score === questions.length ? "🎉 Perfect! All correct!" : "Keep practicing!");
         if (score === questions.length) setShowGift(true);
         else setShowNoGift(true);
       } catch (err) {
@@ -347,16 +372,21 @@ const feedback = score === questions.length ? perfectScoreAdviceList
 
       const resResults = {};
       questions.forEach((q) => {
-        resResults[q.id] = Number(answers[q.id]) === Number(res.data.correctAnswers[q.id]);
+        resResults[q.id] =
+          Number(answers[q.id]) === Number(res.data.correctAnswers[q.id]);
       });
       setResults(resResults);
 
-const feedback = score === questions.length ? perfectScoreAdviceList
-[ Math.floor(Math.random() * perfectScoreAdviceList.length) ] 
-: score >= 2 ? adviceList[Math.floor(Math.random() * adviceList.length)] : guideList;
+      const feedback =
+        score === questions.length
+          ? perfectScoreAdviceList[
+              Math.floor(Math.random() * perfectScoreAdviceList.length)
+            ]
+          : score >= 2
+          ? adviceList[Math.floor(Math.random() * adviceList.length)]
+          : guideList;
 
-
-     setFeedbackMessage(`🎉 You scored ${score} points! ${feedback}`);
+      setFeedbackMessage(`🎉 You scored ${score} points! ${feedback}`);
       if (score === questions.length) setShowGift(true);
       else setShowNoGift(true);
     } catch (err) {
@@ -365,70 +395,48 @@ const feedback = score === questions.length ? perfectScoreAdviceList
     }
   };
 
-  // Sticker click: persist sticker and animate
-  // const onStickerClicked = async (emoji, event) => {
-  //   if (!user || !user._id) {
-  //     message.error("Not logged in");
-  //     return;
-  //   }
+  const onStickerClicked = async (emoji, event) => {
+    if (!user || !user._id) {
+      message.error("Not logged in");
+      return;
+    }
 
-  //   const rect = event.currentTarget.getBoundingClientRect();
-  //   const start = { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 };
-  //   const basketTarget = { x: window.innerWidth - 100, y: window.innerHeight - 100 };
-  //   setFlyData({ emoji, start, target: basketTarget });
+    // Only check selectedStickers (stickers available to collect)
+    if (!selectedStickers.includes(emoji)) {
+      message.info("You've already collected this sticker!");
+      return;
+    }
 
-  //   try {
-  //     await api.post(`/users/${user._id}/stickers`, { sticker: [emoji] });
-  //     setUser((prev) => ({ ...(prev || {}), sticker: [...((prev && prev.sticker) || []), emoji] }));
-  //   } catch (err) {
-  //     console.error("Failed to save sticker", err);
-  //     message.error("Failed to save sticker.");
-  //   }
+    const rect = event.currentTarget.getBoundingClientRect();
+    const start = {
+      x: rect.left + rect.width / 2,
+      y: rect.top + rect.height / 2,
+    };
+    const basketTarget = {
+      x: window.innerWidth - 100,
+      y: window.innerHeight - 100,
+    };
+    setFlyData({ emoji, start, target: basketTarget });
 
-  //   setTimeout(() => {
-  //     setBasket((prev) => [...prev, emoji]);
-  //     setSelectedStickers((prev) => prev.filter((s) => s !== emoji));
-  //     setFlyData(null);
-  //     setShowStickerModal(false);
-  //     setShowResultModal(true);
-  //   }, 720);
-  // };
-const onStickerClicked = async (emoji, event) => {
-  if (!user || !user._id) {
-    message.error("Not logged in");
-    return;
-  }
+    try {
+      await api.post(`/users/${user._id}/stickers`, { sticker: [emoji] });
+      setUser((prev) => ({
+        ...(prev || {}),
+        sticker: [...((prev && prev.sticker) || []), emoji],
+      }));
+    } catch (err) {
+      console.error("Failed to save sticker", err);
+      message.error("Failed to save sticker.");
+    }
 
-  // Only check selectedStickers (stickers available to collect)
-  if (!selectedStickers.includes(emoji)) {
-    message.info("You've already collected this sticker!");
-    return;
-  }
-
-  const rect = event.currentTarget.getBoundingClientRect();
-  const start = { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 };
-  const basketTarget = { x: window.innerWidth - 100, y: window.innerHeight - 100 };
-  setFlyData({ emoji, start, target: basketTarget });
-
-  try {
-    await api.post(`/users/${user._id}/stickers`, { sticker: [emoji] });
-    setUser((prev) => ({
-      ...(prev || {}),
-      sticker: [...((prev && prev.sticker) || []), emoji],
-    }));
-  } catch (err) {
-    console.error("Failed to save sticker", err);
-    message.error("Failed to save sticker.");
-  }
-
-  setTimeout(() => {
-    setBasket((prev) => [...prev, emoji]);
-    setSelectedStickers((prev) => prev.filter((s) => s !== emoji)); // remove from modal
-    setFlyData(null);
-    setShowStickerModal(false);
-    setShowResultModal(true);
-  }, 720);
-};
+    setTimeout(() => {
+      setBasket((prev) => [...prev, emoji]);
+      setSelectedStickers((prev) => prev.filter((s) => s !== emoji)); // remove from modal
+      setFlyData(null);
+      setShowStickerModal(false);
+      setShowResultModal(true);
+    }, 720);
+  };
 
   // Render flows
   if (!selectedLevel) {
@@ -459,7 +467,6 @@ const onStickerClicked = async (emoji, event) => {
     <div style={containerStyle}>
       <div style={innerStyle}>
         <div style={quizCardStyle}>
-
           {category === "sorting" ? (
             <SortingQuizCard
               questions={questions}
@@ -478,32 +485,8 @@ const onStickerClicked = async (emoji, event) => {
               buttonStyle={buttonStyle}
               playAgainButtonStyle={playAgainButtonStyle}
             />
-          ) : (category === "math" && selectedLevel === 2 ) ? (
-
-
-     <QuizWithTimer
-            
-              questions={questions}
-              answers={answers}
-              setAnswers={setAnswers}
-              submitQuiz={submitQuiz}
-              submitted={submitted}
-              results={results}
-              loading={loading}
-              fetchQuiz={fetchQuiz}
-              firstInputRef={firstInputRef}
-              titleStyle={titleStyle}
-              numberStyle={numberStyle}
-              buttonStyle={buttonStyle}
-              playAgainButtonStyle={playAgainButtonStyle}
-              speakLine={speakLine}
-          />
- 
-
-       
-          ): (
-            <QuizCard
-           selectedLevel={selectedLevel}
+          ) : category === "math" && selectedLevel === 2 ? (
+            <QuizWithTimer
               questions={questions}
               answers={answers}
               setAnswers={setAnswers}
@@ -519,13 +502,29 @@ const onStickerClicked = async (emoji, event) => {
               playAgainButtonStyle={playAgainButtonStyle}
               speakLine={speakLine}
             />
-     
+          ) : (
+            <QuizCard
+              selectedLevel={selectedLevel}
+              questions={questions}
+              answers={answers}
+              setAnswers={setAnswers}
+              submitQuiz={submitQuiz}
+              submitted={submitted}
+              results={results}
+              loading={loading}
+              fetchQuiz={fetchQuiz}
+              firstInputRef={firstInputRef}
+              titleStyle={titleStyle}
+              numberStyle={numberStyle}
+              buttonStyle={buttonStyle}
+              playAgainButtonStyle={playAgainButtonStyle}
+              speakLine={speakLine}
+            />
           )}
         </div>
       </div>
 
       <GiftBox
-   
         setSelectedStickers={setSelectedStickers}
         setShowStickerModal={setShowStickerModal}
         speakLine={speakLine}
@@ -535,7 +534,7 @@ const onStickerClicked = async (emoji, event) => {
       />
 
       <NoGiftBox
-        speakLine ={speakLine}    
+        speakLine={speakLine}
         showNoGift={showNoGift}
         setShowNoGift={setShowNoGift}
         setShowResultModal={setShowResultModal}
@@ -559,9 +558,11 @@ const onStickerClicked = async (emoji, event) => {
         }}
         speakLine={speakLine}
       />
-     
 
-      <FlyingSticker flyData={flyData} setShowResultModal={setShowResultModal} />
+      <FlyingSticker
+        flyData={flyData}
+        setShowResultModal={setShowResultModal}
+      />
       <Basket basket={basket} />
     </div>
   );

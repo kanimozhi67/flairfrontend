@@ -1,13 +1,17 @@
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Button, Select, Modal } from "antd";
 import { useNavigate } from "react-router-dom";
 import { useWindowSize } from "react-use";
 import api from "../api/axiosClient";
 import logo from "../images/fologo.png";
+
 import educate from "../images/educate.png";
 import Login from "./Login";
 import Signup from "./Signup";
+import OnlinePage from "./OnlinePage";
+import HomeSection from "./HomeSection";
+import ContactFooter from "./ContactFooter";
 
 const { Option } = Select;
 
@@ -19,6 +23,15 @@ const HomePage = ({ user, setUser }) => {
 
   const [modalOpen, setModalOpen] = useState(false);
   const [isLogin, setIsLogin] = useState(true);
+   const onlineRef = useRef(null);
+
+ const scrollToOnline = () => {
+  if (onlineRef.current) {
+    onlineRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+};
+
+
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -38,9 +51,9 @@ const HomePage = ({ user, setUser }) => {
     <div
       style={{
         minHeight: "100vh",
-        background: "linear-gradient(135deg, #7b2ff7, #f107a3)",
+        background: "linear-gradient(95deg, #7b2ff7, #f107a3)",
         color: "#fff",
-        overflow: "hidden",
+      //  overflow: "hidden",
         fontFamily: "sans-serif",
          position: "relative",   // 👈 REQUIRED
     zIndex: 0,          
@@ -86,7 +99,7 @@ const HomePage = ({ user, setUser }) => {
           <Button
             type="text"
             style={{ color: "#fff" , fontSize: 18}}
-            onClick={() => navigate("/online-class")}
+           onClick={scrollToOnline}
           >
             Online Class
           </Button>
@@ -205,7 +218,7 @@ const HomePage = ({ user, setUser }) => {
             color: "#000",
             borderRadius: 20,
             marginTop:-70,
-            padding: isMobile ? "20px 20px" : "40px 30px",
+            padding: isMobile ? "0px 20px" : "40px 30px",
             width: "100%",
           maxWidth: 400,
             boxShadow: "0 10px 25px rgba(0,0,0,0.2)",
@@ -222,15 +235,18 @@ const HomePage = ({ user, setUser }) => {
             <input placeholder="Mobile No" style={inputStyle} />
 
             <Select placeholder="Grade">
-              {[...Array(12)].map((_, i) => (
-                <Option key={i + 1} value={i + 1}>
-                  {i + 1}
+              {["KG1","KG2","Grade1","Grade2","Grade3","Grade4","Grade5","Grade6","Grade7","Grade8","Grade9","Grade10",
+
+                "Grade11","Grade12"
+              ].map((item, i) => (
+                <Option key={i } >
+                  {item}
                 </Option>
               ))}
             </Select>
 
-            <Select placeholder="City">
-              {["Abu Dhabi", "Dubai", "Sharjah"].map((city) => (
+            <Select placeholder="Country">
+              {["US", "UAE", "India","Other"].map((city) => (
                 <Option key={city}>{city}</Option>
               ))}
             </Select>
@@ -301,6 +317,19 @@ const HomePage = ({ user, setUser }) => {
           )
           .join("")}
       </style>
+  
+  
+  <div>
+    <HomeSection />
+  </div>
+  
+   {/* Online Section */}
+    <div ref={onlineRef} id="online" style={{ paddingTop: 100 }}>
+  <OnlinePage />
+</div>
+<ContactFooter />
+
+      
     </div>
   );
 };

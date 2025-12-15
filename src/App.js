@@ -10,6 +10,7 @@ import Layout from "./components/Layout";
 import api from "./api/axiosClient";
 import HomePage from "./pages/HomePage";
 import Profile from "./pages/Profile";
+import OnlinePage from "./pages/OnlinePage";
 
 const App = () => {
   const [user, setUser] = useState(null);
@@ -48,6 +49,7 @@ const App = () => {
       <Routes>
         {/* Public routes */}
         <Route path="/" element={<HomePage />} />
+        <Route path="/onlinepage" element={<OnlinePage /> } />
         <Route path="/auth/login" element={<Login setUser={setUser} />} />
         <Route path="/auth/signup" element={<Signup setUser={setUser} />} />
 

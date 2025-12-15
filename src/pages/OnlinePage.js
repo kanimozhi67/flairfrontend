@@ -57,7 +57,7 @@ const OnlinePage = () => {
             <Title level={3} style={{ color: "#fff" }}>
               FLAIR OLYMPIAD'S Early Learn
             </Title>
-            <Paragraph style={{ color: "#f0f0f0", fontSize: 16 }}>
+            <Paragraph style={{ color: "#f0f0f0", fontSize: 20 }}>
               A fun and engaging early learning program to spark curiosity in young minds.
             </Paragraph>
             <Button type="primary" shape="round">
@@ -77,7 +77,7 @@ const OnlinePage = () => {
             <Title level={3} style={{ color: "#fff" }}>
               FLAIR OLYMPIAD'S
             </Title>
-            <Paragraph style={{ color: "#fdfdfd", fontSize: 16 }}>
+            <Paragraph style={{ color: "#fdfdfd", fontSize: 20 }}>
               A smart learning app that adapts to you—anytime, anywhere, for smarter results.
             </Paragraph>
             <Button type="primary" shape="round">
@@ -95,41 +95,43 @@ const OnlinePage = () => {
       </div>
 
       {/* Olympiad / App Creator Section */}
-      <div style={sectionStyle("#00c6ff", "#5098f0ff")}>
+      <div style={sectionStyle("#6cb8f7ff", "#740743ff")}>
         <Row gutter={[24, 24]} align="middle">
-          <Col xs={24} md={8} style={{ textAlign: "center" }}>
+          <Col xs={24} md={8} style={{ textAlign: "center" ,border:"3px solid wheat" ,padding:30,borderRadius:10 , 
+           
+          }}>
             <img
               src={olymp}
               alt="Olympiad"
               style={{ width: "100%", borderRadius: 20 }}
             />
-            <Paragraph style={{ color: "#fff", marginTop: 12 }}>
+            <Paragraph style={{ color: "#fff", marginTop: 12,fontSize:20 }}>
               Step-by-step curriculum for Olympiad aspirants.
             </Paragraph>
-            <Button type="primary" block shape="round">
+            <Button type="primary" block shape="round" style={{fontSize:20, backgroundColor:"orange",padding: "5px 1px"}}>
               Explore Olympiad
             </Button>
           </Col>
 
           <Col xs={24} md={8} style={{ textAlign: "center" }}>
-            <Title level={3} style={{ color: "#fff" }}>
+            <Title level={1} style={{ color: "#f5eaeaff",fontSize:28 , fontWeight:"bold"}}>
               FLAIR OLYMPIAD'S
             </Title>
-            <Title level={4} style={{ color: "#ffd700" }}>
+            <Title level={2} style={{ color: "#faf5f7ff" ,fontSize:20 , fontWeight:"bold"}}>
               ADVANCED LEVEL
             </Title>
           </Col>
 
-          <Col xs={24} md={8} style={{ textAlign: "center" }}>
+          <Col xs={24} md={8} style={{ textAlign: "center",border:"3px solid wheat" ,padding:30,borderRadius:10 , }}>
             <img
               src={appc}
               alt="App Creator"
               style={{ width: "100%", borderRadius: 20 }}
             />
-            <Paragraph style={{ color: "#fff", marginTop: 12 }}>
+            <Paragraph style={{ color: "#fff", marginTop: 12,fontSize:20 }}>
               Intensive coaching plan for aspiring app creators.
             </Paragraph>
-            <Button type="primary" block shape="round">
+            <Button type="primary" block shape="round" style={{fontSize:20, backgroundColor:"orange",padding: "5px 1px"}}>
               Explore Software Courses
             </Button>
           </Col>

@@ -173,7 +173,7 @@ const QuizCard = ({
             boxShadow: "0 4px 10px rgba(0,0,0,0.15)",
           }}
         >
-          🔄 Play Again
+          🔄 New Game
         </Button>
       )}
     </Card>

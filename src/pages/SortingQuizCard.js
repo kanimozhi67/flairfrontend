@@ -131,7 +131,7 @@ const SortingQuizCard = ({
       {/* Play Again Button */}
       {submitted && (
         <button onClick={fetchQuiz} style={playAgainButtonStyle}>
-          🔄 Play Again
+          🔄 New Game
         </button>
       )}
     </div>

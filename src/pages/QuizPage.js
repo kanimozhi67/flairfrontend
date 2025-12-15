@@ -223,8 +223,8 @@ const QuizPage = ({ user, setUser }) => {
         res = await api.get(`/quiz/math?level=${selectedLevel}`);
       }
       setQuestions(res.data.questions || []);
-      //setAnswers({});
-      setAnswers(Array((res.data.questions || []).length).fill(null));
+      setAnswers({});
+    //  setAnswers(Array((res.data.questions || []).length).fill(null));
     } catch (err) {
       console.error("fetchQuiz error:", err);
       setQuestions([]);
@@ -352,12 +352,24 @@ const QuizPage = ({ user, setUser }) => {
 
       return;
     }
+console.log("submitquiz")
+console.log("ANSWERS:", answers);
+console.log("QUESTIONS:", questions.map(q => q.id));
 
     // Normal math quiz
-    if (!questions.every((q) => typeof answers[q.id] === "number")) {
-      setFeedbackMessage("⚠️ Please answer all questions before submitting!");
-      return;
-    }
+    // if (!questions.every((q) => typeof answers[q.id] === "number")) {
+    //   setFeedbackMessage("⚠️ Please answer all questions before submitting!");
+    //   return;
+    // }
+// allow null (wrong), block only undefined
+// allow null (wrong), block only missing keys
+const hasAllKeys = questions.every((q) => answers.hasOwnProperty(q.id));
+
+if (!hasAllKeys) {
+  setFeedbackMessage("⚠️ Quiz incomplete!");
+  return;
+}
+
 
     try {
       const res = await api.post("/quiz/check", {
@@ -377,7 +389,15 @@ const QuizPage = ({ user, setUser }) => {
       });
       setResults(resResults);
 
-      const feedback =
+      giftmessage(score);
+    } catch (err) {
+      console.error("submitQuiz (math) error:", err);
+      setFeedbackMessage("❌ Submit failed.");
+    }
+  };
+
+  const giftmessage =(score) =>{
+    const feedback =
         score === questions.length
           ? perfectScoreAdviceList[
               Math.floor(Math.random() * perfectScoreAdviceList.length)
@@ -389,12 +409,7 @@ const QuizPage = ({ user, setUser }) => {
       setFeedbackMessage(`🎉 You scored ${score} points! ${feedback}`);
       if (score === questions.length) setShowGift(true);
       else setShowNoGift(true);
-    } catch (err) {
-      console.error("submitQuiz (math) error:", err);
-      setFeedbackMessage("❌ Submit failed.");
-    }
-  };
-
+  }
   const onStickerClicked = async (emoji, event) => {
     if (!user || !user._id) {
       message.error("Not logged in");
@@ -490,17 +505,18 @@ const QuizPage = ({ user, setUser }) => {
               questions={questions}
               answers={answers}
               setAnswers={setAnswers}
-              submitQuiz={submitQuiz}
-              submitted={submitted}
-              results={results}
-              loading={loading}
-              fetchQuiz={fetchQuiz}
-              firstInputRef={firstInputRef}
-              titleStyle={titleStyle}
-              numberStyle={numberStyle}
-              buttonStyle={buttonStyle}
-              playAgainButtonStyle={playAgainButtonStyle}
+            //  submitQuiz={submitQuiz}
+             // submitted={submitted}
+            //  results={results}
+           setFeedbackMessage={setFeedbackMessage}
+setFinalScore={setFinalScore}
+setSubmitted={setSubmitted}
+addPointsToBackend={addPointsToBackend}
+setResults={setResults}
+giftmessage={giftmessage}
+fetchQuiz={fetchQuiz}
               speakLine={speakLine}
+              
             />
           ) : (
             <QuizCard

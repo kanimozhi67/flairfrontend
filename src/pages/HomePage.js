@@ -144,9 +144,9 @@ const HomePage = ({ user, setUser }) => {
 
       {/* Floating Icons */}
     {floatingIcons.map((icon, idx) => {
-        const size = Math.random() * 60 + 30;
+        const size = Math.random() * 60 + 40;
         const left = Math.random() * 100;
-        const duration = Math.random() * 5 + 5;
+        const duration = Math.random() * 5 + 2;
         return (
           <div
             key={idx}
@@ -157,7 +157,7 @@ const HomePage = ({ user, setUser }) => {
               fontSize: size,
               opacity: 0.8,
               animation: `floatAnim${idx} ${duration}s ease-in-out infinite alternate`,
-              zIndex: -1,               // 👈 behind content
+              zIndex: 0,               // 👈 behind content
    // pointerEvents: "none",    // 👈 CRITICAL (no input blocking)
    // userSelect: "none",
             }}

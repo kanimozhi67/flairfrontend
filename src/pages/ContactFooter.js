@@ -12,7 +12,7 @@ import {
 const { Title, Paragraph } = Typography;
 const { TextArea } = Input;
 
-const ContactFooter = () => {
+const ContactFooter = ({scrollToOnline3}) => {
   return (
     <div
       style={{
@@ -84,6 +84,7 @@ const ContactFooter = () => {
       >
         © 2025 Flair Olympiad. All rights reserved.
       </Paragraph>
+      <button style={{ float:"right", color:"blueviolet", fontWeight:"bold"}} onClick={scrollToOnline3}>GO TO TOP</button>
     </div>
   );
 };

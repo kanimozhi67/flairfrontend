@@ -25,6 +25,7 @@ const HomePage = ({ user, setUser }) => {
   const [isLogin, setIsLogin] = useState(true);
    const onlineRef = useRef(null);
    const onlineRef2 = useRef(null);
+   const onlineRef3 = useRef(null);
 
  const scrollToOnline = () => {
   if (onlineRef.current) {
@@ -35,6 +36,11 @@ const HomePage = ({ user, setUser }) => {
  const scrollToOnline2 = () => {
   if (onlineRef2.current) {
     onlineRef2.current.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+};
+ const scrollToOnline3 = () => {
+  if (onlineRef3.current) {
+    onlineRef3.current.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 };
 
@@ -64,6 +70,7 @@ const HomePage = ({ user, setUser }) => {
     zIndex: 0,          
       }}
     >
+      <div ref={onlineRef3} id="header" >
       {/* Header */}
       <header
         style={{
@@ -73,6 +80,7 @@ const HomePage = ({ user, setUser }) => {
           alignItems: "center",
           padding: isMobile ? "12px 16px" : "20px 50px",
           gap: isMobile ? 12 : 0,
+          
         }}
       >
         <div
@@ -155,13 +163,13 @@ const HomePage = ({ user, setUser }) => {
               >
                 Login
               </Button>
-               <button></button>
+               
             </>
            
           )}
         </div>
       </header>
-
+</div>
       {/* Floating Icons */}
     {floatingIcons.map((icon, idx) => {
         const size = Math.random() * 60 + 40;
@@ -211,12 +219,12 @@ const HomePage = ({ user, setUser }) => {
           }}
         />
 
-        {/* <div style={{ fontSize: isMobile ? 60 : 100 }}>👶✨ 🎓</div> */}
-    {["👶✨", "🎓"].map((emoji, i) => (
-            <div key={i} style={{ fontSize: 100, textAlign: "center" }}>
+        <div style={{ fontSize: isMobile ? 60 : 100 }}>👶 🎓 ✨</div>
+    {/* {["👶","✨", "🎓"].map((emoji, i) => (
+            <div key={i} style={{ fontSize: 100, textAlign: "center" , fontSize: isMobile ? 60 : 100}}>
               {emoji}
             </div>
-          ))}
+          ))} */}
       
 
         <div
@@ -335,7 +343,10 @@ const HomePage = ({ user, setUser }) => {
   <OnlinePage />
 </div>
  <div ref={onlineRef2} id="contact" >
-<ContactFooter />
+<ContactFooter 
+scrollToOnline3={scrollToOnline3}
+/>
+
 </div>
       
     </div>

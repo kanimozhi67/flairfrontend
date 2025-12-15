@@ -24,6 +24,7 @@ const HomePage = ({ user, setUser }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [isLogin, setIsLogin] = useState(true);
    const onlineRef = useRef(null);
+   const onlineRef2 = useRef(null);
 
  const scrollToOnline = () => {
   if (onlineRef.current) {
@@ -31,7 +32,11 @@ const HomePage = ({ user, setUser }) => {
   }
 };
 
-
+ const scrollToOnline2 = () => {
+  if (onlineRef2.current) {
+    onlineRef2.current.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+};
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -106,7 +111,7 @@ const HomePage = ({ user, setUser }) => {
           <Button
             type="text"
             style={{ color: "#fff" , fontSize: 18}}
-            onClick={() => navigate("/contact")}
+            onClick={scrollToOnline2}
           >
             Contact
           </Button>
@@ -150,7 +155,9 @@ const HomePage = ({ user, setUser }) => {
               >
                 Login
               </Button>
+               <button></button>
             </>
+           
           )}
         </div>
       </header>
@@ -327,8 +334,9 @@ const HomePage = ({ user, setUser }) => {
     <div ref={onlineRef} id="online" style={{ paddingTop: 100 }}>
   <OnlinePage />
 </div>
+ <div ref={onlineRef2} id="contact" >
 <ContactFooter />
-
+</div>
       
     </div>
   );

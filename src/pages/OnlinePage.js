@@ -68,7 +68,7 @@ const OnlinePage = () => {
       </div>
 
       {/* Grade 4 - 12 Section */}
-      <div style={sectionStyle("#ff6a00", "#f14e9dff")}>
+      <div style={sectionStyle("#f36c0cff", "#f14e9dff")}>
         <Row align="middle" gutter={[24, 24]} justify="end">
           <Col xs={24} md={14}>
             <Tag color="cyan" style={{ fontWeight: "bold", marginBottom: 12 }}>

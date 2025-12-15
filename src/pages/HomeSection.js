@@ -38,7 +38,7 @@ const HomeSection = () => {
       <Paragraph style={{ maxWidth: 800, margin: "0 auto 40px", color: "wheat",fontSize:16 }}>
         Empower your learning with a centralized dashboard that helps you track progress, get guidance, and stay motivated.
       </Paragraph>
-<br></br>
+<br></br><br></br>
       <div
         style={{
           position: "relative",

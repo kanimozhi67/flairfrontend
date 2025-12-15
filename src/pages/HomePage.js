@@ -334,7 +334,7 @@ const HomePage = ({ user, setUser }) => {
       </style>
   
   
-  <div>
+  <div style={{ border:"2px solid white", borderRadius:20 , margin: "auto 90px", zIndex: 5}}>
     <HomeSection />
   </div>
   

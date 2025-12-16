@@ -18,7 +18,7 @@ const ResetIcon = ({ size = 16 }) => (
 
 /* ---------- Component ---------- */
 
-export default function SudokuBoard({ addPointsToBackend }) {
+export default function SudokuBoard({ selectedLevel ,addPointsToBackend }) {
   const [puzzleId, setPuzzleId] = useState(null);
   const [puzzle, setPuzzle] = useState([]);
   const [userAnswers, setUserAnswers] = useState({});
@@ -66,16 +66,26 @@ const [clicked, setClicked] = useState(false)
     setResult(null);
     setUserAnswers({});
     resetTimer();
-
-    const { data } = await api.get("/quiz/sudoku");
-    setPuzzleId(data.puzzleId);
-    setPuzzle(data.questions);
+if(selectedLevel === 1)  {const { data } = await api.get("/quiz/sudoku");
+ setPuzzleId(data.puzzleId);
+    setPuzzle(data.questions);}
+else if(selectedLevel === 2)  {const { data } = await api.get("/quiz/sudokulevel2");
+ setPuzzleId(data.puzzleId);
+    setPuzzle(data.questions);}
+else {const { data } = await api.get("/quiz/sudokulevel3");
+ setPuzzleId(data.puzzleId);
+    setPuzzle(data.questions);}
+    // setPuzzleId(data.puzzleId);
+    // setPuzzle(data.questions);
     setLoading(false);
+    setClicked(false)
   };
 
   const resetBoard = () => {
     setUserAnswers({});
     setResult(null);
+     setLoading(false);
+    setClicked(false)
   };
 
   const handleInputChange = (r, c, v) => {

@@ -4,6 +4,7 @@ import api from "../api/axiosClient";
 import { IconMap } from "antd/es/result";
 
 export default function Puzzle({
+  selectedLevel,
   user,
   answers,
   setAnswers,
@@ -19,22 +20,18 @@ export default function Puzzle({
   const [loading, setLoading] = useState(true);
  const [message, setMessage] = useState({ type: "", text: "" });
   const [inputToIcon, setInputToIcon] = useState({});
+  const [clicked,setClicked] =useState(false)
   // Map each input to an icon
   const icons =  ["🍎", "🍌", "🍇", "🍊", "🥝", "🍍", "🍑", "🍒", "🥭"];
   //const inputToIcon = {};
 
   // Fetch puzzle from backend
-  useEffect(() => {
-    const fetchPuzzle = async () => {
-      setLoading(true);
-      try {
-        const res = await api.get("/quiz/puzzle");
-        const puzzleData = res.data.puzzle || {};
+  const addData=(res)=>{
+  const puzzleData = res.data.puzzle || {};
         setPuzzleId(puzzleData.id);
         setEquations(puzzleData.equations || []);
         setInputs(puzzleData.inputs || []);
-
-        // Initialize answers for each input
+          // Initialize answers for each input
         const initialAnswers = {};
          const iconMap = {};
         (puzzleData.inputs || []).forEach((input, idx) => {
@@ -43,6 +40,27 @@ export default function Puzzle({
         });
         setAnswers((prev) => ({ ...prev, ...initialAnswers }));
            setInputToIcon(iconMap);
+  }
+   const fetchPuzzle = async () => {
+      setLoading(true);
+     setAnswers({});
+     setClicked(false);
+     setSubmitted(false);
+      try {
+        if(selectedLevel ===1){
+        const res = await api.get("/quiz/puzzle");
+        addData(res);
+       }
+
+else if(selectedLevel ===2){
+        const res = await api.get("/quiz/puzzlelevel2");
+       addData(res); }
+   else {
+        const res = await api.get("/quiz/puzzlelevel3");
+         addData(res); }
+
+       
+      
       } catch (err) {
         console.error("Failed to fetch puzzle:", err);
         message.error("Failed to load puzzle.");
@@ -50,6 +68,8 @@ export default function Puzzle({
         setLoading(false);
       }
     };
+  useEffect(() => {
+   
     fetchPuzzle();
   }, []);
 
@@ -132,47 +152,47 @@ if (typeof val === "string" && inputs.includes(val)) {
   };
 
   return (
-    <div >
+    <div  >
         <h1 style ={{ fontSize: 26 , color:"blue" }}>"Solve the Puzzle 🧺"</h1>
     <Card  style={{width: "580px",  backgroundColor: "lightcoral"}}>
       {equations.map((eq, eqIdx) => (
 eqIdx===1 ?(
-        <Row key={eqIdx} gutter={16} align="middle" style={{ marginBottom: 12 , fontSize: 28 , }}>
+        <Row key={eqIdx} gutter={16} align="middle" style={{ marginBottom: 12 , fontSize: 28 , border:"1px solid gray"}}>
           <div style={{ fontWeight: "bold"}}> 
              {eq.left.map((val, i) =>
          i !== 0 ? (
-    <Col key={i}>{renderCell(val)}</Col>
+    <Col key={i} style={{ fontWeight: "bold" , fontSize: "28px",border:"1px solid gray"}}>{renderCell(val)}</Col>
        ) : null
       )}
-          <div style={{ fontWeight: "bold" , fontSize: "20px"}}> 
-          <Col >=</Col></div>
+          <div > 
+          <Col style={{ fontWeight: "bold" , fontSize: "28px",border:"1px solid gray"}} >=</Col></div>
           {/* <Col >{renderCell(eq.right)}</Col> */}
            
            </div>
         </Row>)
 : eqIdx===2 ?(
-        <Row key={eqIdx} gutter={16} align="middle" style={{ marginBottom: 12 , fontSize: 28 , }}>
+        <Row key={eqIdx} gutter={16} align="middle" style={{ marginBottom: 12 , fontSize: 28 ,border:"1px solid gray" }}>
            
              {eq.left.map((val, i) =>
      
-           <Col key={i}>{renderCell(val)}</Col>
+           <Col key={i} style={{ fontWeight: "bold" , fontSize: "28px",border:"1px solid gray"}}>{renderCell(val)}</Col>
              
             )}
          
-          <Col>=</Col>
-          <Col>{renderCell(eq.right)}</Col>
+          <Col style={{ fontWeight: "bold" , fontSize: "28px",border:"1px solid gray"}}>=</Col>
+          <Col style={{ fontWeight: "bold" , fontSize: "28px",border:"1px solid gray"}}>{renderCell(eq.right)}</Col>
        
         </Row>
        
     ): (
-        <Row key={eqIdx} gutter={16} align="middle" style={{ marginBottom: 12 , fontSize: 28 , }}>
+        <Row key={eqIdx} gutter={16} align="middle" style={{ marginBottom: 12 , fontSize: 28 ,border:"1px solid gray", }}>
         {eq.left.map((val, i) =>
   
-    <Col key={i}>{renderCell(val)}</Col>
+    <Col style={{ fontWeight: "bold" , fontSize: "28px",border:"1px solid gray"}} key={i}>{renderCell(val)}</Col>
   ) }
 
-          <Col>=</Col>
-          <Col>{renderCell(eq.right)}</Col>
+          <Col style={{ fontWeight: "bold" , fontSize: "28px",border:"1px solid gray"}}>=</Col>
+          <Col style={{ fontWeight: "bold" , fontSize: "28px",border:"1px solid gray"}}>{renderCell(eq.right)}</Col>
          <div style={{ fontWeight: "bold"}}>  </div>
         </Row>)
       ))}
@@ -181,10 +201,21 @@ eqIdx===1 ?(
         type="primary"
         onClick={submitPuzzle}
         style={{ marginTop: 16 , fontSize: 24, backgroundColor:"green", textAlign:"center"}}
-        disabled={submitted}
+        disabled={submitted || clicked}
       >
         {submitted ? "Submitted" : "Check Answer"}
-      </Button>
+      </Button> &nbsp;&nbsp;&nbsp;&nbsp;
+      {submitted &&
+      <Button
+        type="primary"
+        onClick={fetchPuzzle}
+        style={{ marginTop: 16 , fontSize: 24, backgroundColor:"green", textAlign:"center"}}
+        
+      >
+         "New Game" 
+      </Button> }
+
+      
     </Card>
     </div>
   );

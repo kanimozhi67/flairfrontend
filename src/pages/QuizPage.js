@@ -197,9 +197,10 @@ const [puzzleId, setPuzzleId] = useState(null);
 
    const feedmsg = (score) =>{
     let len = questions.length;
-        if(category==="sudoku"){
-        
-          len=6;
+        if(category==="sudoku" ){
+        if(selectedLevel ===1) len=5;
+       else if(selectedLevel ===2) len=6;
+        else len=7;
           console.log(`score: ${score} and questions.length: ${len}`)
           console.log(score === len)
         } 
@@ -551,11 +552,12 @@ fetchQuiz={fetchQuiz}
           ) : category === "sudoku" ? (
 
 <SudokuBoard 
-//selectedLevel={selectedLevel}
+selectedLevel={selectedLevel}
   addPointsToBackend={addPointsToBackend}
-/>): category === "puzzles" && selectedLevel === 1 ? (
+/>): category === "puzzles" ? (
 <div style={{ fontSize :"28px" , fontWeight: "bold"}} >
 <Puzzle
+selectedLevel={selectedLevel}
   user={user}
   puzzleId={puzzleId}
   answers={answers}

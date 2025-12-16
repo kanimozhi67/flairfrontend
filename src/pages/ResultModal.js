@@ -28,8 +28,8 @@ const ResultModal = ({
         run={visible}
       />
       <div style={{ textAlign: "center", padding: 10 }}>
-        <h2 style={{ fontSize: 32, marginBottom: 10 }}>
-          🎉 Your Score: {score}
+        <h2 style={{ fontSize: 32, marginBottom: 10 , color:"orange"}}>
+          🎉 Your Score Box
         </h2>
         <div style={{ marginBottom: 20 }}>
           {Array.from({ length: score }).map((_, idx) => (

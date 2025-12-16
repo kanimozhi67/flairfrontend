@@ -5,11 +5,11 @@ import das from "../images/das.png";
 const { Title, Paragraph } = Typography;
 
 const features = [
-  { icon: "🔔", title: "Stay organized with session reminders" },
+  { icon: "🔔", title: "Stay on schedule with session reminders" },
   { icon: "📚", title: "Access to all session recordings" },
-  { icon: "📊", title: "Detailed reports on accuracy & speed" },
-  { icon: "👩‍💼", title: "Instant support from customer care" },
-  { icon: "🤖", title: "AI bot for step-by-step guidance" },
+  { icon: "📊", title: "Clear insights into accuracy & speed" },
+  { icon: "👩‍💼", title: "Instant customer care support" },
+  { icon: "🤖", title: "Smart AI bot for step-by-step guidance" },
   { icon: "🔢", title: "Fun math challenges" },
 ];
 

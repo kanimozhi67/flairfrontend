@@ -12,8 +12,11 @@ export const logout = () =>
 export const getMe = () =>
   axiosClient.get("/auth/getMe");
 
-export const quiz = () =>
-  axiosClient.get("/quiz/math");
+// export const quiz = () =>
+//   axiosClient.get("/quiz/math");
+
+// export const checksudoku = () =>
+//   axiosClient.get("/quiz/checksudoku");
 
 export const today = () =>
   axiosClient.get("/quiz/progress/today");

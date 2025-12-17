@@ -165,7 +165,7 @@ const Logics = ({ selectedLevel, user, addPointsToBackend }) => {
           <Card
             key={question.id}
             title={`Logic Puzzle ${qIdx + 1}/3`}
-            style={{ marginBottom: 16 }}
+            style={{ marginBottom: 16, width: "95%", maxWidth: 600, marginLeft: "auto", marginRight: "auto" }}
           >
             <Row gutter={[12, 12]} justify="center" wrap>
               {question.pattern.map((item, index) => {
@@ -180,20 +180,20 @@ const Logics = ({ selectedLevel, user, addPointsToBackend }) => {
                 return (
                   <Col
                     key={index}
-                    xs={6}
-                    sm={4}
-                    md={3}
-                    lg={2}
+                    xs={8}
+                    sm={6}
+                    md={4}
+                    lg={3}
                     style={{ textAlign: "center" }}
                   >
                     {item === "❓" ? (
                       <div
                         style={{
-                          width: "80%",
-                          paddingTop: "80%",
+                          width: "100%",
+                          paddingTop: "100%",
                           border: "2px dashed #999",
                           position: "relative",
-                          fontSize: "calc(20px + 1vw)",
+                          fontSize: "clamp(18px, 3vw, 24px)",
                           backgroundColor,
                         }}
                       >
@@ -209,7 +209,7 @@ const Logics = ({ selectedLevel, user, addPointsToBackend }) => {
                         </span>
                       </div>
                     ) : (
-                      <span style={{ fontSize: "calc(24px + 1vw)" }}>{item}</span>
+                      <span style={{ fontSize: "clamp(20px, 4vw, 28px)" }}>{item}</span>
                     )}
                   </Col>
                 );
@@ -217,7 +217,7 @@ const Logics = ({ selectedLevel, user, addPointsToBackend }) => {
             </Row>
           </Card>
         ))}
-        <Space style={{ display: "flex", justifyContent: "center", marginTop: 16 }}>
+        <Space style={{ display: "flex", justifyContent: "center", marginTop: 16, flexWrap: "wrap", gap: "10px" }}>
           <Button icon={<UndoOutlined />} onClick={resetQuiz}>
             Reset
           </Button>
@@ -230,31 +230,31 @@ const Logics = ({ selectedLevel, user, addPointsToBackend }) => {
   }
 
   return (
-    <Card style={{ width: 800, marginLeft: "-180px", paddingLeft: 0 }}>
-      <h2>
+    <Card style={{ width: "95%", maxWidth: 600, margin: "20px auto", padding: "16px" }}>
+      <h2 style={{ fontSize: "clamp(18px, 3vw, 24px)" }}>
         ⭐ Logic Puzzle {currentIndex + 1}/3 &nbsp;&nbsp;
         Time left: <span style={{ color: "orange" }}>{timeLeft}s</span>
         &nbsp;&nbsp;&nbsp;&nbsp;
-        <Button icon={<UndoOutlined />} onClick={resetQuiz} style={{ color: "blue", fontSize: 20 }}>
+        <Button icon={<UndoOutlined />} onClick={resetQuiz} style={{ color: "blue", fontSize: "clamp(14px, 2vw, 20px)" }}>
           Reset
         </Button>
       </h2>
       <hr />
 
-      <Row gutter={[24, 24]} justify="center" wrap>
+      <Row gutter={[12, 12]} justify="center" wrap>
         {currentQuestion.pattern.map((item, index) => {
           const userAns = (userAnswersList[currentIndex] || {})[index] || "";
           return (
-            <Col key={index} xs={6} sm={4} md={3} lg={2} style={{ textAlign: "center" }}>
+            <Col key={index} xs={8} sm={6} md={4} lg={3} style={{ textAlign: "center" }}>
               {item === "❓" ? (
                 <div
                   onClick={() => handleResetCell(index)}
                   style={{
-                    width: "80%",
-                    paddingTop: "80%",
+                    width: "100%",
+                    paddingTop: "100%",
                     border: "2px dashed #999",
                     position: "relative",
-                    fontSize: "calc(20px + 1vw)",
+                    fontSize: "clamp(18px, 3vw, 24px)",
                     cursor: "pointer",
                   }}
                 >
@@ -270,19 +270,19 @@ const Logics = ({ selectedLevel, user, addPointsToBackend }) => {
                   </span>
                 </div>
               ) : (
-                <span style={{ fontSize: "calc(24px + 1vw)" }}>{item}</span>
+                <span style={{ fontSize: "clamp(20px, 4vw, 28px)" }}>{item}</span>
               )}
             </Col>
           );
         })}
       </Row>
 
-      <h3 style={{ marginTop: 24 }}>Choose an answer:</h3>
-      <Row gutter={[24, 24]} justify="center" wrap>
+      <h3 style={{ marginTop: 24, fontSize: "clamp(16px, 2.5vw, 20px)" }}>Choose an answer:</h3>
+      <Row gutter={[12, 12]} justify="center" wrap>
         {shapes.map((shape) => (
-          <Col key={shape} xs={6} sm={4} md={3} lg={2} style={{ textAlign: "center" }}>
+          <Col key={shape} xs={8} sm={6} md={4} lg={3} style={{ textAlign: "center" }}>
             <Button
-              style={{ fontSize: "24px", width: "100%" }}
+              style={{ fontSize: "clamp(20px, 3vw, 26px)", width: "100%" }}
               onClick={() => handleSelectAnswer(shape)}
               disabled={disabled}
             >

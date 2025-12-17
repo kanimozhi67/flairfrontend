@@ -13,7 +13,7 @@ const ResultModal = ({
   // Speak when modal opens
   useEffect(() => {
     if (visible && speakLine) {
-      speakLine(`Hurray! You scored ${score} points! ${feedback}`);
+      speakLine(`🤖  Score Box 🎉 ${feedback}`);
     }
   }, [visible, speakLine, score, feedback]);
 
@@ -29,7 +29,7 @@ const ResultModal = ({
       />
       <div style={{ textAlign: "center", padding: 10 }}>
         <h2 style={{ fontSize: 32, marginBottom: 10 , color:"orange"}}>
-          🎉 Your Score Box
+         🤖  Score Box 🎉
         </h2>
         <div style={{ marginBottom: 20 }}>
           {Array.from({ length: score }).map((_, idx) => (

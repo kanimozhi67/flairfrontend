@@ -19,8 +19,9 @@ const Layout = ({ user, setUser }) => {
   const menuItems = [
     { key: "home", label: "🏠 Home", path: "/categories" },
     { key: "dashboard", label: "📈 Dashboard", path: "/quiz/progress" },
+     { key: "mystickers", label: " 👝 My Stickers", path: "/mystickers" },
     { key: "getMe", label: "👶 My Profile", path: "/auth/getMe" },
-    { key: "mystickers", label: " 👝 My Stickers", path: "/mystickers" },
+   
   ];
 
   const noSidebarRoutes = ["/login", "/signup", "/"];

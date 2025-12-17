@@ -78,15 +78,15 @@ const Profile = ({ setUser }) => {
         <h1 style={{ fontSize: 28, fontWeight: "bold", marginBottom: 5 }}>{user.username}</h1>
         <p style={{ fontSize: 25, color: "#555", marginBottom: 15 }}>Email: {user.email}</p>
         <p style={{ fontSize: 25, marginBottom: 15 }}>Today's Score: <span style={{ color: "#ff4e2fff", fontWeight: "bold" }}>{todayScore} ⭐</span></p>
-        <p style={{ fontSize: 25, marginBottom: 20 }}>
-          Your Stickers:{" "}
-          {user.sticker.length > 0 ? 
+        <p style={{ fontSize: 23, marginBottom: 20 }}>
+          Your Stickers:{" "} <strong>{user.sticker.length }</strong>
+          {/* {user.sticker.length > 0 ? 
             user.sticker.map((item, idx) => (
               <Tag key={idx} color="orange" style={{ fontSize: 20, margin: 3 , border: "10x solid gold"}}>
                 {item}
               </Tag>
-            )) : <span>No stickers yet 🎁</span>
-          }
+            )) : <span>No stickers yet 🎁</span>} */}
+          
         </p>
 
         <Button 

@@ -12,6 +12,7 @@ import HomePage from "./pages/HomePage";
 import Profile from "./pages/Profile";
 import OnlinePage from "./pages/OnlinePage";
 import Mystickers from "./pages/Mystickers";
+import DashboardWrapper from "./pages/DadhboardWrapper";
 
 
 const App = () => {
@@ -77,7 +78,7 @@ const App = () => {
             path="/quiz/progress"
             element={
               <PrivateRoute user={user}>
-                <Dashboard user={user} setUser={setUser} />
+                <DashboardWrapper user={user} setUser={setUser} />
               </PrivateRoute>
             }
           />

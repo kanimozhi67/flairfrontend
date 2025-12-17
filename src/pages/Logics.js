@@ -1,14 +1,95 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Card, Row, Col, Button, message, Spin, Space } from "antd";
-import { ReloadOutlined, UndoOutlined } from "@ant-design/icons";
+import { UndoOutlined } from "@ant-design/icons";
 import api from "../api/axiosClient";
+import {
+  DndContext,
+  useDraggable,
+  useDroppable,
+  closestCenter,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
 
+const DraggableShape = ({ shape, disabled }) => {
+  const { attributes, listeners, setNodeRef, transform } = useDraggable({
+    id: shape,
+    disabled,
+  });
 
+  const style = {
+    transform: transform
+      ? `translate3d(${transform.x}px, ${transform.y}px, 0)`
+      : undefined,
+    width: "80%",
+    paddingTop: "80%",
+    position: "relative",
+    border: "1px solid #ccc",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    fontSize: "calc(24px + 1vw)",
+    margin: "auto",
+    cursor: disabled ? "not-allowed" : "grab",
+    backgroundColor: "#f5f5f5",
+    opacity: disabled ? 0.6 : 1,
+  };
 
-const Logics = ({ selectedLevel, user , addPointsToBackend}) => {
-    const shapes = selectedLevel === 1 ? ["🟪", "⭐", "💛", "💎", "⭕", "🟢"] :
-    selectedLevel === 2 ?  ["❤️", "💛", "💚", "💙", "💜", "🖤", "🤍"] : [  "⬅️",  "➡️",  "⬆️",   "⬇️",  "🔄" ];
-    ;
+  return (
+    <div ref={setNodeRef} {...listeners} {...attributes} style={style}>
+      <span
+        style={{
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+        }}
+      >
+        {shape}
+      </span>
+    </div>
+  );
+};
+
+const DroppableCell = ({ index, userAns, backgroundColor, disabled }) => {
+  const { setNodeRef } = useDroppable({ id: index.toString() });
+
+  return (
+    <div
+      ref={setNodeRef}
+      style={{
+        width: "80%",
+        paddingTop: "80%",
+        border: "2px dashed #999",
+        position: "relative",
+        fontSize: "calc(20px + 1vw)",
+        backgroundColor,
+        opacity: disabled ? 0.6 : 1,
+      }}
+    >
+      <span
+        style={{
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+        }}
+      >
+        {userAns}
+      </span>
+    </div>
+  );
+};
+
+const Logics = ({ selectedLevel, user, addPointsToBackend }) => {
+  const shapes =
+    selectedLevel === 1
+      ? ["🟪", "⭐", "💛", "💎", "⭕", "🟢"]
+      : selectedLevel === 2
+      ? ["❤️", "💛", "💚", "💙", "💜", "🖤", "🤍"]
+      : ["⬅️", "➡️", "⬆️", "⬇️", "🔄"];
+
   const [questions, setQuestions] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [userAnswersList, setUserAnswersList] = useState([]);
@@ -28,26 +109,19 @@ const Logics = ({ selectedLevel, user , addPointsToBackend}) => {
     setCurrentIndex(0);
 
     try {
-        if(selectedLevel === 1){
-      const res1 = await api.get("/quiz/logic");
-      const res2 = await api.get("/quiz/logic");
-      const res3 = await api.get("/quiz/logic");
-      setQuestions([res1.data, res2.data, res3.data]);
-    
-        }  else if(selectedLevel === 2){
-      const res1 = await api.get("/quiz/logiclevel2");
-      const res2 = await api.get("/quiz/logiclevel2");
-      const res3 = await api.get("/quiz/logiclevel2");
-      setQuestions([res1.data, res2.data, res3.data]);
-        }else {
-      const res1 = await api.get("/quiz/logiclevel3");
-      const res2 = await api.get("/quiz/logiclevel3");
-      const res3 = await api.get("/quiz/logiclevel3");
-      setQuestions([res1.data, res2.data, res3.data]);
-        }
+      const endpoint =
+        selectedLevel === 1
+          ? "/quiz/logic"
+          : selectedLevel === 2
+          ? "/quiz/logiclevel2"
+          : "/quiz/logiclevel3";
 
+      const res1 = await api.get(endpoint);
+      const res2 = await api.get(endpoint);
+      const res3 = await api.get(endpoint);
+
+      setQuestions([res1.data, res2.data, res3.data]);
       startTimer();
-
     } catch (err) {
       message.error("Failed to load questions.");
     }
@@ -76,23 +150,6 @@ const Logics = ({ selectedLevel, user , addPointsToBackend}) => {
     }, 1000);
   };
 
-  const handleDragStart = (e, shape) => {
-    e.dataTransfer.setData("shape", shape);
-  };
-
-  const handleDrop = (e, index) => {
-    if (disabled) return;
-    const shape = e.dataTransfer.getData("shape");
-    const currentAnswers = userAnswersList[currentIndex] || {};
-    setUserAnswersList((prev) => {
-      const newList = [...prev];
-      newList[currentIndex] = { ...currentAnswers, [index]: shape };
-      return newList;
-    });
-  };
-
-  const allowDrop = (e) => e.preventDefault();
-
   const nextQuestion = () => {
     clearInterval(timerRef.current);
     if (currentIndex < questions.length - 1) {
@@ -106,12 +163,11 @@ const Logics = ({ selectedLevel, user , addPointsToBackend}) => {
     questions.forEach((q, idx) => {
       const userAns = answers[idx] || {};
       const correctAns = correctAnswers?.[q.id];
-      if (!correctAns) return; // skip if correct answers not loaded yet
+      if (!correctAns) return;
       const isCorrect = Object.keys(correctAns).every(
         (key) => userAns[key] === correctAns[key]
       );
       if (isCorrect) s += 1;
-
     });
     addPointsToBackend(s);
     return s;
@@ -143,21 +199,37 @@ const Logics = ({ selectedLevel, user , addPointsToBackend}) => {
   const newGame = () => fetchQuestions();
 
   useEffect(() => {
-    // Live score update before submission if results available
     if (Object.keys(results).length > 0) {
       setScore(calculateScore(userAnswersList, results));
     }
   }, [userAnswersList, results]);
 
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 5 } })
+  );
+
+  // NEW handleDrop for dnd-kit
+  const handleDrop = (event, index) => {
+    if (disabled) return;
+    const shape = event.active.id;
+    const currentAnswers = userAnswersList[currentIndex] || {};
+    setUserAnswersList((prev) => {
+      const newList = [...prev];
+      newList[currentIndex] = { ...currentAnswers, [index]: shape };
+      return newList;
+    });
+  };
+
   if (!questions.length) return <Spin />;
 
   const currentQuestion = questions[currentIndex];
 
-  // **After submission or live score display**
   if (showResults || Object.keys(results).length > 0) {
     return (
       <div>
-        <h2 style={{ textAlign: "center" }}>Score: {score} / {questions.length}</h2>
+        <h2 style={{ textAlign: "center" }}>
+          Score: {score} / {questions.length}
+        </h2>
         {questions.map((question, qIdx) => (
           <Card
             key={question.id}
@@ -168,7 +240,6 @@ const Logics = ({ selectedLevel, user , addPointsToBackend}) => {
               {question.pattern.map((item, index) => {
                 const userAns = (userAnswersList[qIdx] || {})[index] || "";
                 const correctEmoji = results[question.id]?.[index];
-
                 let backgroundColor = "transparent";
                 if (correctEmoji) {
                   if (userAns === correctEmoji) backgroundColor = "#b6fcb6";
@@ -185,27 +256,11 @@ const Logics = ({ selectedLevel, user , addPointsToBackend}) => {
                     style={{ textAlign: "center" }}
                   >
                     {item === "❓" ? (
-                      <div
-                        style={{
-                          width: "80%",
-                          paddingTop: "80%",
-                          border: "2px dashed #999",
-                          position: "relative",
-                          fontSize: "calc(20px + 1vw)",
-                          backgroundColor,
-                        }}
-                      >
-                        <span
-                          style={{
-                            position: "absolute",
-                            top: "50%",
-                            left: "50%",
-                            transform: "translate(-50%, -50%)",
-                          }}
-                        >
-                          {userAns}
-                        </span>
-                      </div>
+                      <DroppableCell
+                        index={index}
+                        userAns={userAns}
+                        backgroundColor={backgroundColor}
+                      />
                     ) : (
                       <span style={{ fontSize: "calc(24px + 1vw)" }}>{item}</span>
                     )}
@@ -228,97 +283,62 @@ const Logics = ({ selectedLevel, user , addPointsToBackend}) => {
   }
 
   return (
+
     <Card
-      title={`Logic Puzzle ${currentIndex + 1}/3 - Time left: ${timeLeft}s`}
-      extra={
-        <Space>
-          <Button icon={<UndoOutlined />} onClick={resetQuiz}>
-            Reset
-          </Button>
-        </Space>
-      }
-    >
-      <Row gutter={[12, 12]} justify="center" wrap>
-        {currentQuestion.pattern.map((item, index) => {
-          const userAns = (userAnswersList[currentIndex] || {})[index] || "";
 
-          return (
-            <Col
-              key={index}
-              xs={6}
-              sm={4}
-              md={3}
-              lg={2}
-              style={{ textAlign: "center" }}
-            >
-              {item === "❓" ? (
-                <div
-                  onDrop={(e) => handleDrop(e, index)}
-                  onDragOver={allowDrop}
-                  style={{
-                    width: "80%",
-                    paddingTop: "80%",
-                    border: "2px dashed #999",
-                    position: "relative",
-                    fontSize: "calc(20px + 1vw)",
-                    cursor: disabled ? "not-allowed" : "pointer",
-                    opacity: disabled ? 0.6 : 1,
-                  }}
-                >
-                  <span
-                    style={{
-                      position: "absolute",
-                      top: "50%",
-                      left: "50%",
-                      transform: "translate(-50%, -50%)",
-                    }}
-                  >
-                    {userAns}
-                  </span>
-                </div>
-              ) : (
-                <span style={{ fontSize: "calc(24px + 1vw)" }}>{item}</span>
-              )}
+     style={{
+      width: 800,
+      marginLeft:"-180px",
+      paddingLeft:0,
+     }}
+        
+      >
+        
+     <h2>⭐Logic Puzzle  :<span style={{color: "orange"}} >  {`   ${currentIndex + 1}/3 `} </span>&nbsp;&nbsp;&nbsp;&nbsp;
+   Time left: <span style={{color: "orange"}} > {` ${timeLeft}s   `}</span> &nbsp;&nbsp;&nbsp;&nbsp;
+   
+       <Button icon={<UndoOutlined />} onClick={resetQuiz} style={{color: "blue", fontSize:20}}>
+         
+    Reset
+          </Button> </h2>
+          <br></br><hr></hr><br></br>
+      <DndContext
+        sensors={sensors}
+        collisionDetection={closestCenter}
+        onDragEnd={(event) => {
+          const { active, over } = event;
+          if (!over) return;
+          handleDrop(event, parseInt(over.id));
+        }}
+      >
+        <Row gutter={[24,24]} justify="center" wrap>
+          {currentQuestion.pattern.map((item, index) => {
+            const userAns = (userAnswersList[currentIndex] || {})[index] || "";
+            return (
+              <Col key={index} xs={6} sm={4} md={3} lg={2} style={{ textAlign: "center" }}>
+                {item === "❓" ? (
+                  <DroppableCell
+                    index={index}
+                    userAns={userAns}
+                    backgroundColor="transparent"
+                    disabled={disabled}
+                  />
+                ) : (
+                  <span style={{ fontSize: "calc(24px + 1vw)" }}>{item}</span>
+                )}
+              </Col>
+            );
+          })}
+        </Row>
+
+        <Row gutter={[24,24]} justify="center" wrap style={{ marginTop: 24 }}>
+          {shapes.map((shape) => (
+            <Col key={shape} xs={6} sm={4} md={3} lg={2} style={{ textAlign: "center" }}>
+              <DraggableShape shape={shape} disabled={disabled} />
             </Col>
-          );
-        })}
-      </Row>
-
-      <Row gutter={[12, 12]} justify="center" wrap style={{ marginTop: 24 }}>
-        {shapes.map((shape) => (
-          <Col key={shape} xs={6} sm={4} md={3} lg={2} style={{ textAlign: "center" }}>
-            <div
-              draggable={!disabled}
-              onDragStart={(e) => handleDragStart(e, shape)}
-              style={{
-                width: "80%",
-                paddingTop: "80%",
-                position: "relative",
-                border: "1px solid #ccc",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                fontSize: "calc(24px + 1vw)",
-                margin: "auto",
-                cursor: disabled ? "not-allowed" : "grab",
-                backgroundColor: "#f5f5f5",
-                opacity: disabled ? 0.6 : 1,
-              }}
-            >
-              <span
-                style={{
-                  position: "absolute",
-                  top: "50%",
-                  left: "50%",
-                  transform: "translate(-50%, -50%)",
-                }}
-              >
-                {shape}
-              </span>
-            </div>
-          </Col>
-        ))}
-      </Row>
+          ))}
+        </Row>
+      </DndContext>
 
       <Row justify="center" style={{ marginTop: 24 }}>
         {currentIndex < questions.length - 1 ? (

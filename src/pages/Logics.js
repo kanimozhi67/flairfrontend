@@ -2,85 +2,6 @@ import React, { useEffect, useState, useRef } from "react";
 import { Card, Row, Col, Button, message, Spin, Space } from "antd";
 import { UndoOutlined } from "@ant-design/icons";
 import api from "../api/axiosClient";
-import {
-  DndContext,
-  useDraggable,
-  useDroppable,
-  closestCenter,
-  PointerSensor,
-  useSensor,
-  useSensors,
-} from "@dnd-kit/core";
-
-const DraggableShape = ({ shape, disabled }) => {
-  const { attributes, listeners, setNodeRef, transform } = useDraggable({
-    id: shape,
-    disabled,
-  });
-
-  const style = {
-    transform: transform
-      ? `translate3d(${transform.x}px, ${transform.y}px, 0)`
-      : undefined,
-    width: "80%",
-    paddingTop: "80%",
-    position: "relative",
-    border: "1px solid #ccc",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    fontSize: "calc(24px + 1vw)",
-    margin: "auto",
-    cursor: disabled ? "not-allowed" : "grab",
-    backgroundColor: "#f5f5f5",
-    opacity: disabled ? 0.6 : 1,
-  };
-
-  return (
-    <div ref={setNodeRef} {...listeners} {...attributes} style={style}>
-      <span
-        style={{
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-        }}
-      >
-        {shape}
-      </span>
-    </div>
-  );
-};
-
-const DroppableCell = ({ index, userAns, backgroundColor, disabled }) => {
-  const { setNodeRef } = useDroppable({ id: index.toString() });
-
-  return (
-    <div
-      ref={setNodeRef}
-      style={{
-        width: "80%",
-        paddingTop: "80%",
-        border: "2px dashed #999",
-        position: "relative",
-        fontSize: "calc(20px + 1vw)",
-        backgroundColor,
-        opacity: disabled ? 0.6 : 1,
-      }}
-    >
-      <span
-        style={{
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-        }}
-      >
-        {userAns}
-      </span>
-    </div>
-  );
-};
 
 const Logics = ({ selectedLevel, user, addPointsToBackend }) => {
   const shapes =
@@ -134,7 +55,7 @@ const Logics = ({ selectedLevel, user, addPointsToBackend }) => {
 
   const startTimer = () => {
     clearInterval(timerRef.current);
-    setTimeLeft(20);
+    setTimeLeft(50);
     setDisabled(false);
 
     timerRef.current = setInterval(() => {
@@ -204,25 +125,35 @@ const Logics = ({ selectedLevel, user, addPointsToBackend }) => {
     }
   }, [userAnswersList, results]);
 
-  const sensors = useSensors(
-    useSensor(PointerSensor, { activationConstraint: { distance: 5 } })
-  );
+  const currentQuestion = questions[currentIndex];
 
-  // NEW handleDrop for dnd-kit
-  const handleDrop = (event, index) => {
+  const handleSelectAnswer = (shape) => {
     if (disabled) return;
-    const shape = event.active.id;
+
+    const currentAnswers = userAnswersList[currentIndex] || {};
+    const firstEmptyIndex = currentQuestion.pattern.findIndex(
+      (item, idx) => item === "❓" && !currentAnswers[idx]
+    );
+    if (firstEmptyIndex === -1) return;
+
+    setUserAnswersList((prev) => {
+      const newList = [...prev];
+      newList[currentIndex] = { ...currentAnswers, [firstEmptyIndex]: shape };
+      return newList;
+    });
+  };
+
+  const handleResetCell = (index) => {
+    if (disabled) return;
     const currentAnswers = userAnswersList[currentIndex] || {};
     setUserAnswersList((prev) => {
       const newList = [...prev];
-      newList[currentIndex] = { ...currentAnswers, [index]: shape };
+      newList[currentIndex] = { ...currentAnswers, [index]: undefined };
       return newList;
     });
   };
 
   if (!questions.length) return <Spin />;
-
-  const currentQuestion = questions[currentIndex];
 
   if (showResults || Object.keys(results).length > 0) {
     return (
@@ -256,11 +187,27 @@ const Logics = ({ selectedLevel, user, addPointsToBackend }) => {
                     style={{ textAlign: "center" }}
                   >
                     {item === "❓" ? (
-                      <DroppableCell
-                        index={index}
-                        userAns={userAns}
-                        backgroundColor={backgroundColor}
-                      />
+                      <div
+                        style={{
+                          width: "80%",
+                          paddingTop: "80%",
+                          border: "2px dashed #999",
+                          position: "relative",
+                          fontSize: "calc(20px + 1vw)",
+                          backgroundColor,
+                        }}
+                      >
+                        <span
+                          style={{
+                            position: "absolute",
+                            top: "50%",
+                            left: "50%",
+                            transform: "translate(-50%, -50%)",
+                          }}
+                        >
+                          {userAns}
+                        </span>
+                      </div>
                     ) : (
                       <span style={{ fontSize: "calc(24px + 1vw)" }}>{item}</span>
                     )}
@@ -283,62 +230,67 @@ const Logics = ({ selectedLevel, user, addPointsToBackend }) => {
   }
 
   return (
+    <Card style={{ width: 800, marginLeft: "-180px", paddingLeft: 0 }}>
+      <h2>
+        ⭐ Logic Puzzle {currentIndex + 1}/3 &nbsp;&nbsp;
+        Time left: <span style={{ color: "orange" }}>{timeLeft}s</span>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <Button icon={<UndoOutlined />} onClick={resetQuiz} style={{ color: "blue", fontSize: 20 }}>
+          Reset
+        </Button>
+      </h2>
+      <hr />
 
-    <Card
-
-     style={{
-      width: 800,
-      marginLeft:"-180px",
-      paddingLeft:0,
-     }}
-        
-      >
-        
-     <h2>⭐Logic Puzzle  :<span style={{color: "orange"}} >  {`   ${currentIndex + 1}/3 `} </span>&nbsp;&nbsp;&nbsp;&nbsp;
-   Time left: <span style={{color: "orange"}} > {` ${timeLeft}s   `}</span> &nbsp;&nbsp;&nbsp;&nbsp;
-   
-       <Button icon={<UndoOutlined />} onClick={resetQuiz} style={{color: "blue", fontSize:20}}>
-         
-    Reset
-          </Button> </h2>
-          <br></br><hr></hr><br></br>
-      <DndContext
-        sensors={sensors}
-        collisionDetection={closestCenter}
-        onDragEnd={(event) => {
-          const { active, over } = event;
-          if (!over) return;
-          handleDrop(event, parseInt(over.id));
-        }}
-      >
-        <Row gutter={[24,24]} justify="center" wrap>
-          {currentQuestion.pattern.map((item, index) => {
-            const userAns = (userAnswersList[currentIndex] || {})[index] || "";
-            return (
-              <Col key={index} xs={6} sm={4} md={3} lg={2} style={{ textAlign: "center" }}>
-                {item === "❓" ? (
-                  <DroppableCell
-                    index={index}
-                    userAns={userAns}
-                    backgroundColor="transparent"
-                    disabled={disabled}
-                  />
-                ) : (
-                  <span style={{ fontSize: "calc(24px + 1vw)" }}>{item}</span>
-                )}
-              </Col>
-            );
-          })}
-        </Row>
-
-        <Row gutter={[24,24]} justify="center" wrap style={{ marginTop: 24 }}>
-          {shapes.map((shape) => (
-            <Col key={shape} xs={6} sm={4} md={3} lg={2} style={{ textAlign: "center" }}>
-              <DraggableShape shape={shape} disabled={disabled} />
+      <Row gutter={[24, 24]} justify="center" wrap>
+        {currentQuestion.pattern.map((item, index) => {
+          const userAns = (userAnswersList[currentIndex] || {})[index] || "";
+          return (
+            <Col key={index} xs={6} sm={4} md={3} lg={2} style={{ textAlign: "center" }}>
+              {item === "❓" ? (
+                <div
+                  onClick={() => handleResetCell(index)}
+                  style={{
+                    width: "80%",
+                    paddingTop: "80%",
+                    border: "2px dashed #999",
+                    position: "relative",
+                    fontSize: "calc(20px + 1vw)",
+                    cursor: "pointer",
+                  }}
+                >
+                  <span
+                    style={{
+                      position: "absolute",
+                      top: "50%",
+                      left: "50%",
+                      transform: "translate(-50%, -50%)",
+                    }}
+                  >
+                    {userAns}
+                  </span>
+                </div>
+              ) : (
+                <span style={{ fontSize: "calc(24px + 1vw)" }}>{item}</span>
+              )}
             </Col>
-          ))}
-        </Row>
-      </DndContext>
+          );
+        })}
+      </Row>
+
+      <h3 style={{ marginTop: 24 }}>Choose an answer:</h3>
+      <Row gutter={[24, 24]} justify="center" wrap>
+        {shapes.map((shape) => (
+          <Col key={shape} xs={6} sm={4} md={3} lg={2} style={{ textAlign: "center" }}>
+            <Button
+              style={{ fontSize: "24px", width: "100%" }}
+              onClick={() => handleSelectAnswer(shape)}
+              disabled={disabled}
+            >
+              {shape}
+            </Button>
+          </Col>
+        ))}
+      </Row>
 
       <Row justify="center" style={{ marginTop: 24 }}>
         {currentIndex < questions.length - 1 ? (

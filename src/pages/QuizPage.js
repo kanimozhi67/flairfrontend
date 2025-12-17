@@ -99,28 +99,58 @@ const [puzzleId, setPuzzleId] = useState(null);
   };
 
   // Layout-safe container styles
-  const containerStyle = {
-    width: "100%",
-    padding: 16,
-    background: "linear-gradient(135deg, #ffe680, #ffb3b3)",
-    overflowX: "hidden",
-  };
+  // const containerStyle = {
+  //   width: "100%",
+  //   padding: 16,
+  //   background: "linear-gradient(135deg, #ffe680, #ffb3b3)",
+  //   overflowX: "hidden",
+  // };
 
-  const innerStyle = {
-    display: "flex",
-    flexDirection: width < 768 ? "column" : "row",
-    gap: 20,
-    alignItems: "flex-start",
-    justifyContent: "center",
-    width: "100%",
-    maxWidth: 1200,
-    margin: "0 auto",
-  };
+  // const innerStyle = {
+  //   display: "flex",
+  //   flexDirection: width < 768 ? "column" : "row",
+  //   gap: 20,
+  //   alignItems: "flex-start",
+  //   justifyContent: "center",
+  //   width: "100%",
+  //   maxWidth: 1200,
+  //   margin: "0 auto",
+  // };
 
-  const quizCardStyle = {
-    flex: 1,
-    margin: width < 768 ? "20px 0" : "0 20px",
-  };
+  // const quizCardStyle = {
+  //   flex: 1,
+   
+  //   margin: width < 768 ? "20px 0" : "0 20px",
+  // };
+const containerStyle = {
+  width: "100%",
+  minHeight: "100vh", // full viewport height for vertical centering
+  padding: 16,
+  background: "linear-gradient(135deg, #ffe680, #ffb3b3)",
+  display: "flex",
+  justifyContent: "center", // center horizontally
+  alignItems: "center",     // center vertically
+  overflowX: "hidden",
+  boxSizing: "border-box",
+};
+
+const innerStyle = {
+  display: "flex",
+  flexDirection: width < 768 ? "column" : "row", // responsive stacking
+  gap: 20,
+  alignItems: "flex-start",
+  justifyContent: "center",
+  width: "100%",
+  maxWidth: 1200,
+  margin: "0 auto",
+};
+
+const quizCardStyle = {
+  width: width < 768 ? "90%" : "580px", // responsive width
+  flex: "0 0 auto",                     // prevent stretching
+  margin: width < 768 ? "20px 0" : "0 20px",
+  boxShadow: "0 4px 12px rgba(0,0,0,0.1)", // optional styling
+};
 
   const allStickers = [
     "🍰",
@@ -652,7 +682,7 @@ selectedLevel={selectedLevel}
         flyData={flyData}
         setShowResultModal={setShowResultModal}
       />
-      <Basket basket={basket} />
+      {/* <Basket basket={basket} /> */}
     </div>
   );
 }

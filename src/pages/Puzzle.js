@@ -26,21 +26,24 @@ export default function Puzzle({
   //const inputToIcon = {};
 
   // Fetch puzzle from backend
-  const addData=(res)=>{
+ const addData = (res) => {
   const puzzleData = res.data.puzzle || {};
-        setPuzzleId(puzzleData.id);
-        setEquations(puzzleData.equations || []);
-        setInputs(puzzleData.inputs || []);
-          // Initialize answers for each input
-        const initialAnswers = {};
-         const iconMap = {};
-        (puzzleData.inputs || []).forEach((input, idx) => {
-          initialAnswers[input] = answers[input] ?? null;
-          iconMap[input] = icons[idx % icons.length]; // assign icon
-        });
-        setAnswers((prev) => ({ ...prev, ...initialAnswers }));
-           setInputToIcon(iconMap);
-  }
+  setPuzzleId(puzzleData.id);
+  setEquations(puzzleData.equations || []);
+  setInputs(puzzleData.inputs || []);
+
+  // Initialize answers to null for each input
+  const initialAnswers = {};
+  const iconMap = {};
+  (puzzleData.inputs || []).forEach((input, idx) => {
+    initialAnswers[input] = null; // <-- reset all inputs
+    iconMap[input] = icons[idx % icons.length]; 
+  });
+
+  setAnswers(initialAnswers); // <-- fully reset answers
+  setInputToIcon(iconMap);
+};
+
    const fetchPuzzle = async () => {
       setLoading(true);
      setAnswers({});

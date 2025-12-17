@@ -1,312 +1,222 @@
-import React, { useEffect, useState, useRef } from "react";
-import { Card, Row, Col, Button, message, Spin, Space } from "antd";
-import { ReloadOutlined, UndoOutlined } from "@ant-design/icons";
+import React, { useEffect, useState } from "react";
+import { Card, Row, Col, InputNumber, Button, message } from "antd";
 import api from "../api/axiosClient";
+import { IconMap } from "antd/es/result";
 
-const shapes = ["🟪", "⭐", "💛", "💎", "⭕", "🟢"];
+export default function Puzzle({
+  selectedLevel,
+  user,
+  answers,
+  setAnswers,
+  submitted,
+  setSubmitted,
+  results,
+  setResults,
+  addPointsToBackend,
+}) {
+  const [puzzleId, setPuzzleId] = useState(null);
+  const [equations, setEquations] = useState([]);
+  const [inputs, setInputs] = useState([]);
+  const [loading, setLoading] = useState(true);
+ const [message, setMessage] = useState({ type: "", text: "" });
+  const [inputToIcon, setInputToIcon] = useState({});
+  const [clicked,setClicked] =useState(false)
+  // Map each input to an icon
+  const icons =  ["🍎", "🍌", "🍇", "🍊", "🥝", "🍍", "🍑", "🍒", "🥭"];
+  //const inputToIcon = {};
 
-const Logics = ({ selectedLevel, user }) => {
-  const [questions, setQuestions] = useState([]); // 3 questions
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [userAnswersList, setUserAnswersList] = useState([]); // answers per question
-  const [timeLeft, setTimeLeft] = useState(20);
-  const timerRef = useRef(null);
-  const [disabled, setDisabled] = useState(false);
-  const [showResults, setShowResults] = useState(false);
-  const [results, setResults] = useState([]);
-  const [score, setScore] = useState(0);
+  // Fetch puzzle from backend
+  const addData=(res)=>{
+  const puzzleData = res.data.puzzle || {};
+        setPuzzleId(puzzleData.id);
+        setEquations(puzzleData.equations || []);
+        setInputs(puzzleData.inputs || []);
+          // Initialize answers for each input
+        const initialAnswers = {};
+         const iconMap = {};
+        (puzzleData.inputs || []).forEach((input, idx) => {
+          initialAnswers[input] = answers[input] ?? null;
+          iconMap[input] = icons[idx % icons.length]; // assign icon
+        });
+        setAnswers((prev) => ({ ...prev, ...initialAnswers }));
+           setInputToIcon(iconMap);
+  }
+   const fetchPuzzle = async () => {
+      setLoading(true);
+     setAnswers({});
+     setClicked(false);
+     setSubmitted(false);
+      try {
+        if(selectedLevel ===1){
+        const res = await api.get("/quiz/puzzle");
+        addData(res);
+       }
 
-  // Fetch 3 questions
-  const fetchQuestions = async () => {
-    setDisabled(false);
-    setShowResults(false);
-    setUserAnswersList([]);
-    setResults([]);
-    setScore(0);
-    setCurrentIndex(0);
+else if(selectedLevel ===2){
+        const res = await api.get("/quiz/puzzlelevel2");
+       addData(res); }
+   else {
+        const res = await api.get("/quiz/puzzlelevel3");
+         addData(res); }
 
-    try {
-      const res1 = await api.get("/quiz/logic");
-      const res2 = await api.get("/quiz/logic");
-      const res3 = await api.get("/quiz/logic");
-      setQuestions([res1.data, res2.data, res3.data]);
-      startTimer();
-    } catch (err) {
-      message.error("Failed to load questions.");
-    }
-  };
-
-  useEffect(() => {
-    fetchQuestions();
-    return () => clearInterval(timerRef.current);
-  }, [selectedLevel]);
-
-  const startTimer = () => {
-    clearInterval(timerRef.current);
-    setTimeLeft(20);
-    setDisabled(false);
-
-    timerRef.current = setInterval(() => {
-      setTimeLeft((prev) => {
-        if (prev <= 1) {
-          clearInterval(timerRef.current);
-          setDisabled(true);
-          message.warning("Time's up!");
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
-  };
-
-  const handleDragStart = (e, shape) => {
-    e.dataTransfer.setData("shape", shape);
-  };
-
-  const handleDrop = (e, index) => {
-    if (disabled || showResults) return;
-    const shape = e.dataTransfer.getData("shape");
-    const currentAnswers = userAnswersList[currentIndex] || {};
-    setUserAnswersList((prev) => {
-      const newList = [...prev];
-      newList[currentIndex] = { ...currentAnswers, [index]: shape };
-      return newList;
-    });
-  };
-
-  const allowDrop = (e) => e.preventDefault();
-
-  const nextQuestion = () => {
-    clearInterval(timerRef.current);
-    if (currentIndex < questions.length - 1) {
-      setCurrentIndex((prev) => prev + 1);
-      startTimer();
-    }
-  };
-
-  const submitQuiz = async () => {
-    clearInterval(timerRef.current);
-    setDisabled(true);
-
-    const payload = {
-      userId: user?._id,
-      answers: questions.map((q, idx) => ({
-        id: q.id,
-        answer: userAnswersList[idx] || {},
-      })),
+       
+      
+      } catch (err) {
+        console.error("Failed to fetch puzzle:", err);
+        message.error("Failed to load puzzle.");
+      } finally {
+        setLoading(false);
+      }
     };
+  useEffect(() => {
+   
+    fetchPuzzle();
+  }, []);
 
-    try {
-      const res = await api.post("/quiz/checklogic", payload);
-      setResults(res.data.correctAnswers); // object with questionId: {index: emoji}
-
-      // Calculate score out of 3
-      let calculatedScore = 0;
-      questions.forEach((q, idx) => {
-        const userAns = userAnswersList[idx] || {};
-        const correctAns = res.data.correctAnswers[q.id];
-        const isCorrect = Object.keys(correctAns).every(
-          (key) => userAns[key] === correctAns[key]
-        );
-        if (isCorrect) calculatedScore += 1;
-      });
-      setScore(calculatedScore);
-
-      setShowResults(true);
-    } catch (err) {
-      message.error("Failed to submit quiz.");
-    }
-  };
-
-  const resetQuiz = () => fetchQuestions();
-
-  const newGame = () => fetchQuestions();
-
-  if (!questions.length) return <Spin />;
-
-  // **After submission: show all questions**
-  if (showResults) {
-    return (
-      <div>
-        <h2 style={{ textAlign: "center" }}>Score: {score} / {questions.length}</h2>
-        {questions.map((question, qIdx) => (
-          <Card
-            key={question.id}
-            title={`Logic Puzzle ${qIdx + 1}/3`}
-            style={{ marginBottom: 16 }}
-          >
-            <Row gutter={[12, 12]} justify="center" wrap>
-              {question.pattern.map((item, index) => {
-                const userAns = (userAnswersList[qIdx] || {})[index] || "";
-                const correctEmoji = results[question.id][index];
-
-                let backgroundColor = "transparent";
-                if (userAns === correctEmoji) backgroundColor = "#b6fcb6"; // green
-                else if (userAns !== correctEmoji && userAns !== "")
-                  backgroundColor = "#fcb6b6"; // red
-
-                return (
-                  <Col
-                    key={index}
-                    xs={6}
-                    sm={4}
-                    md={3}
-                    lg={2}
-                    style={{ textAlign: "center" }}
-                  >
-                    {item === "❓" ? (
-                      <div
-                        style={{
-                          width: "80%",
-                          paddingTop: "80%",
-                          border: "2px dashed #999",
-                          position: "relative",
-                          fontSize: "calc(20px + 1vw)",
-                          backgroundColor,
-                        }}
-                      >
-                        <span
-                          style={{
-                            position: "absolute",
-                            top: "50%",
-                            left: "50%",
-                            transform: "translate(-50%, -50%)",
-                          }}
-                        >
-                          {userAns}
-                        </span>
-                      </div>
-                    ) : (
-                      <span style={{ fontSize: "calc(24px + 1vw)" }}>{item}</span>
-                    )}
-                  </Col>
-                );
-              })}
-            </Row>
-          </Card>
-        ))}
-
-        <Space style={{ display: "flex", justifyContent: "center", marginTop: 16 }}>
-          <Button icon={<UndoOutlined />} onClick={resetQuiz}>
-            Reset
-          </Button>
-          <Button type="primary" onClick={newGame}>
-            New Game
-          </Button>
-        </Space>
-      </div>
-    );
+ const submitPuzzle = async () => {
+  const allAnswered = inputs.every(
+    (input) => answers[input] !== null && answers[input] !== undefined
+  );
+  if (!allAnswered) {
+    message.warning("⚠️ Please answer all puzzle inputs before submitting!");
+    return;
   }
 
-  // **While taking quiz: show current question**
-  const currentQuestion = questions[currentIndex];
+  try {
+    const payload = inputs.map((input) => ({
+      id: input,
+      answer: answers[input],
+    }));
 
-  return (
-    <Card
-      title={`Logic Puzzle ${currentIndex + 1}/3 - Time left: ${timeLeft}s`}
-      extra={
-        <Space>
-          <Button icon={<UndoOutlined />} onClick={resetQuiz}>
-            Reset
-          </Button>
-        </Space>
+    const res = await api.post("/quiz/checkpuzzle", {
+      puzzleId,
+      answers: payload,
+      userId: user?._id,
+    });
+
+    const score = res?.data?.score ?? 0;
+    setSubmitted(true);
+
+    if (addPointsToBackend) await addPointsToBackend(score);
+
+    // Fixed answer check
+    const resResults = {};
+    inputs.forEach((input) => {
+      const correct = res.data.correctAnswers[input];
+      const userAns = answers[input];
+
+      // Check number if possible, otherwise string comparison
+      if (!isNaN(Number(correct)) && !isNaN(Number(userAns))) {
+        resResults[input] = Number(userAns) === Number(correct);
+      } else {
+        resResults[input] = String(userAns).trim() === String(correct).trim();
       }
-    >
-      <Row gutter={[12, 12]} justify="center" wrap>
-        {currentQuestion.pattern.map((item, index) => {
-          const userAns = (userAnswersList[currentIndex] || {})[index] || "";
+    });
+    setResults(resResults);
 
-          return (
-            <Col
-              key={index}
-              xs={6}
-              sm={4}
-              md={3}
-              lg={2}
-              style={{ textAlign: "center" }}
-            >
-              {item === "❓" ? (
-                <div
-                  onDrop={(e) => handleDrop(e, index)}
-                  onDragOver={allowDrop}
-                  style={{
-                    width: "80%",
-                    paddingTop: "80%",
-                    border: "2px dashed #999",
-                    position: "relative",
-                    fontSize: "calc(20px + 1vw)",
-                    cursor: disabled ? "not-allowed" : "pointer",
-                    opacity: disabled ? 0.6 : 1,
-                  }}
-                >
-                  <span
-                    style={{
-                      position: "absolute",
-                      top: "50%",
-                      left: "50%",
-                      transform: "translate(-50%, -50%)",
-                    }}
-                  >
-                    {userAns}
-                  </span>
-                </div>
-              ) : (
-                <span style={{ fontSize: "calc(24px + 1vw)" }}>{item}</span>
-              )}
-            </Col>
-          );
-        })}
-      </Row>
-
-      <Row gutter={[12, 12]} justify="center" wrap style={{ marginTop: 24 }}>
-        {shapes.map((shape) => (
-          <Col key={shape} xs={6} sm={4} md={3} lg={2} style={{ textAlign: "center" }}>
-            <div
-              draggable={!disabled}
-              onDragStart={(e) => handleDragStart(e, shape)}
-              style={{
-                width: "80%",
-                paddingTop: "80%",
-                position: "relative",
-                border: "1px solid #ccc",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                fontSize: "calc(24px + 1vw)",
-                margin: "auto",
-                cursor: disabled ? "not-allowed" : "grab",
-                backgroundColor: "#f5f5f5",
-                opacity: disabled ? 0.6 : 1,
-              }}
-            >
-              <span
-                style={{
-                  position: "absolute",
-                  top: "50%",
-                  left: "50%",
-                  transform: "translate(-50%, -50%)",
-                }}
-              >
-                {shape}
-              </span>
-            </div>
-          </Col>
-        ))}
-      </Row>
-
-      <Row justify="center" style={{ marginTop: 24 }}>
-        {currentIndex < questions.length - 1 ? (
-          <Button type="primary" onClick={nextQuestion}>
-            Next
-          </Button>
-        ) : (
-          <Button type="primary" onClick={submitQuiz}>
-            Submit
-          </Button>
-        )}
-      </Row>
-    </Card>
-  );
+    message.success(`🎉 You scored ${score} points!`);
+  } catch (err) {
+    console.error("Failed to submit puzzle:", err);
+   // message.error("Failed to submit puzzle. Try again.");
+  }
 };
 
-export default Logics;
+
+  if (loading) return <div style={{ fontSize: 30, textAlign: "center" }}>Loading puzzle...</div>;
+  if (!equations.length || !inputs.length)
+    return <div>No puzzle questions available.</div>;
+
+  // Render each cell
+  const renderCell = (val) => {
+if (typeof val === "string" && inputs.includes(val)) {
+  const icon = inputToIcon[val];
+  return val === "A" ? (
+    <InputNumber
+      value={answers[val] ?? null}
+      placeholder="🍓"// special placeholder for A
+      onChange={(v) => setAnswers((prev) => ({ ...prev, [val]: v ?? null }))}
+      style={{ width: 80 ,fontSize: 30, textAlign: "center" }}
+    />
+  ) : (
+    <InputNumber
+      value={answers[val] ?? null}
+      placeholder={icon} // normal placeholder
+      onChange={(v) => setAnswers((prev) => ({ ...prev, [val]: v ?? null }))}
+      style={{ width: 80 ,fontSize: 26, textAlign: "center"  }}
+    />
+  );
+}
+
+    if (val === null) return <span style={{fontSize: 30,}}>?</span>;
+    return <span style={{fontSize: 30,}}>{val}</span>;
+  };
+
+  return (
+    <div  >
+        <h1 style ={{ fontSize: 26 , color:"blue" }}>"Solve the Puzzle 🧺"</h1>
+    <Card  style={{width: "580px",  backgroundColor: "lightcoral"}}>
+      {equations.map((eq, eqIdx) => (
+eqIdx===1 ?(
+        <Row key={eqIdx} gutter={16} align="middle" style={{ marginBottom: 12 , fontSize: 28 , border:"1px solid gray"}}>
+          <div style={{ fontWeight: "bold"}}> 
+             {eq.left.map((val, i) =>
+         i !== 0 ? (
+    <Col key={i} style={{ fontWeight: "bold" , fontSize: "28px",border:"1px solid gray"}}>{renderCell(val)}</Col>
+       ) : null
+      )}
+          <div > 
+          <Col style={{ fontWeight: "bold" , fontSize: "28px",border:"1px solid gray"}} >=</Col></div>
+          {/* <Col >{renderCell(eq.right)}</Col> */}
+           
+           </div>
+        </Row>)
+: eqIdx===2 ?(
+        <Row key={eqIdx} gutter={16} align="middle" style={{ marginBottom: 12 , fontSize: 28 ,border:"1px solid gray" }}>
+           
+             {eq.left.map((val, i) =>
+     
+           <Col key={i} style={{ fontWeight: "bold" , fontSize: "28px",border:"1px solid gray"}}>{renderCell(val)}</Col>
+             
+            )}
+         
+          <Col style={{ fontWeight: "bold" , fontSize: "28px",border:"1px solid gray"}}>=</Col>
+          <Col style={{ fontWeight: "bold" , fontSize: "28px",border:"1px solid gray"}}>{renderCell(eq.right)}</Col>
+       
+        </Row>
+       
+    ): (
+        <Row key={eqIdx} gutter={16} align="middle" style={{ marginBottom: 12 , fontSize: 28 ,border:"1px solid gray", }}>
+        {eq.left.map((val, i) =>
+  
+    <Col style={{ fontWeight: "bold" , fontSize: "28px",border:"1px solid gray"}} key={i}>{renderCell(val)}</Col>
+  ) }
+
+          <Col style={{ fontWeight: "bold" , fontSize: "28px",border:"1px solid gray"}}>=</Col>
+          <Col style={{ fontWeight: "bold" , fontSize: "28px",border:"1px solid gray"}}>{renderCell(eq.right)}</Col>
+         <div style={{ fontWeight: "bold"}}>  </div>
+        </Row>)
+      ))}
+
+      <Button
+        type="primary"
+        onClick={submitPuzzle}
+        style={{ marginTop: 16 , fontSize: 24, backgroundColor:"green", textAlign:"center"}}
+        disabled={submitted || clicked}
+      >
+        {submitted ? "Submitted" : "Check Answer"}
+      </Button> &nbsp;&nbsp;&nbsp;&nbsp;
+      {submitted &&
+      <Button
+        type="primary"
+        onClick={fetchPuzzle}
+        style={{ marginTop: 16 , fontSize: 24, backgroundColor:"green", textAlign:"center"}}
+        
+      >
+         "New Game" 
+      </Button> }
+
+      
+    </Card>
+    </div>
+  );
+}

@@ -20,6 +20,7 @@ const Layout = ({ user, setUser }) => {
     { key: "home", label: "🏠 Home", path: "/categories" },
     { key: "dashboard", label: "📈 Dashboard", path: "/quiz/progress" },
     { key: "getMe", label: "👶 My Profile", path: "/auth/getMe" },
+    { key: "mystickers", label: " 👝 My Stickers", path: "/mystickers" },
   ];
 
   const noSidebarRoutes = ["/login", "/signup", "/"];
@@ -149,8 +150,8 @@ const Layout = ({ user, setUser }) => {
           {/* Avatar + score */}
           <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
             <div style={{ textAlign: "right", fontSize: 12 }}>
-           //   <div>{user.username}</div>
-           //   <div>⭐ {todayScore}</div>
+              {/* <div>{user.username}</div> */}
+              <div>⭐ {todayScore}</div>
             </div>
             <Avatar
               size={windowWidth < 360 ? 32 : 40}

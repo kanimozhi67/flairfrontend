@@ -11,6 +11,8 @@ import api from "./api/axiosClient";
 import HomePage from "./pages/HomePage";
 import Profile from "./pages/Profile";
 import OnlinePage from "./pages/OnlinePage";
+import Mystickers from "./pages/Mystickers";
+
 
 const App = () => {
   const [user, setUser] = useState(null);
@@ -60,6 +62,14 @@ const App = () => {
             element={
               <PrivateRoute user={user}>
                 <QuizCategories user={user} setUser={setUser} />
+              </PrivateRoute>
+            } />
+       
+          <Route
+            path="/mystickers"
+            element={
+              <PrivateRoute user={user}>
+                <Mystickers user={user} setUser={setUser} />
               </PrivateRoute>
             }
           />

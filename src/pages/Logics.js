@@ -3,12 +3,15 @@ import { Card, Row, Col, Button, message, Spin, Space } from "antd";
 import { ReloadOutlined, UndoOutlined } from "@ant-design/icons";
 import api from "../api/axiosClient";
 
-const shapes = ["🟪", "⭐", "💛", "💎", "⭕", "🟢"];
 
-const Logics = ({ selectedLevel, user }) => {
-  const [questions, setQuestions] = useState([]); // 3 questions
+
+const Logics = ({ selectedLevel, user , addPointsToBackend}) => {
+    const shapes = selectedLevel === 1 ? ["🟪", "⭐", "💛", "💎", "⭕", "🟢"] :
+    selectedLevel === 2 ?  ["❤️", "💛", "💚", "💙", "💜", "🖤", "🤍"] : [  "⬅️",  "➡️",  "⬆️",   "⬇️",  "🔄" ];
+    ;
+  const [questions, setQuestions] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [userAnswersList, setUserAnswersList] = useState([]); // answers per question
+  const [userAnswersList, setUserAnswersList] = useState([]);
   const [timeLeft, setTimeLeft] = useState(20);
   const timerRef = useRef(null);
   const [disabled, setDisabled] = useState(false);
@@ -16,7 +19,6 @@ const Logics = ({ selectedLevel, user }) => {
   const [results, setResults] = useState([]);
   const [score, setScore] = useState(0);
 
-  // Fetch 3 questions
   const fetchQuestions = async () => {
     setDisabled(false);
     setShowResults(false);
@@ -26,11 +28,26 @@ const Logics = ({ selectedLevel, user }) => {
     setCurrentIndex(0);
 
     try {
+        if(selectedLevel === 1){
       const res1 = await api.get("/quiz/logic");
       const res2 = await api.get("/quiz/logic");
       const res3 = await api.get("/quiz/logic");
       setQuestions([res1.data, res2.data, res3.data]);
+    
+        }  else if(selectedLevel === 2){
+      const res1 = await api.get("/quiz/logiclevel2");
+      const res2 = await api.get("/quiz/logiclevel2");
+      const res3 = await api.get("/quiz/logiclevel2");
+      setQuestions([res1.data, res2.data, res3.data]);
+        }else {
+      const res1 = await api.get("/quiz/logiclevel3");
+      const res2 = await api.get("/quiz/logiclevel3");
+      const res3 = await api.get("/quiz/logiclevel3");
+      setQuestions([res1.data, res2.data, res3.data]);
+        }
+
       startTimer();
+
     } catch (err) {
       message.error("Failed to load questions.");
     }
@@ -64,7 +81,7 @@ const Logics = ({ selectedLevel, user }) => {
   };
 
   const handleDrop = (e, index) => {
-    if (disabled || showResults) return;
+    if (disabled) return;
     const shape = e.dataTransfer.getData("shape");
     const currentAnswers = userAnswersList[currentIndex] || {};
     setUserAnswersList((prev) => {
@@ -84,6 +101,22 @@ const Logics = ({ selectedLevel, user }) => {
     }
   };
 
+  const calculateScore = (answers, correctAnswers) => {
+    let s = 0;
+    questions.forEach((q, idx) => {
+      const userAns = answers[idx] || {};
+      const correctAns = correctAnswers?.[q.id];
+      if (!correctAns) return; // skip if correct answers not loaded yet
+      const isCorrect = Object.keys(correctAns).every(
+        (key) => userAns[key] === correctAns[key]
+      );
+      if (isCorrect) s += 1;
+
+    });
+    addPointsToBackend(s);
+    return s;
+  };
+
   const submitQuiz = async () => {
     clearInterval(timerRef.current);
     setDisabled(true);
@@ -98,20 +131,8 @@ const Logics = ({ selectedLevel, user }) => {
 
     try {
       const res = await api.post("/quiz/checklogic", payload);
-      setResults(res.data.correctAnswers); // object with questionId: {index: emoji}
-
-      // Calculate score out of 3
-      let calculatedScore = 0;
-      questions.forEach((q, idx) => {
-        const userAns = userAnswersList[idx] || {};
-        const correctAns = res.data.correctAnswers[q.id];
-        const isCorrect = Object.keys(correctAns).every(
-          (key) => userAns[key] === correctAns[key]
-        );
-        if (isCorrect) calculatedScore += 1;
-      });
-      setScore(calculatedScore);
-
+      setResults(res.data.correctAnswers);
+      setScore(calculateScore(userAnswersList, res.data.correctAnswers));
       setShowResults(true);
     } catch (err) {
       message.error("Failed to submit quiz.");
@@ -119,13 +140,21 @@ const Logics = ({ selectedLevel, user }) => {
   };
 
   const resetQuiz = () => fetchQuestions();
-
   const newGame = () => fetchQuestions();
+
+  useEffect(() => {
+    // Live score update before submission if results available
+    if (Object.keys(results).length > 0) {
+      setScore(calculateScore(userAnswersList, results));
+    }
+  }, [userAnswersList, results]);
 
   if (!questions.length) return <Spin />;
 
-  // **After submission: show all questions**
-  if (showResults) {
+  const currentQuestion = questions[currentIndex];
+
+  // **After submission or live score display**
+  if (showResults || Object.keys(results).length > 0) {
     return (
       <div>
         <h2 style={{ textAlign: "center" }}>Score: {score} / {questions.length}</h2>
@@ -138,12 +167,13 @@ const Logics = ({ selectedLevel, user }) => {
             <Row gutter={[12, 12]} justify="center" wrap>
               {question.pattern.map((item, index) => {
                 const userAns = (userAnswersList[qIdx] || {})[index] || "";
-                const correctEmoji = results[question.id][index];
+                const correctEmoji = results[question.id]?.[index];
 
                 let backgroundColor = "transparent";
-                if (userAns === correctEmoji) backgroundColor = "#b6fcb6"; // green
-                else if (userAns !== correctEmoji && userAns !== "")
-                  backgroundColor = "#fcb6b6"; // red
+                if (correctEmoji) {
+                  if (userAns === correctEmoji) backgroundColor = "#b6fcb6";
+                  else if (userAns !== "") backgroundColor = "#fcb6b6";
+                }
 
                 return (
                   <Col
@@ -185,7 +215,6 @@ const Logics = ({ selectedLevel, user }) => {
             </Row>
           </Card>
         ))}
-
         <Space style={{ display: "flex", justifyContent: "center", marginTop: 16 }}>
           <Button icon={<UndoOutlined />} onClick={resetQuiz}>
             Reset
@@ -197,9 +226,6 @@ const Logics = ({ selectedLevel, user }) => {
       </div>
     );
   }
-
-  // **While taking quiz: show current question**
-  const currentQuestion = questions[currentIndex];
 
   return (
     <Card

@@ -7,7 +7,7 @@ const categories = [
   { id: 1, name: "Addition & Subtraction", path: "/quiz/math" },
   { id: 2, name: "Sorting", path: "/quiz/sorting" },
   { id: 3, name: "Multiplication", path: "/quiz/multiplication" },
-  { id: 4, name: "Logical Questions", path: "/quiz/logical" },
+  { id: 4, name: "Logical Questions", path: "/quiz/logic" },
   { id: 5, name: "Sudoku", path: "/quiz/sudoku" },
   { id: 6, name: "Puzzles", path: "/quiz/puzzles" },
 ];

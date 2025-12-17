@@ -6,7 +6,7 @@ import { useParams, useOutletContext } from "react-router-dom";
 import api from "../api/axiosClient";
 import LevelSelection from "./LevelSelection.js";
 import QuizCard from "./QuizCard.js";
-
+import Logics from "./Logics.js";
 import SortingQuizCard from "./SortingQuizCard.js";
 import MotivationScreen from "./MotivationScreen.js";
 import ResultModal from "./ResultModal.js";
@@ -209,6 +209,13 @@ const [puzzleId, setPuzzleId] = useState(null);
           console.log(`score: ${score} and questions.length: ${len}`)
           console.log(score === len)
         }
+         if (category === "logic" ){
+            len=3;
+          console.log(`score: ${score} and questions.length: ${len}`)
+          console.log(score === len)
+        }
+
+
         const feedback =
           score === len
             ? perfectScoreAdviceList[
@@ -570,6 +577,20 @@ selectedLevel={selectedLevel}
 />
 </div>
 
+          ): category === "logic" ? (
+
+<Logics 
+selectedLevel={selectedLevel}
+  user={user}
+  puzzleId={puzzleId}
+  answers={answers}
+  setAnswers={setAnswers}
+  submitted={submitted}
+  setSubmitted={setSubmitted}
+  results={results}
+  setResults={setResults}
+  addPointsToBackend={addPointsToBackend}
+/>
           ):(
             <QuizCard
               selectedLevel={selectedLevel}

@@ -3,14 +3,19 @@ import { Card, Row, Col, Button, message, Spin, Space } from "antd";
 import { UndoOutlined } from "@ant-design/icons";
 import api from "../api/axiosClient";
 
-const Logics = ({ selectedLevel, user, addPointsToBackend }) => {
-  const shapes =
-    selectedLevel === 1
+const Logics = ({level, selectedLevel, user, addPointsToBackend }) => {
+let shapes=[];
+
+if( level==="primary"){
+  shapes =["↗️","↘️","↙️","↖️","⬅️", "➡️", "⬆️","⬇️","🔄" ];
+}else{
+  shapes =
+ selectedLevel === 1
       ? ["🟪", "⭐", "💛", "💎", "⭕", "🟢"]
       : selectedLevel === 2
       ? ["❤️", "💛", "💚", "💙", "💜", "🖤", "🤍"]
       : ["⬅️", "➡️", "⬆️", "⬇️", "🔄"];
-
+}
   const [questions, setQuestions] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [userAnswersList, setUserAnswersList] = useState([]);
@@ -29,7 +34,20 @@ const Logics = ({ selectedLevel, user, addPointsToBackend }) => {
     setScore(0);
     setCurrentIndex(0);
 
-    try {
+    try {if(level==="primary"){
+const endpoint =
+        selectedLevel === 1
+          ? "/quiz/logicp"
+          : selectedLevel === 2
+          ? "/quiz/logicplevel2"
+          : "/quiz/logicplevel3";
+
+      const res1 = await api.get(endpoint);
+      const res2 = await api.get(endpoint);
+      const res3 = await api.get(endpoint);
+
+      setQuestions([res1.data, res2.data, res3.data]);
+    }else{
       const endpoint =
         selectedLevel === 1
           ? "/quiz/logic"
@@ -41,7 +59,7 @@ const Logics = ({ selectedLevel, user, addPointsToBackend }) => {
       const res2 = await api.get(endpoint);
       const res3 = await api.get(endpoint);
 
-      setQuestions([res1.data, res2.data, res3.data]);
+      setQuestions([res1.data, res2.data, res3.data]);}
       startTimer();
     } catch (err) {
       message.error("Failed to load questions.");

@@ -22,7 +22,7 @@ import PrimaryPage from "./PrimaryPage.js";
 import { useSearchParams } from "react-router-dom";
 
 const QuizPage = ({ user, setUser }) => {
-   const [searchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const level = searchParams.get("level"); // kindergarten | primary
   const { category } = useParams();
   const { width } = useWindowSize();
@@ -33,7 +33,7 @@ const QuizPage = ({ user, setUser }) => {
   const updateTodayScore =
     outletCtx?.updateTodayScore || outletCtx?.fetchTodayScore || (() => {});
 
-     // const [level, setLevel] = useState(null);
+  // const [level, setLevel] = useState(null);
   const [selectedLevel, setSelectedLevel] = useState(null);
   const [showMotivation, setShowMotivation] = useState(false);
   const [motivationMessage, setMotivationMessage] = useState("");
@@ -51,7 +51,7 @@ const QuizPage = ({ user, setUser }) => {
   const [flyData, setFlyData] = useState(null);
   const [showGift, setShowGift] = useState(false);
   const [showNoGift, setShowNoGift] = useState(false);
-const [puzzleId, setPuzzleId] = useState(null);
+  const [puzzleId, setPuzzleId] = useState(null);
 
   // --- Default style objects (passed to children so they won't be undefined) ---
   const titleStyle = {
@@ -103,35 +103,35 @@ const [puzzleId, setPuzzleId] = useState(null);
     }
   };
 
-const containerStyle = {
-  width: "100%",
-  minHeight: "100vh", // full viewport height for vertical centering
-  padding: 16,
-  background: "linear-gradient(135deg, #ffe680, #ffb3b3)",
-  display: "flex",
-  justifyContent: "center", // center horizontally
-  alignItems: "center",     // center vertically
-  overflowX: "hidden",
-  boxSizing: "border-box",
-};
+  const containerStyle = {
+    width: "100%",
+    minHeight: "100vh", // full viewport height for vertical centering
+    padding: 16,
+    background: "linear-gradient(135deg, #ffe680, #ffb3b3)",
+    display: "flex",
+    justifyContent: "center", // center horizontally
+    alignItems: "center", // center vertically
+    overflowX: "hidden",
+    boxSizing: "border-box",
+  };
 
-const innerStyle = {
-  display: "flex",
-  flexDirection: width < 768 ? "column" : "row", // responsive stacking
-  gap: 20,
-  alignItems: "flex-start",
-  justifyContent: "center",
-  width: "100%",
-  maxWidth: 1200,
-  margin: "0 auto",
-};
+  const innerStyle = {
+    display: "flex",
+    flexDirection: width < 768 ? "column" : "row", // responsive stacking
+    gap: 20,
+    alignItems: "flex-start",
+    justifyContent: "center",
+    width: "100%",
+    maxWidth: 1200,
+    margin: "0 auto",
+  };
 
-const quizCardStyle = {
-  width: width < 768 ? "90%" : "580px", // responsive width
-  flex: "0 0 auto",                     // prevent stretching
-  margin: width < 768 ? "20px 0" : "0 20px",
-  boxShadow: "0 4px 12px rgba(0,0,0,0.1)", // optional styling
-};
+  const quizCardStyle = {
+    width: width < 768 ? "90%" : "580px", // responsive width
+    flex: "0 0 auto", // prevent stretching
+    margin: width < 768 ? "20px 0" : "0 20px",
+    boxShadow: "0 4px 12px rgba(0,0,0,0.1)", // optional styling
+  };
 
   const allStickers = [
     "🍰",
@@ -206,52 +206,50 @@ const quizCardStyle = {
     "Keep going—your story is unfolding beautifully! 🌙✨",
   ];
 
-  console.log(`level: ${level}`)
-   const feedmsg = (score) =>{
+  console.log(`level: ${level}`);
+
+  const feedmsg = (score) => {
     let len = questions.length;
-
-
-    
-        if(category==="sudoku" ){
-  if(level=== "primary"){if(selectedLevel ===1) len=15;
-       else if(selectedLevel ===2) len=20;
-        else len=25;
-          console.log(`score: ${score} and questions.length: ${len}`)
-          console.log(score === len)}
-  else{
-     if(selectedLevel ===1) len=5;
-       else if(selectedLevel ===2) len=6;
-        else len=7;
-          console.log(`score: ${score} and questions.length: ${len}`)
-          console.log(score === len)
-        }}
-         if (category === "puzzles" ){
-            len=3;
-          console.log(`score: ${score} and questions.length: ${len}`)
-          console.log(score === len)
-        }
-         if (category === "logic" ){
-            len=3;
-          console.log(`score: ${score} and questions.length: ${len}`)
-          console.log(score === len)
-        }
-
-
-        const feedback =
-          score === len
-            ? perfectScoreAdviceList[
-                Math.floor(Math.random() * perfectScoreAdviceList.length)
-              ]
-            : score >= 2
-            ? adviceList[Math.floor(Math.random() * adviceList.length)]
-            : guideList;
-console.log(score)
-        setFeedbackMessage(`🎉 You scored ${score} points! ${feedback}`);
-        //   setFeedbackMessage(score === questions.length ? "🎉 Perfect! All correct!" : "Keep practicing!");
-        if (score === len) setShowGift(true);
-        else setShowNoGift(true);
+    if (category === "sudoku") {
+      if (level === "primary") {
+        if (selectedLevel === 1) len = 15;
+        else if (selectedLevel === 2) len = 20;
+        else len = 25;
+        console.log(`score: ${score} and questions.length: ${len}`);
+        console.log(score === len);
+      } else {
+        if (selectedLevel === 1) len = 5;
+        else if (selectedLevel === 2) len = 6;
+        else len = 7;
+        console.log(`score: ${score} and questions.length: ${len}`);
+        console.log(score === len);
       }
+    }
+    if (category === "puzzles") {
+      len = 3;
+      console.log(`score: ${score} and questions.length: ${len}`);
+      console.log(score === len);
+    }
+    if (category === "logic") {
+      len = 3;
+      console.log(`score: ${score} and questions.length: ${len}`);
+      console.log(score === len);
+    }
 
+    const feedback =
+      score === len
+        ? perfectScoreAdviceList[
+            Math.floor(Math.random() * perfectScoreAdviceList.length)
+          ]
+        : score >= 2
+        ? adviceList[Math.floor(Math.random() * adviceList.length)]
+        : guideList;
+    console.log(score);
+    setFeedbackMessage(`🎉 You scored ${score} points! ${feedback}`);
+    //   setFeedbackMessage(score === questions.length ? "🎉 Perfect! All correct!" : "Keep practicing!");
+    if (score === len) setShowGift(true);
+    else setShowNoGift(true);
+  };
 
   // Fetch quiz questions
   const fetchQuiz = async () => {
@@ -265,52 +263,64 @@ console.log(score)
       let res;
       if (category === "sorting") {
         console.log(`sorting category`);
+        if(level=== "primary"){
+            if (selectedLevel === 1) res = await api.get("/quiz/sortp");
+        else if (selectedLevel === 2) res = await api.get("/quiz/sortplevel2");
+        else res = await api.get("/quiz/sortplevel3");
+        }else{
         if (selectedLevel === 1) res = await api.get("/quiz/sort");
         else if (selectedLevel === 2) res = await api.get("/quiz/sortlevel2");
         else res = await api.get("/quiz/sortlevel3");
+        }
       } else if (category === "multiplication") {
-        console.log(`mul category`);
+       
+        if(level==="primary"){
+             if (selectedLevel === 1) res = await api.get("/quiz/mulp");
+        else if (selectedLevel === 2) res = await api.get("/quiz/mulplevel2");
+        else res = await api.get("/quiz/mulplevel3");
+        }else{
         if (selectedLevel === 1) res = await api.get("/quiz/mul");
         else if (selectedLevel === 2) res = await api.get("/quiz/mullevel2");
         else res = await api.get("/quiz/mullevel3");
-        console.log(`mul : ${res.data}`);
-      } else if (category === "math") {
-         console.log(`add sub category`);
-         if(level === "primary"){
-              if (selectedLevel === 1) res = await api.get("/quiz/mathp");
-        else if (selectedLevel === 2) res = await api.get("/quiz/mathp");
-        else res = await api.get("/quiz/mathplevel3");
-              setQuestions(res.data.questions || []);
-      setAnswers({});}
-      else
-       {
-        if (selectedLevel === 1) res = await api.get("/quiz/math");
-        else if (selectedLevel === 2) res = await api.get("/quiz/math");
-        else res = await api.get("/quiz/mathlevel3");
-        console.log(`addsub : ${res.data}`);
-}
-      }else if (category === "sudoku") {
+      
+      }
+     } else if (category === "math") {
+        console.log(`add sub category`);
+        if (level === "primary") {
+          if (selectedLevel === 1) res = await api.get("/quiz/mathp");
+          else if (selectedLevel === 2) res = await api.get("/quiz/mathp");
+          else res = await api.get("/quiz/mathplevel3");
+          setQuestions(res.data.questions || []);
+          setAnswers({});
+        } else {
+          if (selectedLevel === 1) res = await api.get("/quiz/math");
+          else if (selectedLevel === 2) res = await api.get("/quiz/math");
+          else res = await api.get("/quiz/mathlevel3");
+          console.log(`addsub : ${res.data}`);
+        }
+      } else if (category === "sudoku") {
         console.log(`sudoku category`);
-         res = await api.get("/quiz/sudoku");
-      setQuestions(res.data.questions || []);
-      setPuzzleId(res.data.puzzleId); // Store puzzleId
-      setAnswers({});
+        res = await api.get("/quiz/sudoku");
+        setQuestions(res.data.questions || []);
+        setPuzzleId(res.data.puzzleId); // Store puzzleId
+        setAnswers({});
         //else if (selectedLevel === 2) res = await api.get("/quiz/sudokulevel2");
-       // else res = await api.get("/quiz/sudokulevel3");
+        // else res = await api.get("/quiz/sudokulevel3");
         console.log(`sudoku : ${res.data}`);
       } else {
-        if(level === "primary"){
-            res = await api.get(`/quiz/mathp?level=${selectedLevel}`);
-              setQuestions(res.data.questions || []);
-      setAnswers({});
-        }else{
-        res = await api.get(`/quiz/math?level=${selectedLevel}`);
+        if (level === "primary") {
+          res = await api.get(`/quiz/mathp?level=${selectedLevel}`);
           setQuestions(res.data.questions || []);
-      setAnswers({});
-      }}
+          setAnswers({});
+        } else {
+          res = await api.get(`/quiz/math?level=${selectedLevel}`);
+          setQuestions(res.data.questions || []);
+          setAnswers({});
+        }
+      }
       setQuestions(res.data.questions || []);
       setAnswers({});
-    //  setAnswers(Array((res.data.questions || []).length).fill(null));
+      //  setAnswers(Array((res.data.questions || []).length).fill(null));
     } catch (err) {
       console.error("fetchQuiz error:", err);
       setQuestions([]);
@@ -353,8 +363,8 @@ console.log(score)
 
   // Helper: send points to backend and update UI
   const addPointsToBackend = async (points) => {
-    if (!user || !user._id) return;  
-      try {
+    if (!user || !user._id) return;
+    try {
       const res = await api.post("/quiz/progress/addpoints", { points });
       const total = res?.data?.points ?? res?.data?.total ?? null;
 
@@ -365,9 +375,8 @@ console.log(score)
         // ignore
       }
       window.dispatchEvent(new Event("scoreUpdated"));
-       feedmsg(points);
+      feedmsg(points);
       return total;
-      
     } catch (err) {
       console.error("addPointsToBackend error:", err);
       message.error("Failed to save points. Try again.");
@@ -378,7 +387,7 @@ console.log(score)
   // Submit quiz and handle results
   const submitQuiz = async () => {
     if (!questions || questions.length === 0) return;
-console.log("submitquiz")
+    console.log("submitquiz");
     // Sorting quiz
     if (category === "sorting") {
       const allAnswered = questions.every((q) =>
@@ -399,17 +408,17 @@ console.log("submitquiz")
           answer: q.numbers.map((_, idx) => Number(answers[`${q.id}-${idx}`])),
         }));
 
-   const      res = await api.post("/quiz/checksort", {
+        const res = await api.post("/quiz/checksort", {
           userId: user?._id,
           answers: payload,
         });
 
-         const score = res?.data?.score ?? 0;
+        const score = res?.data?.score ?? 0;
         setFinalScore(score);
         setSubmitted(true);
 
         await addPointsToBackend(score);
-          const resResults = {};
+        const resResults = {};
         questions.forEach((q) => {
           q.numbers.forEach((_, idx) => {
             const key = `${q.id}-${idx}`;
@@ -418,9 +427,6 @@ console.log("submitquiz")
           });
         });
         setResults(resResults);
-
-     
-     
       } catch (err) {
         console.error("submitQuiz (sorting) error:", err);
         setFeedbackMessage("❌ Submit failed.");
@@ -429,62 +435,55 @@ console.log("submitquiz")
       return;
     }
 
+    const hasAllKeys = questions.every((q) => answers.hasOwnProperty(q.id));
 
+    if (!hasAllKeys) {
+      setFeedbackMessage("⚠️ Quiz incomplete!");
+      return;
+    }
 
+    //normal quiz
 
+    const res = await api.post("/quiz/check", {
+      answers: questions.map((q) => ({ id: q.id, answer: answers[q.id] })),
+    });
 
- 
-const hasAllKeys = questions.every((q) => answers.hasOwnProperty(q.id));
-
-if (!hasAllKeys) {
-  setFeedbackMessage("⚠️ Quiz incomplete!");
-  return;
-}
-
-//normal quiz
-    
-    const    res = await api.post("/quiz/check", {
-        answers: questions.map((q) => ({ id: q.id, answer: answers[q.id] })),
-        
-      }
+    console.log("submitquiz");
+    console.log("ANSWERS:", answers);
+    console.log(
+      "QUESTIONS:",
+      questions.map((q) => q.id)
     );
-     
-   
-  
-  console.log("submitquiz")
-console.log("ANSWERS:", answers);
-console.log("QUESTIONS:", questions.map(q => q.id));
-      const score = res?.data?.score ?? 0;
-      setFinalScore(score);
-      setSubmitted(true);
+    const score = res?.data?.score ?? 0;
+    setFinalScore(score);
+    setSubmitted(true);
 
-      await addPointsToBackend(score);
+    await addPointsToBackend(score);
 
-      const resResults = {};
-      questions.forEach((q) => {
-        resResults[q.id] =
-          Number(answers[q.id]) === Number(res.data.correctAnswers[q.id]);
-      });
-      setResults(resResults);
+    const resResults = {};
+    questions.forEach((q) => {
+      resResults[q.id] =
+        Number(answers[q.id]) === Number(res.data.correctAnswers[q.id]);
+    });
+    setResults(resResults);
 
-      giftmessage(score);
-    } 
-  
+    giftmessage(score);
+  };
 
-  const giftmessage =(score) =>{
+  const giftmessage = (score) => {
     const feedback =
-        score === questions.length
-          ? perfectScoreAdviceList[
-              Math.floor(Math.random() * perfectScoreAdviceList.length)
-            ]
-          : score >= 2
-          ? adviceList[Math.floor(Math.random() * adviceList.length)]
-          : guideList;
+      score === questions.length
+        ? perfectScoreAdviceList[
+            Math.floor(Math.random() * perfectScoreAdviceList.length)
+          ]
+        : score >= 2
+        ? adviceList[Math.floor(Math.random() * adviceList.length)]
+        : guideList;
 
-      setFeedbackMessage(`🎉 You scored ${score} points! ${feedback}`);
-      if (score === questions.length) setShowGift(true);
-      else setShowNoGift(true);
-  }
+    setFeedbackMessage(`🎉 You scored ${score} points! ${feedback}`);
+    if (score === questions.length) setShowGift(true);
+    else setShowNoGift(true);
+  };
   const onStickerClicked = async (emoji, event) => {
     if (!user || !user._id) {
       message.error("Not logged in");
@@ -556,13 +555,10 @@ console.log("QUESTIONS:", questions.map(q => q.id));
   return (
     <div style={containerStyle}>
       <div style={innerStyle}>
-
-
-
         <div style={quizCardStyle}>
           {category === "sorting" ? (
             <SortingQuizCard
-
+              level={level}
               questions={questions}
               setQuestions={setQuestions}
               answers={answers}
@@ -584,58 +580,56 @@ console.log("QUESTIONS:", questions.map(q => q.id));
               questions={questions}
               answers={answers}
               setAnswers={setAnswers}
-            //  submitQuiz={submitQuiz}
-             // submitted={submitted}
-            //  results={results}
-           setFeedbackMessage={setFeedbackMessage}
-setFinalScore={setFinalScore}
-setSubmitted={setSubmitted}
-addPointsToBackend={addPointsToBackend}
-setResults={setResults}
-giftmessage={giftmessage}
-fetchQuiz={fetchQuiz}
+              //  submitQuiz={submitQuiz}
+              // submitted={submitted}
+              //  results={results}
+              setFeedbackMessage={setFeedbackMessage}
+              setFinalScore={setFinalScore}
+              setSubmitted={setSubmitted}
+              addPointsToBackend={addPointsToBackend}
+              setResults={setResults}
+              giftmessage={giftmessage}
+              fetchQuiz={fetchQuiz}
               speakLine={speakLine}
-              
             />
           ) : category === "sudoku" ? (
-
-<SudokuBoard 
-level={level}
-selectedLevel={selectedLevel}
-  addPointsToBackend={addPointsToBackend}
-/>): category === "puzzles" ? (
-<div style={{ fontSize :"28px" , fontWeight: "bold"}} >
-<Puzzle
-selectedLevel={selectedLevel}
-  user={user}
-  puzzleId={puzzleId}
-  answers={answers}
-  setAnswers={setAnswers}
-  submitted={submitted}
-  setSubmitted={setSubmitted}
-  results={results}
-  setResults={setResults}
-  addPointsToBackend={addPointsToBackend}
-/>
-</div>
-
-          ): category === "logic" ? (
-
-<Logics 
-selectedLevel={selectedLevel}
-  user={user}
-  puzzleId={puzzleId}
-  answers={answers}
-  setAnswers={setAnswers}
-  submitted={submitted}
-  setSubmitted={setSubmitted}
-  results={results}
-  setResults={setResults}
-  addPointsToBackend={addPointsToBackend}
-/>
-          ):(
-            <QuizCard
+            <SudokuBoard
+              level={level}
+              selectedLevel={selectedLevel}
+              addPointsToBackend={addPointsToBackend}
+            />
+          ) : category === "puzzles" ? (
+            <div style={{ fontSize: "28px", fontWeight: "bold" }}>
+              <Puzzle
+                selectedLevel={selectedLevel}
+                user={user}
+                puzzleId={puzzleId}
+                answers={answers}
+                setAnswers={setAnswers}
+                submitted={submitted}
+                setSubmitted={setSubmitted}
+                results={results}
+                setResults={setResults}
+                addPointsToBackend={addPointsToBackend}
+              />
+            </div>
+          ) : category === "logic" ? (
+            <Logics
             level={level}
+              selectedLevel={selectedLevel}
+              user={user}
+              puzzleId={puzzleId}
+              answers={answers}
+              setAnswers={setAnswers}
+              submitted={submitted}
+              setSubmitted={setSubmitted}
+              results={results}
+              setResults={setResults}
+              addPointsToBackend={addPointsToBackend}
+            />
+          ) : (
+            <QuizCard
+              level={level}
               selectedLevel={selectedLevel}
               category={category}
               questions={questions}
@@ -653,7 +647,7 @@ selectedLevel={selectedLevel}
               playAgainButtonStyle={playAgainButtonStyle}
               speakLine={speakLine}
             />
-      )  }
+          )}
         </div>
       </div>
 
@@ -699,6 +693,6 @@ selectedLevel={selectedLevel}
       {/* <Basket basket={basket} /> */}
     </div>
   );
-}
+};
 
 export default QuizPage;

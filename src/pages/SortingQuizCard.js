@@ -65,7 +65,7 @@ const SortingQuizCard = ({
           }}
         >
           {/* Numbers to sort */}
-          <div style={{ marginBottom: "auto",position:"fixed" }}>
+          <div style={{ marginBottom: "10px",position:"fixed" }}>
             {q.numbers.map((num, idx) => (
               <span key={idx} style={numberStyle}>
                 {num} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

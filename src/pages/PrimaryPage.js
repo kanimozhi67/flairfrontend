@@ -18,24 +18,14 @@ const ResetIcon = ({ size = 16 }) => (
 
 /* ---------- Component ---------- */
 
-export default function SudokuBoard({
-  level,
-  selectedLevel,
-  addPointsToBackend,
-}) {
-  /* ---------- GRID CONFIG ---------- */
-  const GRID =
-    level === "primary"
-      ? { SIZE: 9, SUBGRID: 3, MAX: 9 }
-      : { SIZE: 4, SUBGRID: 2, MAX: 4 };
-
-  /* ---------- STATE ---------- */
+export default function Sudokup({ selectedLevel ,addPointsToBackend }) {
   const [puzzleId, setPuzzleId] = useState(null);
   const [puzzle, setPuzzle] = useState([]);
   const [userAnswers, setUserAnswers] = useState({});
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [clicked, setClicked] = useState(false);
+const [clicked, setClicked] = useState(false)
+  /* ---------- HIGHLIGHT ---------- */
   const [focusedCell, setFocusedCell] = useState(null);
 
   /* ---------- TIMER ---------- */
@@ -44,13 +34,12 @@ export default function SudokuBoard({
 
   useEffect(() => {
     startTimer();
-    generateNewPuzzle();
     return stopTimer;
   }, []);
 
   const startTimer = () => {
     stopTimer();
-    timerRef.current = setInterval(() => setSeconds((s) => s + 1), 1000);
+    timerRef.current = setInterval(() => setSeconds(s => s + 1), 1000);
   };
 
   const stopTimer = () => {
@@ -64,62 +53,46 @@ export default function SudokuBoard({
   };
 
   const formatTime = () =>
-    `${String(Math.floor(seconds / 60)).padStart(2, "0")}:${String(
-      seconds % 60
-    ).padStart(2, "0")}`;
+    `${String(Math.floor(seconds / 60)).padStart(2, "0")}:${String(seconds % 60).padStart(2, "0")}`;
 
-  /* ---------- PUZZLE ---------- */
+  /* ---------- GAME ---------- */
+
+  useEffect(() => {
+    generateNewPuzzle();
+  }, []);
 
   const generateNewPuzzle = async () => {
     setLoading(true);
     setResult(null);
     setUserAnswers({});
     resetTimer();
-    setClicked(false);
-
-    let url = "";
-
-    if (level === "primary") {
-      url =
-        selectedLevel === 1
-          ? "/quiz/sudokup"
-          : selectedLevel === 2
-          ? "/quiz/sudokuplevel2"
-          : "/quiz/sudokuplevel3";
-    } else {
-      url =
-        selectedLevel === 1
-          ? "/quiz/sudoku"
-          : selectedLevel === 2
-          ? "/quiz/sudokulevel2"
-          : "/quiz/sudokulevel3";
-    }
-
-    const { data } = await api.get(url);
-    setPuzzleId(data.puzzleId);
-    setPuzzle(data.questions);
-    console.log(`solution: ${JSON.stringify(data.solution)}`)
+if(selectedLevel === 1)  {const { data } = await api.get("/quiz/sudoku");
+ setPuzzleId(data.puzzleId);
+    setPuzzle(data.questions);}
+else if(selectedLevel === 2)  {const { data } = await api.get("/quiz/sudokulevel2");
+ setPuzzleId(data.puzzleId);
+    setPuzzle(data.questions);}
+else {const { data } = await api.get("/quiz/sudokulevel3");
+ setPuzzleId(data.puzzleId);
+    setPuzzle(data.questions);}
+    // setPuzzleId(data.puzzleId);
+    // setPuzzle(data.questions);
     setLoading(false);
+    setClicked(false)
   };
 
   const resetBoard = () => {
     setUserAnswers({});
     setResult(null);
-    setClicked(false);
+     setLoading(false);
+    setClicked(false)
   };
-
-  /* ---------- INPUT ---------- */
 
   const handleInputChange = (r, c, v) => {
-    if (
-      v === "" ||
-      (Number(v) >= 1 && Number(v) <= GRID.MAX)
-    ) {
-      setUserAnswers((p) => ({ ...p, [`${r}-${c}`]: v }));
+    if (v === "" || /^[1-4]$/.test(v)) {
+      setUserAnswers(p => ({ ...p, [`${r}-${c}`]: v }));
     }
   };
-
-  /* ---------- CHECK ---------- */
 
   const checkAnswers = async () => {
     setLoading(true);
@@ -130,33 +103,16 @@ export default function SudokuBoard({
       return { row, col, value: v };
     });
 
-  if(level === "primary"){
-      const { data } = await api.post("/quiz/checksudokup", {
-      puzzleId,
-      answers,
-    });
-console.log(`sudoku ans:${JSON.stringify(data)}`)
+    const { data } = await api.post("/quiz/checksudoku", { puzzleId, answers });
     setResult(data);
+
     if (data?.score && typeof addPointsToBackend === "function") {
       addPointsToBackend(data.score);
     }
-  }else{
-      const { data } = await api.post("/quiz/checksudoku", {
-      puzzleId,
-      answers,
-    });
 
-    setResult(data);
-    if (data?.score && typeof addPointsToBackend === "function") {
-      addPointsToBackend(data.score);
-    }
-  }
-
-    setClicked(true);
     setLoading(false);
+    setClicked(true)
   };
-
-  /* ---------- CELL STYLE ---------- */
 
   const getCellStyle = (r, c) => {
     const key = `${r}-${c}`;
@@ -168,23 +124,14 @@ console.log(`sudoku ans:${JSON.stringify(data)}`)
       (focusedCell.row === r || focusedCell.col === c);
 
     return {
-      width: GRID.SIZE === 9 ? "42px" : "60px",
-      height: GRID.SIZE === 9 ? "42px" : "60px",
-      fontSize: GRID.SIZE === 9 ? "18px" : "24px",
+      width: "clamp(45px, 12vw, 60px)",
+      height: "clamp(45px, 12vw, 60px)",
+      fontSize: "clamp(18px, 5vw, 24px)",
       fontWeight: "bold",
       textAlign: "center",
       border: "1px solid #999",
-
-      borderRight:
-        (c + 1) % GRID.SUBGRID === 0 && c !== GRID.SIZE - 1
-          ? "3px solid #222"
-          : "1px solid #999",
-
-      borderBottom:
-        (r + 1) % GRID.SUBGRID === 0 && r !== GRID.SIZE - 1
-          ? "3px solid #222"
-          : "1px solid #999",
-
+      borderRight: c === 1 ? "3px solid #222" : "1px solid #999",
+      borderBottom: r === 1 ? "3px solid #222" : "1px solid #999",
       background:
         correct && Number(user) === correct
           ? "#e6fffb"
@@ -192,33 +139,25 @@ console.log(`sudoku ans:${JSON.stringify(data)}`)
           ? "#fff1f0"
           : isFocused
           ? "#e6f4ff"
-          : "#fff",
-
-      outline:
-        focusedCell?.row === r && focusedCell?.col === c
-          ? "2px solid #1890ff"
-          : "none",
+          : "#ffffff",
+      outline: focusedCell?.row === r && focusedCell?.col === c
+        ? "2px solid #1890ff"
+        : "none",
+      transition: "background 0.2s, box-shadow 0.2s",
+      boxShadow: "inset 0 0 0 1px rgba(0,0,0,0.05)",
     };
   };
-
-  /* ---------- RENDER ---------- */
 
   return (
     <div className="page">
       <div className="card">
-        <h1 style={{ backgroundColor: "lightcyan" }}>
-          {GRID.SIZE}×{GRID.SIZE} Sudoku
-        </h1>
-
+        <h1 style={{ backgroundColor:"lightcyan"}}> 4×4 Sudoku</h1>
+<br></br>
         <div className="top-bar">
           <span className="timer">⏱ {formatTime()}</span>
           <div className="actions">
-            <button onClick={generateNewPuzzle}>
-              <RefreshIcon /> New
-            </button>
-            <button onClick={resetBoard}>
-              <ResetIcon /> Reset
-            </button>
+            <button onClick={generateNewPuzzle}><RefreshIcon /> New</button>
+            <button onClick={resetBoard}><ResetIcon /> Reset</button>
           </div>
         </div>
 
@@ -230,13 +169,11 @@ console.log(`sudoku ans:${JSON.stringify(data)}`)
                   key={`${r}-${c}`}
                   type="tel"
                   inputMode="numeric"
+                  pattern="[1-4]"
                   maxLength={1}
-                  pattern={`[1-${GRID.MAX}]`}
                   disabled={cell !== 0 || loading}
                   value={cell || userAnswers[`${r}-${c}`] || ""}
-                  onChange={(e) =>
-                    handleInputChange(r, c, e.target.value)
-                  }
+                  onChange={(e) => handleInputChange(r, c, e.target.value)}
                   onFocus={() => setFocusedCell({ row: r, col: c })}
                   onBlur={() => setFocusedCell(null)}
                   style={getCellStyle(r, c)}
@@ -246,17 +183,11 @@ console.log(`sudoku ans:${JSON.stringify(data)}`)
           ))}
         </div>
 
-        <button
-          className="check"
-          onClick={checkAnswers}
-          disabled={loading || clicked}
-        >
+        <button className="check" onClick={checkAnswers} disabled={loading || clicked}>
           Check Answers
         </button>
 
-        {result && (
-          <div className="result">Score: {result.score}</div>
-        )}
+        {result && <div className="result">Score: {result.score}</div>}
       </div>
 
       <style>{`
@@ -276,10 +207,20 @@ console.log(`sudoku ans:${JSON.stringify(data)}`)
           box-shadow: 0 16px 40px rgba(0,0,0,0.3);
         }
 
+        h1 {
+          text-align: center;
+          margin-bottom: 10px;
+        }
+
         .top-bar {
           display: flex;
           justify-content: space-between;
-          margin-bottom: 10px;
+          align-items: center;
+          margin-bottom: 12px;
+        }
+
+        .timer {
+          font-weight: bold;
         }
 
         .actions {

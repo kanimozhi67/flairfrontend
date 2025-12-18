@@ -18,8 +18,12 @@ import Basket from "./Basket.js";
 import QuizWithTimer from "./QuizWithTimer.js";
 import SudokuBoard from "./SudokuBoard.js";
 import Puzzle from "./Puzzle.js";
+import PrimaryPage from "./PrimaryPage.js";
+import { useSearchParams } from "react-router-dom";
 
 const QuizPage = ({ user, setUser }) => {
+   const [searchParams] = useSearchParams();
+  const level = searchParams.get("level"); // kindergarten | primary
   const { category } = useParams();
   const { width } = useWindowSize();
   const firstInputRef = useRef(null);
@@ -29,6 +33,7 @@ const QuizPage = ({ user, setUser }) => {
   const updateTodayScore =
     outletCtx?.updateTodayScore || outletCtx?.fetchTodayScore || (() => {});
 
+     // const [level, setLevel] = useState(null);
   const [selectedLevel, setSelectedLevel] = useState(null);
   const [showMotivation, setShowMotivation] = useState(false);
   const [motivationMessage, setMotivationMessage] = useState("");
@@ -98,30 +103,6 @@ const [puzzleId, setPuzzleId] = useState(null);
     }
   };
 
-  // Layout-safe container styles
-  // const containerStyle = {
-  //   width: "100%",
-  //   padding: 16,
-  //   background: "linear-gradient(135deg, #ffe680, #ffb3b3)",
-  //   overflowX: "hidden",
-  // };
-
-  // const innerStyle = {
-  //   display: "flex",
-  //   flexDirection: width < 768 ? "column" : "row",
-  //   gap: 20,
-  //   alignItems: "flex-start",
-  //   justifyContent: "center",
-  //   width: "100%",
-  //   maxWidth: 1200,
-  //   margin: "0 auto",
-  // };
-
-  // const quizCardStyle = {
-  //   flex: 1,
-   
-  //   margin: width < 768 ? "20px 0" : "0 20px",
-  // };
 const containerStyle = {
   width: "100%",
   minHeight: "100vh", // full viewport height for vertical centering
@@ -225,15 +206,25 @@ const quizCardStyle = {
     "Keep going—your story is unfolding beautifully! 🌙✨",
   ];
 
+  console.log(`level: ${level}`)
    const feedmsg = (score) =>{
     let len = questions.length;
+
+
+    
         if(category==="sudoku" ){
-        if(selectedLevel ===1) len=5;
+  if(level=== "primary"){if(selectedLevel ===1) len=15;
+       else if(selectedLevel ===2) len=20;
+        else len=25;
+          console.log(`score: ${score} and questions.length: ${len}`)
+          console.log(score === len)}
+  else{
+     if(selectedLevel ===1) len=5;
        else if(selectedLevel ===2) len=6;
         else len=7;
           console.log(`score: ${score} and questions.length: ${len}`)
           console.log(score === len)
-        } 
+        }}
          if (category === "puzzles" ){
             len=3;
           console.log(`score: ${score} and questions.length: ${len}`)
@@ -549,9 +540,16 @@ console.log("QUESTIONS:", questions.map(q => q.id));
   return (
     <div style={containerStyle}>
       <div style={innerStyle}>
+
+{/* {(level==="primary")&& <PrimaryPage 
+selectedLevel={selectedLevel}
+  addPointsToBackend={addPointsToBackend}
+/>} */}
+
         <div style={quizCardStyle}>
           {category === "sorting" ? (
             <SortingQuizCard
+
               questions={questions}
               setQuestions={setQuestions}
               answers={answers}
@@ -589,6 +587,7 @@ fetchQuiz={fetchQuiz}
           ) : category === "sudoku" ? (
 
 <SudokuBoard 
+level={level}
 selectedLevel={selectedLevel}
   addPointsToBackend={addPointsToBackend}
 />): category === "puzzles" ? (
@@ -623,6 +622,7 @@ selectedLevel={selectedLevel}
 />
           ):(
             <QuizCard
+            level={level}
               selectedLevel={selectedLevel}
               questions={questions}
               answers={answers}

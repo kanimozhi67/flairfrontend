@@ -64,7 +64,7 @@ const QuizCategories = ({ setUser }) => {
         {/* STEP 1 — Choose Level */}
         {!level && (
           <Row gutter={[16, 16]} justify="center">
-            {["kindergarten", "primary"].map((lvl) => (
+            {["kindergarden", "primary"].map((lvl) => (
               <Col key={lvl} xs={24} sm={12}>
                 <Button
                   type="primary"
@@ -80,7 +80,7 @@ const QuizCategories = ({ setUser }) => {
                   }}
                   onClick={() => setLevel(lvl)}
                 >
-                  {lvl === "kindergarten" ? "Kindergarten" : "Primary Level"}
+                  {lvl === "kindergarden" ? "Kindergarden" : "Primary Level"}
                 </Button>
               </Col>
             ))}

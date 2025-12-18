@@ -143,9 +143,11 @@ const Dashboard = ({ userId }) => {
                 }}
               />
 
-              <p style={{ marginTop: 15, fontSize: 16 }}>
-                Keep learning 🎒✨
-              </p>
+              <div style={{ marginTop: 15, fontSize: 16 }}>
+             <p>   Keep learning 🎒✨</p>
+             <p>
+                Total Points:{currentUser.points}</p>
+              </div>
             </div>
           </Card>
         </div>

@@ -275,11 +275,20 @@ console.log(score)
         else res = await api.get("/quiz/mullevel3");
         console.log(`mul : ${res.data}`);
       } else if (category === "math") {
-        console.log(`add sub category`);
+         console.log(`add sub category`);
+         if(level === "primary"){
+              if (selectedLevel === 1) res = await api.get("/quiz/mathp");
+        else if (selectedLevel === 2) res = await api.get("/quiz/mathp");
+        else res = await api.get("/quiz/mathplevel3");
+              setQuestions(res.data.questions || []);
+      setAnswers({});}
+      else
+       {
         if (selectedLevel === 1) res = await api.get("/quiz/math");
         else if (selectedLevel === 2) res = await api.get("/quiz/math");
         else res = await api.get("/quiz/mathlevel3");
         console.log(`addsub : ${res.data}`);
+}
       }else if (category === "sudoku") {
         console.log(`sudoku category`);
          res = await api.get("/quiz/sudoku");
@@ -290,8 +299,15 @@ console.log(score)
        // else res = await api.get("/quiz/sudokulevel3");
         console.log(`sudoku : ${res.data}`);
       } else {
+        if(level === "primary"){
+            res = await api.get(`/quiz/mathp?level=${selectedLevel}`);
+              setQuestions(res.data.questions || []);
+      setAnswers({});
+        }else{
         res = await api.get(`/quiz/math?level=${selectedLevel}`);
-      }
+          setQuestions(res.data.questions || []);
+      setAnswers({});
+      }}
       setQuestions(res.data.questions || []);
       setAnswers({});
     //  setAnswers(Array((res.data.questions || []).length).fill(null));
@@ -541,10 +557,7 @@ console.log("QUESTIONS:", questions.map(q => q.id));
     <div style={containerStyle}>
       <div style={innerStyle}>
 
-{/* {(level==="primary")&& <PrimaryPage 
-selectedLevel={selectedLevel}
-  addPointsToBackend={addPointsToBackend}
-/>} */}
+
 
         <div style={quizCardStyle}>
           {category === "sorting" ? (
@@ -624,6 +637,7 @@ selectedLevel={selectedLevel}
             <QuizCard
             level={level}
               selectedLevel={selectedLevel}
+              category={category}
               questions={questions}
               answers={answers}
               setAnswers={setAnswers}

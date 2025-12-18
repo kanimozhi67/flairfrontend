@@ -6,6 +6,7 @@ import api from "../api/axiosClient";
 const { Text } = Typography;
 
 const QuizWithTimer = ({
+  
   questions,
   answers,
   setAnswers,

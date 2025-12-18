@@ -3,7 +3,9 @@ import { Card, Button, InputNumber, Spin } from "antd";
 import Timer from "./Timer";
 // For category - addition and subtraction
 const QuizCard = ({
+  level,
   selectedLevel,
+  category,
   questions,
   answers,
   setAnswers,
@@ -41,7 +43,7 @@ const QuizCard = ({
     () =>
       questions.map((q, idx) => {
         const isCorrect = submitted ? results[q.id] : null;
-        return (
+ return (
           <div
             key={q.id}
             style={{
@@ -116,7 +118,8 @@ const QuizCard = ({
             textShadow: "2px 2px #fff",
           }}
         >
-          🧠 Addition & Subtraction 🎉  
+          {(category ==="multiplication") ?  "🧠 Multiplication 🎉" :
+         " 🧠 Addition & Subtraction 🎉 " }
          
           
         </div>

@@ -65,14 +65,14 @@ const SortingQuizCard = ({
           }}
         >
           {/* Numbers to sort */}
-          <div style={{ marginBottom: 15 }}>
+          <div style={{ marginBottom: "auto",position:"fixed" }}>
             {q.numbers.map((num, idx) => (
               <span key={idx} style={numberStyle}>
                 {num} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               </span>
             ))}
           </div>
-
+<br></br>
           {/* Shapes with input inside */}
           <div
             style={{
@@ -80,6 +80,7 @@ const SortingQuizCard = ({
               gap: q.numbers.length > 4 ? 10 : 20,
               flexWrap: "wrap", // wrap on mobile
               justifyContent: "center",
+
             }}
           >
             {q.numbers.map((num, idx) => {

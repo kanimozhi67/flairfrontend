@@ -50,7 +50,7 @@ export default function SudokuBoard({ level, selectedLevel, addPointsToBackend }
     setPuzzleId(data.puzzleId); setPuzzle(data.questions); setLoading(false);
   };
 
-  const resetBoard = () => { setUserAnswers({}); setResult(null); setClicked(false); };
+  const resetBoard = () => { setUserAnswers({}); setResult(null); setClicked(false);setLoading(false) };
   const handleInputChange = (r,c,v) => { if(v==="" || (Number(v)>=1 && Number(v)<=GRID.MAX)) setUserAnswers(p=>({...p,[`${r}-${c}`]:v})); };
 
   const checkAnswers = async () => {

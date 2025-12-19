@@ -21,6 +21,7 @@ import Puzzle from "./Puzzle.js";
 import PrimaryPage from "./PrimaryPage.js";
 import { useSearchParams } from "react-router-dom";
 import PuzzleWheel from "./PuzzleWheel.js";
+import PuzzleWheelKinder from "./PuzzleWheelKinder.js";
 
 const QuizPage = ({ user, setUser }) => {
   const [searchParams] = useSearchParams();
@@ -241,6 +242,11 @@ if(category==="multiplication" && selectedLevel ===3){
       console.log(`score: ${score} and questions.length: ${len}`);
       console.log(score === len);
 }
+if(category==="math" && selectedLevel ===3){
+  len = 3;
+      console.log(`score: ${score} and questions.length: ${len}`);
+      console.log(score === len);
+}
     const feedback =
       score === len
         ? perfectScoreAdviceList[
@@ -294,8 +300,8 @@ if(category==="multiplication" && selectedLevel ===3){
         console.log(`add sub category`);
         if (level === "primary") {
           if (selectedLevel === 1) res = await api.get("/quiz/mathp");
-          else if (selectedLevel === 2) res = await api.get("/quiz/mathp");
-          else res = await api.get("/quiz/mathplevel3");
+           if (selectedLevel === 2) res = await api.get("/quiz/mathp");
+         
           setQuestions(res.data.questions || []);
           setAnswers({});
         } else {
@@ -641,7 +647,16 @@ if(category==="multiplication" && selectedLevel ===3){
             setResults={setResults}
             
             />
-          ): (
+          ) : category === "math" && selectedLevel === 3 ? ( 
+
+<PuzzleWheelKinder
+            
+            addPointsToBackend={addPointsToBackend}
+            setResults={setResults}
+            
+            />
+
+        ): (
             <QuizCard
               level={level}
               selectedLevel={selectedLevel}

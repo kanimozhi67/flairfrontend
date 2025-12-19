@@ -292,37 +292,7 @@ export default function PuzzleWheel({ addPointsToBackend, setResults }) {
         </Row>
       )}
 
-      {/* {submitted && correctAnswers && (
-        <div style={{ marginTop: 20, color: "#1b1a1aff",backgroundColor:"azure" ,fontSize: 18 }}>
-          <div>
-    <hr></hr>       1. <strong>Missing value:</strong>{" "}
-            <span style={getAnswerStyle(userAnswer, correctAnswers.correctAnswer)}>
-              {userAnswer}{" "}
-              {Number(userAnswer) !== Number(correctAnswers.correctAnswer)
-                ? `(Correct: ${correctAnswers.correctAnswer})`
-                : ""}
-            </span>
-          </div>
-          <div>
-          2.  <strong>Multiplicand:</strong>{" "}
-            <span style={getAnswerStyle(userMul, correctAnswers.correctMul)}>
-              {userMul}{" "}
-              {Number(userMul) !== Number(correctAnswers.correctMul)
-                ? `(Correct: ${correctAnswers.correctMul})`
-                : ""}
-            </span>
-          </div>
-          <div>
-           3. <strong>Skip-step:</strong>{" "}
-            <span style={getAnswerStyle(userSkip, correctAnswers.correctSkip)}>
-              {userSkip}{" "}
-              {Number(userSkip) !== Number(correctAnswers.correctSkip)
-                ? `(Correct: ${correctAnswers.correctSkip})`
-                : ""}
-            </span>
-          </div>
-        </div>
-      )} */}
+ 
       {submitted && correctAnswers && (
   <div
     style={{

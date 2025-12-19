@@ -171,29 +171,46 @@ export default function SudokuBoard({ level, selectedLevel, addPointsToBackend }
         }
         .check {width:100%; margin-top:12px; background:#52c41a;}
         .result {margin-top:12px; text-align:center; font-weight:bold;}
+@media (max-width: 480px) {
 
-        @media(max-width:480px){
-          h1{font-size:1.3rem;}
-          .timer{font-size:14px;}
-          .check{font-size:14px;}
-        
-          .page { width: min(92vw, 500px); 
-          background: linear-gradient(135deg, #1d2671, #c33764);
-           display: flex;
-            justify-content: center;
-             align-items: center;
-              padding: 0px;
-               margin-left:0; 
-              min-height:70vh;
-               } 
-              
-              .card { width: 100%;
-               max-width: 480px; 
-          width: min(92vw, 360px);
-           background: white; padding: 18px;
-            border-radius: 18px;
-             box-shadow: 0 16px 40px rgba(0,0,0,0.3);
-      }}
+  h1 { font-size: 1.3rem; }
+  .timer, .check { font-size: 14px; }
+
+  /* PAGE */
+  .page {
+    width: 100vw;
+    min-height: 70vh;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #1d2671, #c33764);
+  }
+
+  /* CARD */
+  .card {
+    width: 92vw;
+    max-width: 300px;
+    background: white;
+    padding: 0;
+    border-radius: 18px;
+    box-shadow: 0 16px 40px rgba(0,0,0,0.3);
+    margin-left:-60px ;   /* centers card */
+  }
+
+  /* BOARD */
+  .board {
+    display: grid;
+    grid-template-columns: repeat(var(--grid-size), 1fr);
+    width: 92vw;
+    max-width: 280px;
+    aspect-ratio: 1;
+    border: 4px solid #222;
+    margin: 16px auto; /* centers board */
+  }
+}
+
       `}</style>
     </div>
   );

@@ -191,7 +191,7 @@ export default function SudokuBoard({ level, selectedLevel, addPointsToBackend }
   /* CARD */
   .card {
     width: 92vw;
-    max-width: 300px;
+    max-width: 340px;
     background: white;
     padding: 0;
     border-radius: 18px;

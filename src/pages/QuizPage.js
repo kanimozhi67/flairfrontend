@@ -20,6 +20,7 @@ import SudokuBoard from "./SudokuBoard.js";
 import Puzzle from "./Puzzle.js";
 import PrimaryPage from "./PrimaryPage.js";
 import { useSearchParams } from "react-router-dom";
+import PuzzleWheel from "./PuzzleWheel.js";
 
 const QuizPage = ({ user, setUser }) => {
   const [searchParams] = useSearchParams();
@@ -235,7 +236,11 @@ const QuizPage = ({ user, setUser }) => {
       console.log(`score: ${score} and questions.length: ${len}`);
       console.log(score === len);
     }
-
+if(category==="multiplication" && selectedLevel ===3){
+  len = 9;
+      console.log(`score: ${score} and questions.length: ${len}`);
+      console.log(score === len);
+}
     const feedback =
       score === len
         ? perfectScoreAdviceList[
@@ -276,8 +281,9 @@ const QuizPage = ({ user, setUser }) => {
        
         if(level==="primary"){
              if (selectedLevel === 1) res = await api.get("/quiz/mulp");
-        else if (selectedLevel === 2) res = await api.get("/quiz/mulplevel2");
-        else res = await api.get("/quiz/mulplevel3");
+         if (selectedLevel === 2) res = await api.get("/quiz/mulplevel2");
+      
+        //  res = await api.get("/quiz/mulplevel3");
         }else{
         if (selectedLevel === 1) res = await api.get("/quiz/mul");
         else if (selectedLevel === 2) res = await api.get("/quiz/mullevel2");
@@ -627,7 +633,15 @@ const QuizPage = ({ user, setUser }) => {
               setResults={setResults}
               addPointsToBackend={addPointsToBackend}
             />
-          ) : (
+          ) : category === "multiplication" && selectedLevel === 3 ? ( 
+
+            <PuzzleWheel
+            
+            addPointsToBackend={addPointsToBackend}
+            setResults={setResults}
+            
+            />
+          ): (
             <QuizCard
               level={level}
               selectedLevel={selectedLevel}

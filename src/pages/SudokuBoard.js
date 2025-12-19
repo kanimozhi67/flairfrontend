@@ -88,7 +88,7 @@ export default function SudokuBoard({ level, selectedLevel, addPointsToBackend }
           <span className="timer">⏱ {formatTime()}</span>
           <div className="actions">
             <button onClick={generateNewPuzzle}><RefreshIcon /> New</button>
-            <button onClick={resetBoard}><ResetIcon /> Reset</button>
+            <button onClick={resetBoard}><ResetIcon /> Reset</button>&nbsp;
           </div>
         </div>
 
@@ -204,7 +204,7 @@ export default function SudokuBoard({ level, selectedLevel, addPointsToBackend }
     display: grid;
     grid-template-columns: repeat(var(--grid-size), 1fr);
     width: 92vw;
-    max-width: 280px;
+    max-width: 320px;
     aspect-ratio: 1;
     border: 4px solid #222;
     margin: 16px auto; /* centers board */

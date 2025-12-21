@@ -70,7 +70,7 @@ const QuizWithTimer = ({
   useEffect(() => {
     if (quizCompleted || optionsList.length === 0) return;
 
-    setTimeLeft(20);
+    setTimeLeft(30);
     setSelectedOption(null);
 
     const timer = setInterval(() => {
@@ -200,6 +200,7 @@ const QuizWithTimer = ({
     return (
       <div
         style={{
+        
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
@@ -300,7 +301,7 @@ const QuizWithTimer = ({
     <div
       style={{
         textAlign: "center",
-        marginTop: 50,
+        marginTop: 0,
         background: "linear-gradient(to right, #fff1b8, #ffd6e7)",
         padding: 30,
         borderRadius: 20,

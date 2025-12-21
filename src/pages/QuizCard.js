@@ -24,8 +24,8 @@ const QuizCard = ({
   const width = window.innerWidth;
  const [timeLeft, setTimeLeft] = useState(20);
   // Dynamic styles based on screen width
-  const cardWidth = width <= 480 ? "90%" : width <= 768 ? 500 : 600;
-  const titleFontSize = width <= 480 ? 24 : width <= 768 ? 30 : 35;
+  const cardWidth = width <= 480 ? 320 : width <= 768 ? 500 : 600;
+  const titleFontSize = width <= 480 ? 17 : width <= 768 ? 30 : 35;
   const questionFontSize = width <= 480 ? 28 : width <= 768 ? 32 : 36;
   const inputFontSize = width <= 480 ? 24 : width <= 768 ? 30 : 36;
   const inputWidth = width <= 480 ? 80 : width <= 768 ? 100 : 120;
@@ -119,7 +119,7 @@ const QuizCard = ({
           }}
         >
           {(category ==="multiplication") ?  "🧠 Multiplication 🎉" :
-         " 🧠 Addition & Subtraction 🎉 " }
+         "🧠Addition & Subtraction 🎉 " }
          
           
         </div>

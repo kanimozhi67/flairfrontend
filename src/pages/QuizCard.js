@@ -128,11 +128,13 @@ const QuizCard = ({
         marginTop: 10,
         width: cardWidth,
         textAlign: "center",
-        backgroundColor: "#fff9c4",
+     //   backgroundColor: "#fff9c4",
+     
         borderRadius: 20,
         boxShadow: "0 10px 25px rgba(0,0,0,0.2)",
         padding: 30,
         position: "relative",
+        
       }}
     >
       {loading ? (

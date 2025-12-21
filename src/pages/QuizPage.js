@@ -109,10 +109,15 @@ const QuizPage = ({ user, setUser }) => {
     width: "100%",
     minHeight: "100vh", // full viewport height for vertical centering
     padding: 16,
-    background: "linear-gradient(135deg, #ffe680, #ffb3b3)",
+    background: "linear-gradient(135deg, #ffe680, #f08c8cff)",
+ 
+boxShadow: "0 12px 30px rgba(255, 160, 140, 0.45)",
+
+
     display: "flex",
-    justifyContent: "center", // center horizontally
-    alignItems: "center", // center vertically
+   justifyContent: width > 768 ? "center" : "space-between",
+ // center horizontally
+ //  alignItems:   width > 768 ? "center" : "space-between", // center vertically
     overflowX: "hidden",
     boxSizing: "border-box",
   };
@@ -122,17 +127,18 @@ const QuizPage = ({ user, setUser }) => {
     flexDirection: width < 768 ? "column" : "row", // responsive stacking
     gap: 20,
     alignItems: "flex-start",
-    justifyContent: "center",
+ justifyContent: width > 768 ? "center" : "space-between",
     width: "100%",
     maxWidth: 1200,
     margin: "0 auto",
+   // marginLeft:-60
   };
 
   const quizCardStyle = {
     width: width < 768 ? "90%" : "580px", // responsive width
     flex: "0 0 auto", // prevent stretching
     margin: width < 768 ? "20px 0" : "0 20px",
-    boxShadow: "0 4px 12px rgba(0,0,0,0.1)", // optional styling
+   // boxShadow: "0 4px 12px rgba(0,0,0,0.1)", // optional styling
   };
 
   const allStickers = [
@@ -237,7 +243,7 @@ const QuizPage = ({ user, setUser }) => {
       console.log(`score: ${score} and questions.length: ${len}`);
       console.log(score === len);
     }
-if(category==="multiplication" && selectedLevel ===3){
+if(level === "primary" && category==="multiplication" && selectedLevel ===3){
   len = 9;
       console.log(`score: ${score} and questions.length: ${len}`);
       console.log(score === len);
@@ -639,7 +645,7 @@ if(category==="math" && selectedLevel ===3){
               setResults={setResults}
               addPointsToBackend={addPointsToBackend}
             />
-          ) : category === "multiplication" && selectedLevel === 3 ? ( 
+          ) : level === "primary" && category === "multiplication" && selectedLevel === 3 ? ( 
 
             <PuzzleWheel
             

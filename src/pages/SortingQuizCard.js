@@ -19,6 +19,10 @@ const SortingQuizCard = ({
   //firstInputRef
 }) => {
   const firstInputRef = useRef(null);
+    const width = window.innerWidth;
+  
+    // Dynamic styles based on screen width
+    const cardWidth = width <= 480 ? 330 : width <= 768 ? 500 : 600;
 
  useEffect(() => {
   if (firstInputRef.current) {
@@ -49,14 +53,23 @@ const SortingQuizCard = ({
   );
 
   return (
+    <div
+  style={{
+    width: cardWidth,
+   margin: "0 auto",
+  
+   //marginLeft:-70
+  }}
+>
     <div style={{ textAlign: "center",
        borderRadius: 20,
         background: "linear-gradient(135deg,#a9b1f3,#8a1043)",
         boxShadow: "0 8px 20px rgba(100,7,46,0.25)",
          // padding: 20,
         maxWidth: 1200,
-        margin: "auto"
+        margin: "auto", paddingBottom:40
     }}>
+    
    <br></br>   <h2 style={titleStyle}>Fill the shapes from smallest to largest numbers 🌟
         <hr></hr><br></br>
       </h2>
@@ -68,11 +81,11 @@ const SortingQuizCard = ({
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-            marginBottom: -5,
+           // marginBottom: -5,
           }}
         >
           {/* Numbers to sort */}
-          <div style={{ marginBottom: "0px",position:"fixed" }}>
+          <div style={{ marginTop: "0px",position:"fixed" }}>
             {q.numbers.map((num, idx) => (
               <span key={idx} style={numberStyle}>
                 {num} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -143,6 +156,7 @@ const SortingQuizCard = ({
         </button>
       )}
     </div>
+   </div> 
   );
 };
 

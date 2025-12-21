@@ -144,6 +144,7 @@ export default function PuzzleWheelKinder({ addPointsToBackend, setResults }) {
         background: "linear-gradient(135deg,#a9b1f3,#8a1043)",
         boxShadow: "0 8px 20px rgba(100,7,46,0.25)",
         padding: 20,
+        paddingTop:0,
         maxWidth: 800,
         margin: "auto"
       }}

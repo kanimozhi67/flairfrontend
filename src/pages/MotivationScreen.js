@@ -13,7 +13,7 @@ const MotivationScreen = ({ message, onStart }) => {
   let utterance;
 
   const speakMotivation = () => {
-    utterance = new SpeechSynthesisUtterance(`You are ${message}! You can do it! Let's solve this quiz together! Click start quiz.`);
+    utterance = new SpeechSynthesisUtterance(`You are ${message}! You can do it! `);
     utterance.pitch = 1.5;
     utterance.rate = 1.2;
 
@@ -33,7 +33,7 @@ const MotivationScreen = ({ message, onStart }) => {
     speakMotivation();
   }
 
-  const timer = setTimeout(() => setShowStartButton(true), 6000);
+  const timer = setTimeout(() => setShowStartButton(true), 3000);
 
   return () => {
     clearTimeout(timer);
@@ -46,13 +46,20 @@ const MotivationScreen = ({ message, onStart }) => {
   return (
     <div style={{
       margin: -10, display: "flex", flexDirection: "column",
-      alignItems: "center", justifyContent: "center", minHeight: "100vh",
-      background: "linear-gradient(135deg, #a2d5f2, #07689f)", color: "#fff", textAlign: "center", position: "relative"
+      alignItems: "center", 
+      //justifyContent: "center",
+      // minHeight: "500vh",
+      background: "linear-gradient(135deg, #3ca9e9ff, #07689f)", 
+     boxShadow: "0 14px 32px rgba(5, 85, 130, 0.55)",
+//boxShadow: "0 0 22px rgba(162, 213, 242, 0.6)",
+paddingBottom:80,
+      color: "#fff", textAlign: "center", position: "relative"
     }}>
       <div style={{ fontSize: 200 }}>⛄</div>
       <h1 style={{ fontSize: 48, fontWeight: "bold", margin: 20 }}>You are {message}!</h1>
       <p style={{ fontSize: 28, marginBottom: 40 }}>You can do it! Let's solve this quiz together! 🎉</p>
-      {showStartButton && <Button type="primary" size="large" style={{ fontSize: 28, padding: "20px 40px", borderRadius: 20 }} onClick={onStart}>
+      {showStartButton && <Button type="primary" size="large" style={{ fontSize: 28, 
+        backgroundColor:"orange"  ,padding: "20px 40px", borderRadius: 20 }} onClick={onStart}>
         Start Quiz
       </Button>}
     </div>

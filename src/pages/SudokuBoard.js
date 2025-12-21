@@ -74,7 +74,7 @@ export default function SudokuBoard({ level, selectedLevel, addPointsToBackend }
       border:"1px solid #999",
       borderRight:(c+1)%GRID.SUBGRID===0 && c!==GRID.SIZE-1?"3px solid #222":"1px solid #999",
       borderBottom:(r+1)%GRID.SUBGRID===0 && r!==GRID.SIZE-1?"3px solid #222":"1px solid #999",
-      background:correct && Number(user)===correct?"#e6fffb":user && correct?"#fff1f0":isFocused?"#e6f4ff":"#fff",
+      background:correct && Number(user)===correct?"#28ecccff":user && correct?"#eb483cff":isFocused?"#e6f4ff":"#fff",
       outline:focusedCell?.row===r && focusedCell?.col===c?"2px solid #1890ff":"none",
     };
   };

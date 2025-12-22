@@ -4,6 +4,7 @@ import { useNavigate, useLocation, Outlet } from "react-router-dom";
 import { motion } from "framer-motion";
 import { MenuOutlined } from "@ant-design/icons";
 import api from "../api/axiosClient";
+import avat from "../images/rabbitAvatar.png";
 
 const { Header, Sider, Content } = AntLayout;
 
@@ -163,7 +164,7 @@ const Layout = ({ user, setUser }) => {
             </div>
             <Avatar
               size={windowWidth < 360 ? 32 : 40}
-              src={user.avatar ? `http://localhost:5000${user.avatar}` : "/default-avatar.png"}
+              src={user.avatar ? `http://localhost:5000${user.avatar}` : {avat}}
             />
           </div>
         </Header>

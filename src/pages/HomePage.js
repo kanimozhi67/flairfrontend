@@ -243,9 +243,9 @@ const HomePage = ({ user, setUser }) => {
         style={{
           border: "2px solid white",
           borderRadius: "clamp(10px, 2vw, 20px)",
-          margin: "20px auto",
+          margin: isMobile? 0:"30px auto",
           padding: "20px",
-          maxWidth: "90%",
+          maxWidth: isMobile?"100%":"90%",
           width: "100%",
           boxSizing: "border-box",
           zIndex: 5,

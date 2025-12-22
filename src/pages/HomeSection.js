@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";  
 import { Typography } from "antd";
 import das from "../images/das.png";
+import { useWindowSize } from "react-use";
 
 const { Title, Paragraph } = Typography;
 
@@ -9,12 +10,15 @@ const features = [
   { icon: "📚", title: "Access to all session recordings" },
   { icon: "📊", title: "Clear insights into accuracy & speed" },
   { icon: "👩‍💼", title: "Instant customer care support" },
-  { icon: "🤖", title: "Smart AI bot for step-by-step guidance" },
+  { icon: "🤖", title: "Smart AI bot for guidance" },
   { icon: "🔢", title: "Fun math challenges" },
 ];
 
 const HomeSection = () => {
   const [containerSize, setContainerSize] = useState({ width: 500, height: 500 });
+  //const { width } = useWindowSize();
+  // const isMobile = width < 768;
+  // const isTablet = width >= 768 && width < 1024;
 
   useEffect(() => {
     const updateSize = () => {
@@ -27,10 +31,10 @@ const HomeSection = () => {
   }, []);
 
   const { width, height } = containerSize;
-  const centerX = width / 2;
+  const centerX = width / 2.5;
   const centerY = height / 2;
-  const radius = width / 2.2; // radius slightly smaller to fit icons around
-  const centerSize = width / 2; // central dashboard size
+  const radius = width / 2.5; // radius slightly smaller to fit icons around
+  const centerSize = width / 2.5; // central dashboard size
 
   return (
     <div style={{ padding: "60px 20px", textAlign: "center", color: "wheat"  }}>

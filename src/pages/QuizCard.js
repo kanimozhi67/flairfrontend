@@ -118,7 +118,7 @@ const QuizCard = ({
             textShadow: "2px 2px #fff",
           }}
         >
-          {(category ==="multiplication") ?  "🧠 Multiplication 🎉" :
+          {(category ==="multiplication") ?  "🧠 Multiplication 🎉" : category=== "division" ? "🧠 Division 🎉" :
          "🧠Addition & Subtraction 🎉 " }
          
           

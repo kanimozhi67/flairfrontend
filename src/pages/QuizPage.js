@@ -216,58 +216,128 @@ boxShadow: "0 12px 30px rgba(255, 160, 140, 0.45)",
   ];
 
   console.log(`level: ${level}`);
-
   const feedmsg = (score) => {
-    let len = questions.length;
-    if (category === "sudoku") {
-      if (level === "primary") {
-        if (selectedLevel === 1) len = 15;
-        else if (selectedLevel === 2) len = 20;
-        else len = 25;
-        console.log(`score: ${score} and questions.length: ${len}`);
-        console.log(score === len);
+  let len = questions.length; // default
+
+  // Category-based length
+  switch (category) {
+    case "math":
+    case "multiplication":
+    case "division":
+      if (level === "primary" && category === "multiplication" && selectedLevel === 3) {
+        len = 9;
+      } else if (category === "math" && selectedLevel === 3) {
+        len = 3;
       } else {
-        if (selectedLevel === 1) len = 5;
-        else if (selectedLevel === 2) len = 6;
-        else len = 7;
-        console.log(`score: ${score} and questions.length: ${len}`);
-        console.log(score === len);
+        len = 5;
       }
-    }
-    if (category === "puzzles" || "logic") {
+      break;
+
+    case "sorting":
+      len = 1;
+      break;
+
+    case "sudoku":
+      if (level === "primary") {
+        len = selectedLevel === 1 ? 15 : selectedLevel === 2 ? 20 : 25;
+      } else {
+        len = selectedLevel === 1 ? 5 : selectedLevel === 2 ? 6 : 7;
+      }
+      break;
+
+    case "puzzles":
+    case "logic":
       len = 3;
-      console.log(`score: ${score} and questions.length: ${len}`);
-      console.log(score === len);
-    }
-    if (category === "money") {
+      break;
+
+    case "money":
       len = 6;
-      console.log(`score: ${score} and questions.length: ${len}`);
-      console.log(score === len);
-    }
-if(level === "primary" && category==="multiplication" && selectedLevel ===3){
-  len = 9;
-      console.log(`score: ${score} and questions.length: ${len}`);
-      console.log(score === len);
-}
-if(category==="math" && selectedLevel ===3){
-  len = 3;
-      console.log(`score: ${score} and questions.length: ${len}`);
-      console.log(score === len);
-}
-    const feedback =
-      score === len
-        ? perfectScoreAdviceList[
-            Math.floor(Math.random() * perfectScoreAdviceList.length)
-          ]
-        : score >= 2
-        ? adviceList[Math.floor(Math.random() * adviceList.length)]
-        : guideList;
-    console.log(score);
-    setFeedbackMessage(`🎉 You scored ${score} points! ${feedback}`);
-    //   setFeedbackMessage(score === questions.length ? "🎉 Perfect! All correct!" : "Keep practicing!");
-    if (score === len) setShowGift(true);
-    else setShowNoGift(true);
-  };
+      break;
+
+    default:
+      len = questions.length;
+  }
+
+  console.log(`score: ${score} and len: ${len}`);
+  console.log(score === len);
+
+  const feedback =
+    score === len
+      ? perfectScoreAdviceList[Math.floor(Math.random() * perfectScoreAdviceList.length)]
+      : score >= 2
+      ? adviceList[Math.floor(Math.random() * adviceList.length)]
+      : guideList;
+
+  setFeedbackMessage(`🎉 You scored ${score} points! ${feedback}`);
+
+  if (score === len) {
+    setShowGift(true);
+    setShowNoGift(false);
+  } else {
+    setShowGift(false);
+    setShowNoGift(true);
+  }
+};
+
+
+//   const feedmsg = (score) => {
+//     let len = questions.length;
+// if(category==="math"||category==="multiplication"||category==="division")
+// {
+//   len=5;
+//     console.log(`score: ${score} and questions.length: ${len}`);
+//       console.log(score === len)
+// }
+// if(category==="sorting"){
+//   len=1;
+//     console.log(`score: ${score} and questions.length: ${len}`);
+//       console.log(score === len)
+// }
+//     if (category === "sudoku") {
+//       if (level === "primary") {
+//         if (selectedLevel === 1) len = 15;
+//         else if (selectedLevel === 2) len = 20;
+//         else len = 25;
+//       } else {
+//         if (selectedLevel === 1) len = 5;
+//         else if (selectedLevel === 2) len = 6;
+//         else len = 7; 
+//       }
+//     }
+//      if (category === "puzzles" || "logic") {
+//       len = 3;
+//     }
+//     if (category === "money") {
+//       len = 6;
+//       console.log(`score: ${score} and questions.length: ${len}`);
+//       console.log(score === len);
+//     }
+    
+//  if(level === "primary" && category==="multiplication" && selectedLevel ===3){
+//   len = 9;
+//       console.log(`score: ${score} and questions.length: ${len}`);
+//       console.log(score === len);
+// }
+//  if(category==="math" && selectedLevel ===3){
+//   len = 3;
+//       console.log(`score: ${score} and questions.length: ${len}`);
+//       console.log(score === len);
+// }
+
+//     const feedback =
+//       score === len
+//         ? perfectScoreAdviceList[
+//             Math.floor(Math.random() * perfectScoreAdviceList.length)
+//           ]
+//         : score >= 2
+//         ? adviceList[Math.floor(Math.random() * adviceList.length)]
+//         : guideList;
+//     console.log(score);
+//     setFeedbackMessage(`🎉 You scored ${score} points! ${feedback}`);
+//     //   setFeedbackMessage(score === questions.length ? "🎉 Perfect! All correct!" : "Keep practicing!");
+//     if (score === len) setShowGift(true);
+//     else setShowNoGift(true);
+//   };
 
   // Fetch quiz questions
   const fetchQuiz = async () => {
@@ -303,7 +373,12 @@ if(category==="math" && selectedLevel ===3){
         else res = await api.get("/quiz/mullevel3");
       
       }
-     } else if (category === "math") {
+     } else if (category === "division") {
+ if (selectedLevel === 1) res = await api.get("/quiz/div");
+        else if (selectedLevel === 2) res = await api.get("/quiz/divlevel2");
+        else res = await api.get("/quiz/divlevel3");
+      
+     }else if (category === "math") {
         console.log(`add sub category`);
         if (level === "primary") {
           if (selectedLevel === 1) res = await api.get("/quiz/mathp");
@@ -395,7 +470,7 @@ if(category==="math" && selectedLevel ===3){
       }
       window.dispatchEvent(new Event("scoreUpdated"));
       feedmsg(points);
-      return total;
+     // return total;
     } catch (err) {
       console.error("addPointsToBackend error:", err);
       message.error("Failed to save points. Try again.");
@@ -486,7 +561,7 @@ if(category==="math" && selectedLevel ===3){
     });
     setResults(resResults);
 
-    giftmessage(score);
+   // giftmessage(score);
   };
 
   const giftmessage = (score) => {

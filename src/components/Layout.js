@@ -159,7 +159,14 @@ const Layout = ({ user, setUser }) => {
           {/* Avatar + score */}
           <div style={{ display: "flex", flexDirection:"row", alignItems: "center", gap: 8 , justifyContent:"space-between"}}>
             <div style={{ textAlign: "right", fontSize: 16, color:"white" }}>
-               <div>{user.username}
+               <div>
+
+
+             {user.username.length <= 7
+  ? user.username
+  : `${user.username.slice(0, 7)}..`}
+
+                {user.username}
               ⭐ {todayScore}</div>
             </div>
             <Avatar

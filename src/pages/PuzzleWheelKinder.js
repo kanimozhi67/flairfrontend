@@ -7,7 +7,7 @@ const COLORS = ["#ff7a00", "#7ac943", "#22a6b3", "#6c3483", "#e53935"];
 
 const { useBreakpoint } = Grid;
 
-export default function PuzzleWheelKinder({ addPointsToBackend, setResults }) {
+export default function PuzzleWheelKinder({ level,addPointsToBackend, setResults }) {
   const screens = useBreakpoint();
   const mobile = !screens.md; // true on mobile, false on desktop
 
@@ -56,9 +56,15 @@ export default function PuzzleWheelKinder({ addPointsToBackend, setResults }) {
   /* ------------------- FETCH QUESTION ------------------- */
   const fetchQuestion = async () => {
     try {
-      const res = await api.get("quiz/mathlevel3");
-      const qObj = res.data.questions?.[0];
-      if (!qObj) throw new Error("No questions returned");
+        const endpoint =
+      level === "primary"
+        ? "/quiz/mathplevel3"
+        : "/quiz/mathlevel3";
+
+    const res = await api.get(endpoint);
+    const qObj = res.data.questions?.[0];
+
+    if (!qObj) throw new Error("No questions returned");
 
       setData(
         qObj.q.map((v, i) => ({

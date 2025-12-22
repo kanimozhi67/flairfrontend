@@ -307,7 +307,7 @@ if(category==="math" && selectedLevel ===3){
         if (level === "primary") {
           if (selectedLevel === 1) res = await api.get("/quiz/mathp");
            if (selectedLevel === 2) res = await api.get("/quiz/mathp");
-         
+        //  else res = await api.get("/quiz/mathplevel3");
           setQuestions(res.data.questions || []);
           setAnswers({});
         } else {
@@ -656,7 +656,7 @@ if(category==="math" && selectedLevel ===3){
           ) : category === "math" && selectedLevel === 3 ? ( 
 
 <PuzzleWheelKinder
-            
+            level={level}
             addPointsToBackend={addPointsToBackend}
             setResults={setResults}
             

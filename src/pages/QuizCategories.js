@@ -15,6 +15,7 @@ const categories = [
 const QuizCategories = ({ setUser }) => {
   const navigate = useNavigate();
   const [level, setLevel] = useState(null);
+ const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -43,7 +44,7 @@ const QuizCategories = ({ setUser }) => {
         title={
           <div
             style={{
-              fontSize: "2rem",
+              fontSize: windowWidth<420?"1.5rem":"2rem",
               fontWeight: "bold",
               color: "#ff6b00",
               textAlign: "center",

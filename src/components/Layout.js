@@ -166,7 +166,7 @@ const Layout = ({ user, setUser }) => {
   ? user.username
   : `${user.username.slice(0, 7)}..`}
 
-                {user.username}
+            
               ⭐ {todayScore}</div>
             </div>
             <Avatar

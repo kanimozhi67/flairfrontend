@@ -10,6 +10,21 @@ const categories = [
   { id: 4, name: "Logical Questions", path: "/quiz/logic" },
   { id: 5, name: "Sudoku", path: "/quiz/sudoku" },
   { id: 6, name: "Puzzles", path: "/quiz/puzzles" },
+
+];
+const categories2 = [
+  { id: 1, name: "Addition & Subtraction", path: "/quiz/math" },
+  { id: 2, name: "Sorting", path: "/quiz/sorting" },
+  { id: 3, name: "Multiplication", path: "/quiz/multiplication" },
+  { id: 4, name: "Division", path: "/quiz/division" },
+  { id: 5, name: "Logical Questions", path: "/quiz/logic" },
+  { id: 6, name: "Sudoku", path: "/quiz/sudoku" },
+  { id: 7, name: "Puzzles", path: "/quiz/puzzles" },
+  { id: 8, name: "Money", path: "/quiz/money" },
+  { id: 9, name: "Shapes", path: "/quiz/shapes" },
+  { id: 10, name: "Time", path: "/quiz/time" },
+  { id: 11, name: "Fraction", path: "/quiz/fraction" },
+   { id: 12, name: "Olympiad", path: "/quiz/olympiad" },
 ];
 
 const QuizCategories = ({ setUser }) => {
@@ -101,7 +116,33 @@ const QuizCategories = ({ setUser }) => {
             >
               ⬅ Back
             </Button>
-
+{level==="primary"  && (
+     <Row gutter={[16, 16]} justify="center">
+              {categories2.map((cat) => (
+                <Col key={cat.id} xs={24} sm={12} md={8}>
+                  <Button
+                    type="primary"
+                    block
+                    size="large"
+                    style={{
+                      fontSize: "1rem",
+                      height: 100,
+                      borderRadius: 15,
+                      background: "#ffbf00",
+                      color: "#4d3300",
+                      fontWeight: "bold",
+                    }}
+                    onClick={() =>
+                      navigate(`${cat.path}?level=${level}`)
+                    }
+                  >
+                    {cat.name}
+                  </Button>
+                </Col>
+              ))}
+            </Row>
+)}
+{ level==="kindergarden" && (
             <Row gutter={[16, 16]} justify="center">
               {categories.map((cat) => (
                 <Col key={cat.id} xs={24} sm={12} md={8}>
@@ -125,7 +166,7 @@ const QuizCategories = ({ setUser }) => {
                   </Button>
                 </Col>
               ))}
-            </Row>
+            </Row>)}
           </>
         )}
       </Card>

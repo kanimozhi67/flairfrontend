@@ -22,6 +22,7 @@ import PrimaryPage from "./PrimaryPage.js";
 import { useSearchParams } from "react-router-dom";
 import PuzzleWheel from "./PuzzleWheel.js";
 import PuzzleWheelKinder from "./PuzzleWheelKinder.js";
+import MoneyQuiz from "./MoneyQuiz.js";
 
 const QuizPage = ({ user, setUser }) => {
   const [searchParams] = useSearchParams();
@@ -233,13 +234,13 @@ boxShadow: "0 12px 30px rgba(255, 160, 140, 0.45)",
         console.log(score === len);
       }
     }
-    if (category === "puzzles") {
+    if (category === "puzzles" || "logic") {
       len = 3;
       console.log(`score: ${score} and questions.length: ${len}`);
       console.log(score === len);
     }
-    if (category === "logic") {
-      len = 3;
+    if (category === "money") {
+      len = 6;
       console.log(`score: ${score} and questions.length: ${len}`);
       console.log(score === len);
     }
@@ -662,7 +663,14 @@ if(category==="math" && selectedLevel ===3){
             
             />
 
-        ): (
+        ): category=== "money" ? (
+<MoneyQuiz
+     level={level}
+            addPointsToBackend={addPointsToBackend}
+            setResults={setResults}
+/>
+
+        ):(
             <QuizCard
               level={level}
               selectedLevel={selectedLevel}

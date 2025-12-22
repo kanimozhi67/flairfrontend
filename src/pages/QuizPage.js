@@ -666,6 +666,7 @@ if(category==="math" && selectedLevel ===3){
         ): category=== "money" ? (
 <MoneyQuiz
      level={level}
+     selectedLevel={selectedLevel}
             addPointsToBackend={addPointsToBackend}
             setResults={setResults}
 />

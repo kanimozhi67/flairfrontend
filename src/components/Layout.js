@@ -23,6 +23,13 @@ const Layout = ({ user, setUser }) => {
     { key: "getMe", label: "👶 My Profile", path: "/auth/getMe" },
    
   ];
+  const menuItems2 = [
+    { key: "home", label: "🏠 ", path: "/categories" },
+    { key: "dashboard", label: "📈 ", path: "/quiz/progress" },
+     { key: "mystickers", label: " 👝 ", path: "/mystickers" },
+    { key: "getMe", label: "👶 ", path: "/auth/getMe" },
+   
+  ];
 
   const noSidebarRoutes = ["/login", "/signup", "/"];
   const showSidebar = user && !noSidebarRoutes.includes(location.pathname);
@@ -122,7 +129,7 @@ const Layout = ({ user, setUser }) => {
             justifyContent: "space-between",
             alignItems: "center",
             padding: "6px 12px",
-            background: "#fff5e6",
+            background: "#200202ff",
             boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
           }}
         >
@@ -133,12 +140,12 @@ const Layout = ({ user, setUser }) => {
                 <Button type="primary" icon={<MenuOutlined />} />
               </Dropdown>
             ) : (
-              menuItems.map((item) => (
+              menuItems2.map((item) => (
                 <div
                   key={item.key}
-                  style={{ cursor: "pointer", fontSize: 14, whiteSpace: "nowrap" }}
+                  style={{ cursor: "pointer", fontSize: 24, whiteSpace: "nowrap" }}
                   onClick={() => {
-                    const path = findItemPath(menuItems, item.key);
+                    const path = findItemPath(menuItems2, item.key);
                     if (path) navigate(path);
                   }}
                 >
@@ -149,10 +156,10 @@ const Layout = ({ user, setUser }) => {
           </div>
 
           {/* Avatar + score */}
-          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-            <div style={{ textAlign: "right", fontSize: 12 }}>
-              {/* <div>{user.username}</div> */}
-              <div>⭐ {todayScore}</div>
+          <div style={{ display: "flex", flexDirection:"row", alignItems: "center", gap: 8 , justifyContent:"space-between"}}>
+            <div style={{ textAlign: "right", fontSize: 16, color:"white" }}>
+               <div>{user.username}
+              ⭐ {todayScore}</div>
             </div>
             <Avatar
               size={windowWidth < 360 ? 32 : 40}

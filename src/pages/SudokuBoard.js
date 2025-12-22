@@ -82,13 +82,16 @@ export default function SudokuBoard({ level, selectedLevel, addPointsToBackend }
   return (
     <div className="page">
       <div className="card">
-        <h1>{GRID.SIZE}×{GRID.SIZE} Sudoku</h1>
-
+        <h1 style={{ fontWeight:"bold"}}>{GRID.SIZE}×{GRID.SIZE} Sudoku</h1>
+<hr></hr>
         <div className="top-bar">
-          <span className="timer">⏱ {formatTime()}</span>
+          <span className="timer" style={{ fontWeight:"bold", fontSize:18}}>⏱ {formatTime()}</span>
+        
           <div className="actions">
             <button onClick={generateNewPuzzle}><RefreshIcon /> New</button>
-            <button onClick={resetBoard}><ResetIcon /> Reset</button>&nbsp;
+              {(!clicked) &&
+            <button onClick={resetBoard} disabled={clicked} style={{backgroundColor:"green"}}><ResetIcon /> Reset</button>
+              } &nbsp;
           </div>
         </div>
 
@@ -117,15 +120,18 @@ export default function SudokuBoard({ level, selectedLevel, addPointsToBackend }
             ))
           )}
         </div>
-
-        <button className="check" onClick={checkAnswers} disabled={loading||clicked}>Check Answers</button>
+{( !clicked ) &&
+        <button className="check" onClick={checkAnswers} disabled={loading||clicked}
+        style={{ backgroundColor:"orange"}}
+        >Check Answers</button>}
         {result && <div className="result">Score: {result.score}</div>}
       </div>
 
       <style>{`
         .page {
-          min-height: 100vh;
+          min-height: 80vh;
           background: linear-gradient(135deg,#1d2671,#c33764);
+           boxShadow: "0 8px 20px rgba(100, 7, 46, 0.25)",
           display:flex;
           justify-content:center;
           align-items:center;
@@ -178,14 +184,15 @@ export default function SudokuBoard({ level, selectedLevel, addPointsToBackend }
 
   /* PAGE */
   .page {
-    width: 100vw;
+    width: 380px;
     min-height: 70vh;
-    margin: 0;
+    marginLeft:-20px;
     padding: 0;
     display: flex;
-    justify-content: center;
-    align-items: center;
+   
     background: linear-gradient(135deg, #1d2671, #c33764);
+      boxShadow: "0 8px 20px rgba(100, 7, 46, 0.25)",
+   borderRadius:20,
   }
 
   /* CARD */
@@ -196,7 +203,7 @@ export default function SudokuBoard({ level, selectedLevel, addPointsToBackend }
     padding: 0;
     border-radius: 18px;
     box-shadow: 0 16px 40px rgba(0,0,0,0.3);
-    margin-left:-60px ;   /* centers card */
+    margin-left:-50px ;   /* centers card */
   }
 
   /* BOARD */

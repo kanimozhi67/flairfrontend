@@ -121,7 +121,8 @@ export default function SudokuBoard({ level, selectedLevel, addPointsToBackend }
           )}
         </div>
 {( !clicked ) &&
-        <button className="check" onClick={checkAnswers} disabled={loading||clicked}
+        <button className="check" onClick={checkAnswers} 
+        //disabled={loading||clicked}
         style={{ backgroundColor:"orange"}}
         >Check Answers</button>}
         {result && <div className="result">Score: {result.score}</div>}

@@ -22,9 +22,10 @@ const categories2 = [
   { id: 7, name: "Puzzles", path: "/quiz/puzzles" },
   { id: 8, name: "Money", path: "/quiz/money" },
   { id: 9, name: "Shapes", path: "/quiz/shapes" },
-  { id: 10, name: "Time", path: "/quiz/time" },
-  { id: 11, name: "Fraction", path: "/quiz/fraction" },
-   { id: 12, name: "Olympiad", path: "/quiz/olympiad" },
+  { id: 10, name: "Measurement", path: "/quiz/measure" },
+  { id: 11, name: "Time", path: "/quiz/time" },
+  { id: 12, name: "Fraction", path: "/quiz/fraction" },
+   { id: 13, name: "Olympiad", path: "/quiz/olympiad" },
 ];
 
 const QuizCategories = ({ setUser }) => {

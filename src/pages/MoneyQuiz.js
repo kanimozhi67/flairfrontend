@@ -4,7 +4,7 @@ import api from "../api/axiosClient";
 
 const { Title, Text } = Typography;
 
-const MoneyQuiz = ({ selectedLevel = 1, addPointsToBackend }) => {
+const MoneyQuiz = ({ selectedLevel , addPointsToBackend }) => {
   const [questions, setQuestions] = useState([]);
   const [current, setCurrent] = useState(0);
   const [answers, setAnswers] = useState({});

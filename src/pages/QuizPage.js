@@ -23,6 +23,7 @@ import { useSearchParams } from "react-router-dom";
 import PuzzleWheel from "./PuzzleWheel.js";
 import PuzzleWheelKinder from "./PuzzleWheelKinder.js";
 import MoneyQuiz from "./MoneyQuiz.js";
+import Measurement from "./Measurement.js";
 
 const QuizPage = ({ user, setUser }) => {
   const [searchParams] = useSearchParams();
@@ -254,6 +255,10 @@ boxShadow: "0 12px 30px rgba(255, 160, 140, 0.45)",
       len = 6;
       break;
 
+      case "measure":
+          len = selectedLevel === 1 ? 6 : 5;
+          break;
+
     default:
       len = questions.length;
   }
@@ -279,65 +284,6 @@ boxShadow: "0 12px 30px rgba(255, 160, 140, 0.45)",
   }
 };
 
-
-//   const feedmsg = (score) => {
-//     let len = questions.length;
-// if(category==="math"||category==="multiplication"||category==="division")
-// {
-//   len=5;
-//     console.log(`score: ${score} and questions.length: ${len}`);
-//       console.log(score === len)
-// }
-// if(category==="sorting"){
-//   len=1;
-//     console.log(`score: ${score} and questions.length: ${len}`);
-//       console.log(score === len)
-// }
-//     if (category === "sudoku") {
-//       if (level === "primary") {
-//         if (selectedLevel === 1) len = 15;
-//         else if (selectedLevel === 2) len = 20;
-//         else len = 25;
-//       } else {
-//         if (selectedLevel === 1) len = 5;
-//         else if (selectedLevel === 2) len = 6;
-//         else len = 7; 
-//       }
-//     }
-//      if (category === "puzzles" || "logic") {
-//       len = 3;
-//     }
-//     if (category === "money") {
-//       len = 6;
-//       console.log(`score: ${score} and questions.length: ${len}`);
-//       console.log(score === len);
-//     }
-    
-//  if(level === "primary" && category==="multiplication" && selectedLevel ===3){
-//   len = 9;
-//       console.log(`score: ${score} and questions.length: ${len}`);
-//       console.log(score === len);
-// }
-//  if(category==="math" && selectedLevel ===3){
-//   len = 3;
-//       console.log(`score: ${score} and questions.length: ${len}`);
-//       console.log(score === len);
-// }
-
-//     const feedback =
-//       score === len
-//         ? perfectScoreAdviceList[
-//             Math.floor(Math.random() * perfectScoreAdviceList.length)
-//           ]
-//         : score >= 2
-//         ? adviceList[Math.floor(Math.random() * adviceList.length)]
-//         : guideList;
-//     console.log(score);
-//     setFeedbackMessage(`🎉 You scored ${score} points! ${feedback}`);
-//     //   setFeedbackMessage(score === questions.length ? "🎉 Perfect! All correct!" : "Keep practicing!");
-//     if (score === len) setShowGift(true);
-//     else setShowNoGift(true);
-//   };
 
   // Fetch quiz questions
   const fetchQuiz = async () => {
@@ -746,7 +692,15 @@ boxShadow: "0 12px 30px rgba(255, 160, 140, 0.45)",
             setResults={setResults}
 />
 
-        ):(
+        ):category==="measure" ?(
+<Measurement  
+ level={level}
+     selectedLevel={selectedLevel}
+            addPointsToBackend={addPointsToBackend}
+            setResults={setResults}
+/>
+
+ ):(
             <QuizCard
               level={level}
               selectedLevel={selectedLevel}

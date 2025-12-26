@@ -12,11 +12,12 @@ export const logout = () =>
 export const getMe = () =>
   axiosClient.get("/auth/getMe");
 
-// export const quiz = () =>
-//   axiosClient.get("/quiz/math");
+export const todaytask = () =>
+  axiosClient.get("/users/todaytask");
 
-// export const checksudoku = () =>
-//   axiosClient.get("/quiz/checksudoku");
+export const completeTask = (payload) => {
+  return axiosClient.post("/users/completetask", payload);
+};
 
 export const today = () =>
   axiosClient.get("/quiz/progress/today");

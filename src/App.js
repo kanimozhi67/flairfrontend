@@ -106,7 +106,7 @@ const App = () => {
             }
           />
            <Route
-            path="/users/todaytask"
+            path="/task"
             element={
               <PrivateRoute user={user}>
                 <MyTask user={user} setUser={setUser} />

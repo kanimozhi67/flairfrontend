@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import { message } from "antd";
 import { useWindowSize } from "react-use";
-import { useParams, useOutletContext } from "react-router-dom";
-
+import { useParams, useOutletContext ,useLocation} from "react-router-dom";
+import { completeTask } from "../api/auth.js";
 import api from "../api/axiosClient";
 import LevelSelection from "./LevelSelection.js";
 import QuizCard from "./QuizCard.js";
@@ -26,19 +26,25 @@ import MoneyQuiz from "./MoneyQuiz.js";
 import Measurement from "./Measurement.js";
 
 const QuizPage = ({ user, setUser }) => {
+   const { search } = useLocation();
   const [searchParams] = useSearchParams();
   const level = searchParams.get("level"); // kindergarten | primary
   const { category } = useParams();
   const { width } = useWindowSize();
   const firstInputRef = useRef(null);
-
+ // const taskId = searchParams.get("taskId");
+//console.log(`taskid:${taskId}`)
+const urlSelectedLevel = Number(searchParams.get("selectedLevel"));
   // Attempt to read update function from Layout's Outlet context.
   const outletCtx = useOutletContext?.() || {};
   const updateTodayScore =
     outletCtx?.updateTodayScore || outletCtx?.fetchTodayScore || (() => {});
 
-  // const [level, setLevel] = useState(null);
-  const [selectedLevel, setSelectedLevel] = useState(null);
+
+ const [selectedLevel, setSelectedLevel] = useState(
+  urlSelectedLevel || null
+);
+
   const [showMotivation, setShowMotivation] = useState(false);
   const [motivationMessage, setMotivationMessage] = useState("");
   const [questions, setQuestions] = useState([]);
@@ -182,7 +188,7 @@ boxShadow: "0 12px 30px rgba(255, 160, 140, 0.45)",
     "You're doing great! Stay curious and keep learning.",
     "Super effort! Don’t forget to check your answers carefully.",
     "Well done! Practice makes progress, not perfection.",
-    "Nice work! Take things one step at a time. Progress is still progress.",
+    "Nice work! Take things one step at a ti  me. Progress is still progress.",
     "Super effort! Believe in yourself. You’re more capable than you realize.",
     "Nice work! Stay open-minded. Every experience teaches you something.",
     "Super effort! Don't be afraid to ask questions.curiosity is your superpower.",
@@ -417,6 +423,9 @@ boxShadow: "0 12px 30px rgba(255, 160, 140, 0.45)",
       window.dispatchEvent(new Event("scoreUpdated"));
       feedmsg(points);
      // return total;
+
+
+
     } catch (err) {
       console.error("addPointsToBackend error:", err);
       message.error("Failed to save points. Try again.");
@@ -500,6 +509,9 @@ boxShadow: "0 12px 30px rgba(255, 160, 140, 0.45)",
 
     await addPointsToBackend(score);
 
+
+
+
     const resResults = {};
     questions.forEach((q) => {
       resResults[q.id] =
@@ -567,6 +579,33 @@ boxShadow: "0 12px 30px rgba(255, 160, 140, 0.45)",
     }, 720);
   };
 
+
+const completeTodayTask = async ({ taskId, category, level, score, points }) => {
+  try {
+    const res = await completeTask({
+      taskId,
+      category,
+      level,
+      score,
+      points,
+    });
+
+    message.success("🎉 Task level completed!");
+    return res.data;
+  } catch (err) {
+    console.error("completeTask error:", err);
+    message.error("Failed to update task progress");
+    return null;
+  }
+};
+
+
+useEffect(() => {
+  if (urlSelectedLevel) {
+    setMotivationMessage("🔥 Great choice! Let’s start your challenge!");
+    setShowMotivation(true);
+  }
+}, [urlSelectedLevel]);
   // Render flows
   if (!selectedLevel) {
     return (

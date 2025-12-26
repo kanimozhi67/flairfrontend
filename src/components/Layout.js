@@ -19,21 +19,38 @@ const Layout = ({ user, setUser }) => {
 
   const menuItems = [
     { key: "home", label: "🏠 Home", path: "/categories" },
-    { key: "dashboard", label: "📈 Dashboard", path: "/quiz/progress" },
+    { key: "task", label: "🎯 Today's Task", path: "/users/todaytask" },
+    { key: "dashboard", label: "🏆 Dashboard", path: "/quiz/progress" },
      { key: "mystickers", label: " 👝 My Stickers", path: "/mystickers" },
     { key: "getMe", label: "👶 My Profile", path: "/auth/getMe" },
+    
+  // 🔐 ADMIN ONLY
+  ...(user?.role === "Admin"
+    ? [{ key: "admin", label: "🛠 Admin Panel", path: "/admin" }]
+    : []),
    
   ];
   const menuItems2 = [
     { key: "home", label: "🏠 ", path: "/categories" },
-    { key: "dashboard", label: "📈 ", path: "/quiz/progress" },
+     { key: "task", label: "🎯 ", path: "/task" },
+    { key: "dashboard", label: "🏆 ", path: "/quiz/progress" },
      { key: "mystickers", label: " 👝 ", path: "/mystickers" },
     { key: "getMe", label: "👶 ", path: "/auth/getMe" },
+      // 🔐 ADMIN ONLY (mobile)
+  ...(user?.role === "Admin"
+    ? [{ key: "admin", label: "🛠", path: "/admin" }]
+    : []),
    
   ];
 
+
   const noSidebarRoutes = ["/login", "/signup", "/"];
-  const showSidebar = user && !noSidebarRoutes.includes(location.pathname);
+  //const showSidebar = user && !noSidebarRoutes.includes(location.pathname);
+  const showSidebar =
+  user &&
+  !noSidebarRoutes.includes(location.pathname) &&
+  !location.pathname.startsWith("/admin");
+
 
   useEffect(() => {
     const handleResize = () => setWindowWidth(window.innerWidth);
@@ -195,9 +212,11 @@ const Layout = ({ user, setUser }) => {
             }}
           >
             <Avatar
-              size={collapsed ? 100 : 180}
+              size={collapsed ? 90 : 120}
               src={user.avatar ? `http://localhost:5000${user.avatar}` : {avat}}
-              style={{ width: "70%", marginBottom: 20 }}
+              style={{ width: "30%",
+                // marginBottom: 20 
+                }}
             />
             <h2 style={{ fontSize: collapsed ? 16 : 22, marginBottom: 10 }}>{user?.username}</h2>
             <p style={{ fontSize: collapsed ? 14 : 18, fontWeight: "bold" }}>⭐ {todayScore}</p>

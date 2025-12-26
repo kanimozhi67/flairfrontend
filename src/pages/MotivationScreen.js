@@ -56,7 +56,7 @@ paddingBottom:80,
       color: "#fff", textAlign: "center", position: "relative"
     }}>
       <div style={{ fontSize: 200 }}>⛄</div>
-      <h1 style={{ fontSize: 48, fontWeight: "bold", margin: 20 }}>You are {message}!</h1>
+      <h1 style={{ fontSize: 40, fontWeight: "bold", margin: 20 }}>You are {message}!</h1>
       <p style={{ fontSize: 28, marginBottom: 40 }}>You can do it! Let's solve this quiz together! 🎉</p>
       {showStartButton && <Button type="primary" size="large" style={{ fontSize: 28, 
         backgroundColor:"orange"  ,padding: "20px 40px", borderRadius: 20 }} onClick={onStart}>
@@ -65,4 +65,4 @@ paddingBottom:80,
     </div>
   );
 };
-export default MotivationScreen
+export default MotivationScreen;

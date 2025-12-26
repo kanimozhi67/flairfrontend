@@ -13,6 +13,9 @@ import Profile from "./pages/Profile";
 import OnlinePage from "./pages/OnlinePage";
 import Mystickers from "./pages/Mystickers";
 import DashboardWrapper from "./pages/DadhboardWrapper";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import AdminRoute from "./components/AdminRoute";
+import MyTask from "./pages/MyTask.js";
 
 
 const App = () => {
@@ -49,12 +52,16 @@ const App = () => {
 
   return (
     <BrowserRouter>
+
       <Routes>
         {/* Public routes */}
         <Route path="/" element={<HomePage />} />
         <Route path="/onlinepage" element={<OnlinePage /> } />
         <Route path="/auth/login" element={<Login setUser={setUser} />} />
         <Route path="/auth/signup" element={<Signup setUser={setUser} />} />
+
+ 
+
 
         {/* Protected routes with Layout */}
         <Route element={<Layout user={user} setUser={setUser} />}>
@@ -98,7 +105,27 @@ const App = () => {
               </PrivateRoute>
             }
           />
+           <Route
+            path="/users/todaytask"
+            element={
+              <PrivateRoute user={user}>
+                <MyTask user={user} setUser={setUser} />
+              </PrivateRoute>
+            }
+          />
         </Route>
+
+         
+      
+
+               <Route
+  path="/admin"
+  element={
+    <AdminRoute user={user}>
+      <AdminDashboard />
+    </AdminRoute>
+  }
+/>
 
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

@@ -1,0 +1,58 @@
+/* Background */
+.create-task-container {
+  min-height: 100vh;
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+background: "linear-gradient(135deg, #30a5eeff, #0bafbbff)";
+   box-shadow: "0 8px 20px rgba(255, 150, 180, 0.35)";
+}
+
+/* Card */
+.create-task-card {
+  width: 100%;
+  max-width: 700px;
+  border-radius: 16px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+}
+
+/* Title */
+.ant-card-head-title {
+  font-size: 24px;
+  font-weight: 600;
+  text-align: center;
+  color: rgb(6, 96, 99);
+  border-radius: 16px;
+  padding: 1px;
+}
+
+/* Radio buttons */
+.radio-group .ant-radio-wrapper {
+  margin-right: 20px;
+  font-weight: 500;
+}
+
+/* Category grid */
+.checkbox-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 8px;
+}
+
+/* Submit button */
+.submit-btn {
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+/* Mobile optimization */
+@media (max-width: 576px) {
+  .create-task-card {
+    padding: 0;
+  }
+
+  .ant-card-head-title {
+    font-size: 18px;
+  }
+}

@@ -28,6 +28,10 @@ const MyTask = () => {
   if (!tasks.length) return <Empty description="No tasks available" />;
 
   return (
+    <div style={{  minHeight: "100vh", 
+       // display: "flex", 
+        background: "linear-gradient(135deg, #ffd194, #6a11cb)", 
+        padding: 20 }}>
     <Row gutter={[16, 16]}>
       {tasks.map((task) => (
         <Col xs={24} md={12} lg={8} key={task.userTaskId}>
@@ -37,6 +41,7 @@ const MyTask = () => {
               <span style={{ color: "green", fontWeight: "bold" }}>
                 Active
               </span>
+              
             }
           >
             {task.categories.map((cat) =>
@@ -46,14 +51,15 @@ const MyTask = () => {
                 return (
                   <div
                     key={`${cat.name}-${lvl.selectedLevel}`}
-                    style={{ marginBottom: 12 }}
+                    style={{ marginBottom: 12,textAlign:"center" ,}}
                   >
-                    <p>
-                      <strong>Category:</strong> {cat.name}
-                    </p>
-                    <p>
-                      <strong>Level:</strong> {lvl.selectedLevel}
-                    </p>
+                    {/* <p style={{textAlign:"center", background: "#ffbf00",
+                    color: "#4d3300",padding:10,fontSize:20,
+                      borderRadius:15,width:180}}>
+                     <strong>  {cat.name}<br></br>
+                    
+                     Level: {lvl.selectedLevel}</strong>
+                    </p> */}
 
                     {route ? (
                       <Link
@@ -61,8 +67,16 @@ const MyTask = () => {
                           cat.name
                         )}`}
                       >
-                        <Button type="primary" size="small">
-                          Start Task
+                        <Button  style={{textAlign:"center", background: "#ffbf00",
+                    color: "#4d3300",padding:10,fontSize:20,
+                      borderRadius:15,width:180}} type="primary" size="small">
+                          <p style={{textAlign:"center", background: "#ffbf00",
+                    color: "#4d3300",padding:10,fontSize:20,
+                      borderRadius:15,width:180}}>
+                     <strong>  {cat.name}<br></br>
+                    
+                     Level: {lvl.selectedLevel}</strong>
+                    </p>
                         </Button>
                       </Link>
                     ) : (
@@ -78,6 +92,7 @@ const MyTask = () => {
         </Col>
       ))}
     </Row>
+    </div>
   );
 };
 

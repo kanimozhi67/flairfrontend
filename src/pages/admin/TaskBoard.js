@@ -60,7 +60,7 @@ const TaskBoard = () => {
               dataSource={task.completedStudents}
               columns={[
                 { title: "Name", dataIndex: "username", key: "username" },
-                { title: "Email", dataIndex: "email", key: "email" },
+               // { title: "Email", dataIndex: "email", key: "email" },
                 { title: "Points", dataIndex: "totalPoints", key: "points" },
               ]}
               rowKey={(record) => record.email}

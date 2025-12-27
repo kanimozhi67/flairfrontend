@@ -64,7 +64,7 @@ const CreateTask = () => {
             <Col xs={24}>
               <Form.Item
                 name="title"
-                label="Title"
+                label="TITLE"
                 rules={[{ required: true, message: "Please enter task title" }]}
               >
                 <Input placeholder="Enter task title" />
@@ -80,7 +80,7 @@ const CreateTask = () => {
             <Col xs={24} md={12}>
               <Form.Item
                 name="level"
-                label="Level"
+                label="LEVEL"
                 rules={[{ required: true, message: "Please select a level" }]}
               >
                 <Radio.Group className="radio-group">
@@ -93,7 +93,7 @@ const CreateTask = () => {
             <Col xs={24} md={12}>
               <Form.Item
                 name="date"
-                label="Date"
+                label="DATE"
                 rules={[{ required: true, message: "Please select a date" }]}
               >
                 <DatePicker style={{ width: "100%" }} format="YYYY-MM-DD" />
@@ -103,7 +103,7 @@ const CreateTask = () => {
             <Col xs={24}>
               <Form.Item
                 name="categories"
-                label="Category"
+                label="CATEGORY"
                 rules={[{ required: true, message: "Please select a category" }]}
               >
                 <Radio.Group className="checkbox-grid">
@@ -119,7 +119,7 @@ const CreateTask = () => {
             <Col xs={24}>
               <Form.Item
                 name="selectedLevel"
-                label="Selected Level"
+                label="SELECTED LEVEL"
                 rules={[{ required: true, message: "Please select a level" }]}
               >
                 <Radio.Group options={selectedLevelOptions} />
@@ -129,7 +129,7 @@ const CreateTask = () => {
             <Col xs={24} md={12}>
               <Form.Item
                 name="active"
-                label="Active"
+                label="ACTIVE"
                 valuePropName="checked"
                 initialValue={true}
               >

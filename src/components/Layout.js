@@ -19,27 +19,35 @@ const Layout = ({ user, setUser }) => {
 
   const menuItems = [
     { key: "home", label: "🏠 Home", path: "/categories" },
-    { key: "task", label: "🎯 Today's Task", path: "/task" },
+    ...(user?.role === "Admin"
+    ? [{ key: "admin", label: "🛠 Admin Panel", path: "/admin" }]
+    : [  { key: "task", label: "🎯 Today's Task", path: "/task" },]),
+   
+  
     { key: "dashboard", label: "🏆 Dashboard", path: "/quiz/progress" },
      { key: "mystickers", label: " 👝 My Stickers", path: "/mystickers" },
     { key: "getMe", label: "👶 My Profile", path: "/auth/getMe" },
     
   // 🔐 ADMIN ONLY
-  ...(user?.role === "Admin"
-    ? [{ key: "admin", label: "🛠 Admin Panel", path: "/admin" }]
-    : []),
+  // ...(user?.role === "Admin"
+  //   ? [{ key: "admin", label: "🛠 Admin Panel", path: "/admin" }]
+  //   : []),
    
   ];
   const menuItems2 = [
     { key: "home", label: "🏠 ", path: "/categories" },
-     { key: "task", label: "🎯 ", path: "/task" },
+     ...(user?.role === "Admin"
+    ? [{ key: "admin", label: "🛠", path: "/admin" }]
+    : [ { key: "task", label: "🎯 ", path: "/task" },]),
+   
+    
     { key: "dashboard", label: "🏆 ", path: "/quiz/progress" },
      { key: "mystickers", label: " 👝 ", path: "/mystickers" },
     { key: "getMe", label: "👶 ", path: "/auth/getMe" },
       // 🔐 ADMIN ONLY (mobile)
-  ...(user?.role === "Admin"
-    ? [{ key: "admin", label: "🛠", path: "/admin" }]
-    : []),
+  // ...(user?.role === "Admin"
+  //   ? [{ key: "admin", label: "🛠", path: "/admin" }]
+  //   : []),
    
   ];
 

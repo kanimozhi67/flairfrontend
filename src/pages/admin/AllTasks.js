@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { DeleteOutlined } from "@ant-design/icons";
 import {
   Card,
   Tag,
@@ -8,12 +9,27 @@ import {
   Empty,
   Switch,
   message,
+  Button
 } from "antd";
 import api from "../../api/axiosClient";
-
+  
 const AllTasks = () => {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
+
+
+const handleDelete = async (taskId) => {
+  try {
+    await api.delete(`/admin/task/${taskId}`);
+    message.success("Task deleted successfully");
+    // optionally, refresh task list
+    fetchTasks();
+  } catch (err) {
+    message.error(err.response?.data?.message || "Failed to delete task");
+  }
+};
+
+
 
   const fetchTasks = async () => {
     try {
@@ -40,6 +56,7 @@ const AllTasks = () => {
 
   return (
     <Row gutter={[16, 16]}>
+
       {tasks.map((task) => (
         <Col xs={24} md={12} lg={8} key={task._id}>
           <Card
@@ -75,6 +92,13 @@ const AllTasks = () => {
     ))}
   </div>
 ))}
+<br></br>
+<Button type="primary" danger icon={<DeleteOutlined />}
+  onClick={() => handleDelete(task._id)} 
+ >
+  Delete
+</Button>
+
           </Card>
         </Col>
       ))}

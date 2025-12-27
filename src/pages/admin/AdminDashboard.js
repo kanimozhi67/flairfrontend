@@ -20,29 +20,17 @@ const AdminDashboard = () => {
         <div style={{ color: "#fff", padding: 16, fontSize: 18 }}>
           Admin Panel
         </div>
-        <Menu
-          theme="dark"
-          mode="inline"
-          defaultSelectedKeys={["create"]}
-          onClick={(e) => setActive(e.key)}
-          items={[
-            {
-              key: "create",
-              icon: <PlusOutlined />,
-              label: "Create Task",
-            },
-            {
-              key: "tasks",
-              icon: <UnorderedListOutlined />,
-              label: "All Tasks",
-            },
-            {
-              key: "tasks",
-              icon: <UnorderedListOutlined />,
-              label: "Task Board",
-            },
-          ]}
-        />
+      <Menu
+  theme="dark"
+  mode="inline"
+  defaultSelectedKeys={["create"]}
+  onClick={(e) => setActive(e.key)}
+  items={[
+    { key: "create", icon: <PlusOutlined />, label: "Create Task" },
+    { key: "tasks", icon: <UnorderedListOutlined />, label: "All Tasks" },
+    { key: "board", icon: <UnorderedListOutlined />, label: "Task Board" },
+  ]}
+/>
       </Sider>
 
       <Layout>
@@ -50,11 +38,11 @@ const AdminDashboard = () => {
           Admin Dashboard
         </Header>
 
-        <Content style={{ margin: 16 ,fontWeight:"bold"  }}>
-          {active === "create" && <CreateTask />}
-           {active === "tasks" && <AllTasks />}
-           {active === "tasks" && <TaskBoard />}
-        </Content>
+        <Content style={{ margin: 16 }}>
+  {active === "create" && <CreateTask />}
+  {active === "tasks" && <AllTasks />}
+  {active === "board" && <TaskBoard />}
+</Content>
       </Layout>
     </Layout>
   );

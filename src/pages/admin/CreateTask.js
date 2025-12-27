@@ -6,7 +6,6 @@ import {
   Switch,
   message,
   Radio,
-  Checkbox,
   Card,
   Row,
   Col,
@@ -15,14 +14,15 @@ import api from "../../api/axiosClient";
 import "./CreateTask.css";
 
 const categoryOptions = [
-  "Measurement",
   "Addition & Subtraction",
   "Sorting",
-  "Sudoku",
-  "Logical Questions",
-  "Puzzles",
   "Multiplication",
+  "Logical Questions",
+  "Sudoku",
+  "Puzzles",
+  "Division",
   "Money",
+  "Measurement",
   "Shapes",
   "Time",
   "Fraction",
@@ -37,21 +37,16 @@ const selectedLevelOptions = [
 const CreateTask = () => {
   const onFinish = async (values) => {
     try {
-      const { title, description, level, categories, selectedLevel, date, active } =
-        values;
+      const { title, description, level, categories, selectedLevel, date, active } = values;
 
       const payload = {
         title,
         description,
+        level,                    // "kindergarden" or "primary"
         date: date.format("YYYY-MM-DD"),
         active,
-        categories: categories.map((cat) => ({
-          name: cat,
-          levels: selectedLevel.map((lvl) => ({
-            level,
-            selectedLevel: lvl,
-          })),
-        })),
+        category: categories,      // single selected category
+        selectedLevel,             // single selected level
       };
 
       await api.post("/admin/createtask", payload);
@@ -67,19 +62,27 @@ const CreateTask = () => {
         <Form layout="vertical" onFinish={onFinish}>
           <Row gutter={[16, 16]}>
             <Col xs={24}>
-              <Form.Item name="title" label="Title" required>
+              <Form.Item
+                name="title"
+                label="Title"
+                rules={[{ required: true, message: "Please enter task title" }]}
+              >
                 <Input placeholder="Enter task title" />
               </Form.Item>
             </Col>
 
-            <Col xs={24}>
+            {/* <Col xs={24}>
               <Form.Item name="description" label="Description">
                 <Input.TextArea rows={3} placeholder="Task description" />
               </Form.Item>
-            </Col>
+            </Col> */}
 
             <Col xs={24} md={12}>
-              <Form.Item name="level" label="Level" required>
+              <Form.Item
+                name="level"
+                label="Level"
+                rules={[{ required: true, message: "Please select a level" }]}
+              >
                 <Radio.Group className="radio-group">
                   <Radio value="kindergarden">Kindergarden</Radio>
                   <Radio value="primary">Primary</Radio>
@@ -88,26 +91,38 @@ const CreateTask = () => {
             </Col>
 
             <Col xs={24} md={12}>
-              <Form.Item name="date" label="Date" required>
-                <DatePicker style={{ width: "100%" }} />
+              <Form.Item
+                name="date"
+                label="Date"
+                rules={[{ required: true, message: "Please select a date" }]}
+              >
+                <DatePicker style={{ width: "100%" }} format="YYYY-MM-DD" />
               </Form.Item>
             </Col>
 
             <Col xs={24}>
-              <Form.Item name="categories" label="Categories" required>
-                <Checkbox.Group className="checkbox-grid">
+              <Form.Item
+                name="categories"
+                label="Category"
+                rules={[{ required: true, message: "Please select a category" }]}
+              >
+                <Radio.Group className="checkbox-grid">
                   {categoryOptions.map((cat) => (
-                    <Checkbox key={cat} value={cat}>
+                    <Radio key={cat} value={cat}>
                       {cat}
-                    </Checkbox>
+                    </Radio>
                   ))}
-                </Checkbox.Group>
+                </Radio.Group>
               </Form.Item>
             </Col>
 
             <Col xs={24}>
-              <Form.Item name="selectedLevel" label="Selected Levels" required>
-                <Checkbox.Group options={selectedLevelOptions} />
+              <Form.Item
+                name="selectedLevel"
+                label="Selected Level"
+                rules={[{ required: true, message: "Please select a level" }]}
+              >
+                <Radio.Group options={selectedLevelOptions} />
               </Form.Item>
             </Col>
 
@@ -123,13 +138,7 @@ const CreateTask = () => {
             </Col>
 
             <Col xs={24}>
-              <Button
-                type="primary"
-                htmlType="submit"
-                block
-                size="large"
-                className="submit-btn"
-              >
+              <Button type="primary" htmlType="submit" block size="large" className="submit-btn">
                 Create Task
               </Button>
             </Col>

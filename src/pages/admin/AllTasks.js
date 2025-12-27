@@ -65,17 +65,16 @@ const AllTasks = () => {
               <strong>Categories:</strong>
             </p>
 
-            {task.categories.map((cat, index) => (
-              <div key={index} style={{ marginBottom: 8 }}>
-                <Tag color="blue">{cat.name}</Tag>
-
-                {cat.levels.map((lvl, i) => (
-                  <Tag key={i} color="purple">
-                    {lvl.level} - Level {lvl.selectedLevel}
-                  </Tag>
-                ))}
-              </div>
-            ))}
+           {task.categories.map((cat) => (
+  <div key={cat._id}>
+    <Tag color="blue">{cat.name}</Tag>
+    {cat.levels.map((lvl) => (
+      <Tag color="purple">
+        {lvl.level} - Level {lvl.selectedLevel}
+      </Tag>
+    ))}
+  </div>
+))}
           </Card>
         </Col>
       ))}

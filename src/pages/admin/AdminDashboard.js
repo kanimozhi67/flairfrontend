@@ -6,7 +6,7 @@ import {
 import { useState } from "react";
 import CreateTask from "./CreateTask";
 import AllTasks from "./AllTasks";
-
+import TaskBoard from "./TaskBoard";
 
 
 const { Header, Sider, Content } = Layout;
@@ -36,6 +36,11 @@ const AdminDashboard = () => {
               icon: <UnorderedListOutlined />,
               label: "All Tasks",
             },
+            {
+              key: "tasks",
+              icon: <UnorderedListOutlined />,
+              label: "Task Board",
+            },
           ]}
         />
       </Sider>
@@ -48,6 +53,7 @@ const AdminDashboard = () => {
         <Content style={{ margin: 16 ,fontWeight:"bold"  }}>
           {active === "create" && <CreateTask />}
            {active === "tasks" && <AllTasks />}
+           {active === "tasks" && <TaskBoard />}
         </Content>
       </Layout>
     </Layout>

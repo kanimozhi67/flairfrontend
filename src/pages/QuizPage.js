@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { message } from "antd";
 import { useWindowSize } from "react-use";
-import { useParams, useOutletContext ,useLocation} from "react-router-dom";
+import {  useOutletContext ,useLocation,useNavigate,useParams} from "react-router-dom";
 import { completeTask } from "../api/auth.js";
 import api from "../api/axiosClient";
 import LevelSelection from "./LevelSelection.js";
@@ -26,6 +26,7 @@ import MoneyQuiz from "./MoneyQuiz.js";
 import Measurement from "./Measurement.js";
 
 const QuizPage = ({ user, setUser }) => {
+    const navigate = useNavigate();
    const { search } = useLocation();
   const [searchParams] = useSearchParams();
   const level = searchParams.get("level"); // kindergarten | primary
@@ -407,8 +408,35 @@ boxShadow: "0 12px 30px rgba(255, 160, 140, 0.45)",
     fetchStickers();
   }, [user?._id]);
 
+const userTaskId = searchParams.get("userTaskId");
+const categoryName = searchParams.get("category");
+
+  const handleComplete = async (score) => {
+     if (!userTaskId || !categoryName || !selectedLevel) {
+    console.warn("Task completion skipped – missing data");
+    return;
+  }
+    try {
+      await api.post("/users/completetask", {
+        userTaskId,
+        categoryName,
+        selectedLevel,
+        score,   // calculate real score here
+        points: score,
+      });
+ message.success("🎉 Task level completed!");
+     
+      //navigate("/my-tasks"); // go back to task list
+    } catch (err) {
+      message.error(
+        err.response?.data?.message || "Failed to complete task"
+      );
+    }
+  };
+
   // Helper: send points to backend and update UI
   const addPointsToBackend = async (points) => {
+handleComplete(points);
     if (!user || !user._id) return;
     try {
       const res = await api.post("/quiz/progress/addpoints", { points });
@@ -580,24 +608,6 @@ boxShadow: "0 12px 30px rgba(255, 160, 140, 0.45)",
   };
 
 
-const completeTodayTask = async ({ taskId, category, level, score, points }) => {
-  try {
-    const res = await completeTask({
-      taskId,
-      category,
-      level,
-      score,
-      points,
-    });
-
-    message.success("🎉 Task level completed!");
-    return res.data;
-  } catch (err) {
-    console.error("completeTask error:", err);
-    message.error("Failed to update task progress");
-    return null;
-  }
-};
 
 
 useEffect(() => {

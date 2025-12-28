@@ -1,10 +1,33 @@
 import { useEffect, useState } from "react";
-import { Card, Row, Col, Spin, Empty, Table, Button, Modal, Input, message, Space } from "antd";
+import {
+  Card,
+  Row,
+  Col,
+  Spin,
+  Empty,
+  Table,
+  Button,
+  Modal,
+  Input,
+  message,
+  Space,
+  Grid,
+} from "antd";
 import api from "../../api/axiosClient";
 
+const { useBreakpoint } = Grid;
+const { Search } = Input;
+
 const SchoolBoard = () => {
+  const screens = useBreakpoint();
+
   const [schools, setSchools] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const [schoolSearch, setSchoolSearch] = useState("");
+
+  const [teacherSearch, setTeacherSearch] = useState({});
+  const [paginationState, setPaginationState] = useState({});
 
   const [newSchool, setNewSchool] = useState("");
   const [teacherModal, setTeacherModal] = useState({
@@ -19,12 +42,11 @@ const SchoolBoard = () => {
   const [editingTeacher, setEditingTeacher] = useState(null);
   const [editableValues, setEditableValues] = useState({});
 
-  // Fetch schools
   const fetchSchools = async () => {
     try {
       const res = await api.get("/admin/schools");
       setSchools(res.data);
-    } catch (err) {
+    } catch {
       message.error("Failed to fetch schools");
     } finally {
       setLoading(false);
@@ -35,7 +57,6 @@ const SchoolBoard = () => {
     fetchSchools();
   }, []);
 
-  // Add school
   const handleAddSchool = async () => {
     if (!newSchool) return;
     try {
@@ -48,10 +69,9 @@ const SchoolBoard = () => {
     }
   };
 
-  // Delete school
-  const handleDeleteSchool = async (schoolId) => {
+  const handleDeleteSchool = async (id) => {
     try {
-      await api.delete(`/admin/school/${schoolId}`);
+      await api.delete(`/admin/school/${id}`);
       message.success("School deleted!");
       fetchSchools();
     } catch (err) {
@@ -59,60 +79,21 @@ const SchoolBoard = () => {
     }
   };
 
-  // Add teacher
-  const handleAddTeacher = async () => {
-    const { schoolId, username, email, className, section } = teacherModal;
-    if (!username || !email || !className || !section) return;
-
+  const handleDeleteTeacher = async (id) => {
     try {
-      await api.post("/admin/teacher", {
-        schoolId,
-        username,
-        email,
-        password: "default123",
-        className,
-        section,
-      });
-      message.success("Teacher added!");
-      setTeacherModal({
-        visible: false,
-        schoolId: null,
-        username: "",
-        email: "",
-        className: "",
-        section: "",
-      });
+      await api.delete(`/admin/teacher/${id}`);
+      message.success("Teacher deleted!");
       fetchSchools();
     } catch (err) {
-      message.error(err.response?.data?.message || "Failed to add teacher");
+      message.error(err.response?.data?.message || "Failed to delete teacher");
     }
   };
 
-
-
-// Delete teacher
- const handleDeleteTeacher = async (teacherId) => { 
-try { await api.delete(`/admin/teacher/${teacherId}`);
- message.success("Teacher deleted!");
- fetchSchools(); 
-} catch (err) {
- message.error(err.response?.data?.message || "Failed to delete teacher"); } }; 
-
-
-  // Save teacher edits
-  const handleSaveTeacher = async (teacherId) => {
-    const updatedData = editableValues[teacherId];
-    if (!updatedData) return;
-
+  const handleSaveTeacher = async (id) => {
     try {
-      await api.put(`/admin/teacheredit/${teacherId}`, updatedData);
+      await api.put(`/admin/teacheredit/${id}`, editableValues[id]);
       message.success("Teacher updated!");
       setEditingTeacher(null);
-      setEditableValues((prev) => {
-        const copy = { ...prev };
-        delete copy[teacherId];
-        return copy;
-      });
       fetchSchools();
     } catch (err) {
       message.error(err.response?.data?.message || "Failed to update teacher");
@@ -122,243 +103,169 @@ try { await api.delete(`/admin/teacher/${teacherId}`);
   if (loading) return <Spin size="large" />;
   if (!schools.length) return <Empty description="No schools found" />;
 
+  // 🔍 Filter schools
+  const filteredSchools = schools.filter((school) =>
+    school.name.toLowerCase().includes(schoolSearch.toLowerCase())
+  );
+
   return (
     <div>
-      {/* Add School */}
-      <Space style={{ marginBottom: 16 }}>
-        <Input
-          placeholder="New School Name"
-          value={newSchool}
-          onChange={(e) => setNewSchool(e.target.value)}
-          style={{ width: 300 }}
-        />
-        <Button type="primary" onClick={handleAddSchool}>
-          Add School
-        </Button>
-      </Space>
+      {/* School Search + Add */}
+      <Row gutter={[8, 8]} style={{ marginBottom: 16 }}>
+        <Col xs={24} md={8}>
+          <Search
+            placeholder="Search schools"
+            allowClear
+            onChange={(e) => setSchoolSearch(e.target.value)}
+          />
+        </Col>
+        <Col xs={24} md={10}>
+          <Input
+            placeholder="New School Name"
+            value={newSchool}
+            onChange={(e) => setNewSchool(e.target.value)}
+          />
+        </Col>
+        <Col xs={24} md={6}>
+          <Button type="primary" block onClick={handleAddSchool}>
+            Add School
+          </Button>
+        </Col>
+      </Row>
 
       <Row gutter={[16, 16]}>
-        {schools.map((school) => (
-          <Col xs={24} md={12} key={school._id}>
-            <Card
-              title={school.name}
-              style={{ marginBottom: 16 ,width:900}}
-              extra={
-                <Button danger onClick={() => handleDeleteSchool(school._id)}>
-                  Delete
-                </Button>
-              }
-            >
-              <Button
-                type="dashed"
-                style={{ marginBottom: 8 }}
-                onClick={() =>
-                  setTeacherModal({ ...teacherModal, visible: true, schoolId: school._id })
+        {filteredSchools.map((school) => {
+          const searchValue = teacherSearch[school._id] || "";
+
+          const filteredTeachers = school.teachers.filter((t) =>
+            [t.username, t.email, t.className, t.section]
+              .join(" ")
+              .toLowerCase()
+              .includes(searchValue.toLowerCase())
+          );
+
+          return (
+          <Row gutter={[16, 16]}>
+            <Col
+    xs={24}     // Mobile: full width
+    sm={24}     // Small tablets: full width
+    md={24}     // Tablets: full width
+    lg={24}     // Laptops: wider cards
+    xl={24}     // Desktops: balanced
+    xxl={24}    // Large screens: very wide cards
+   key={school._id}>
+              <Card
+                title={school.name}
+                extra={
+                  <Button danger size="small" onClick={() => handleDeleteSchool(school._id)}>
+                    Delete
+                  </Button>
                 }
               >
-                Add Teacher
-              </Button>
+                {/* Teacher Search */}
+                <Search
+                  placeholder="Search teachers"
+                  allowClear
+                  style={{ marginBottom: 12 }}
+                  onChange={(e) =>
+                    setTeacherSearch((prev) => ({
+                      ...prev,
+                      [school._id]: e.target.value,
+                    }))
+                  }
+                />
 
-              <Table
-                dataSource={school.teachers}
-                rowKey={(record) => record._id}
-                pagination={false}
-                locale={{ emptyText: "No teachers added yet" }}
-                columns={[
-                  {
-                    title: "Username",
-                    dataIndex: "username",
-                    key: "username",
-                    render: (text, record) =>
-                      editingTeacher === record._id ? (
-                        <Input
-                          value={editableValues[record._id]?.username ?? text}
-                          onChange={(e) =>
-                            setEditableValues((prev) => ({
-                              ...prev,
-                              [record._id]: {
-                                ...prev[record._id],
-                                username: e.target.value,
-                                email: prev[record._id]?.email ?? record.email,
-                                className: prev[record._id]?.className ?? record.className,
-                                section: prev[record._id]?.section ?? record.section,
-                              },
-                            }))
-                          }
-                        />
-                      ) : (
-                        text
-                      ),
-                  },
-                  {
-                    title: "Email",
-                    dataIndex: "email",
-                    key: "email",
-                    render: (text, record) =>
-                      editingTeacher === record._id ? (
-                        <Input
-                          value={editableValues[record._id]?.email ?? text}
-                          onChange={(e) =>
-                            setEditableValues((prev) => ({
-                              ...prev,
-                              [record._id]: {
-                                ...prev[record._id],
-                                email: e.target.value,
-                                username: prev[record._id]?.username ?? record.username,
-                                className: prev[record._id]?.className ?? record.className,
-                                section: prev[record._id]?.section ?? record.section,
-                              },
-                            }))
-                          }
-                        />
-                      ) : (
-                        text
-                      ),
-                  },
-                  {
-                    title: "Class",
-                    dataIndex: "className",
-                    key: "className",
-                    render: (text, record) =>
-                      editingTeacher === record._id ? (
-                        <Input
-                          value={editableValues[record._id]?.className ?? text}
-                          onChange={(e) =>
-                            setEditableValues((prev) => ({
-                              ...prev,
-                              [record._id]: {
-                                ...prev[record._id],
-                                className: e.target.value,
-                                username: prev[record._id]?.username ?? record.username,
-                                email: prev[record._id]?.email ?? record.email,
-                                section: prev[record._id]?.section ?? record.section,
-                              },
-                            }))
-                          }
-                        />
-                      ) : (
-                        text
-                      ),
-                  },
-                  {
-                    title: "Section",
-                    dataIndex: "section",
-                    key: "section",
-                    render: (text, record) =>
-                      editingTeacher === record._id ? (
-                        <Input
-                          value={editableValues[record._id]?.section ?? text}
-                          onChange={(e) =>
-                            setEditableValues((prev) => ({
-                              ...prev,
-                              [record._id]: {
-                                ...prev[record._id],
-                                section: e.target.value,
-                                username: prev[record._id]?.username ?? record.username,
-                                email: prev[record._id]?.email ?? record.email,
-                                className: prev[record._id]?.className ?? record.className,
-                              },
-                            }))
-                          }
-                        />
-                      ) : (
-                        text
-                      ),
-                  },
-                  {
-                    title: "Action",
-                    key: "action",
-                    render: (_, record) =>
-                      editingTeacher === record._id ? (
-                        <Space>
-                          <Button
-                            type="primary"
-                            size="small"
-                            onClick={() => handleSaveTeacher(record._id)}
-                          >
-                            Save
-                          </Button>
-                          <Button
-                            size="small"
-                            onClick={() => {
-                              setEditingTeacher(null);
-                              setEditableValues((prev) => {
-                                const copy = { ...prev };
-                                delete copy[record._id];
-                                return copy;
-                              });
-                            }}
-                          >
-                            Cancel
-                          </Button>
-                        </Space>
-                      ) : (
-                        <Space>
-                          <Button
-                            type="link"
-                            size="small"
-                            onClick={() => setEditingTeacher(record._id)}
-                          >
-                            Edit
-                          </Button>
-                          <Button
-                            danger
-                            size="small"
-                            onClick={() => handleDeleteTeacher(record._id)}
-                          >
-                            Delete
-                          </Button>
-                        </Space>
-                      ),
-                  },
-                ]}
-              />
-            </Card>
-          </Col>
-        ))}
+                <Button
+                  type="dashed"
+                  block={!screens.sm}
+                  style={{ marginBottom: 12 }}
+                  onClick={() =>
+                    setTeacherModal({ ...teacherModal, visible: true, schoolId: school._id })
+                  }
+                >
+                  Add Teacher
+                </Button>
+
+                <Table
+                  dataSource={filteredTeachers}
+                  rowKey="_id"
+                  size={screens.md ? "middle" : "small"}
+                  scroll={{ x: "max-content" }}
+                  pagination={{
+                    current: paginationState[school._id]?.current || 1,
+                    pageSize: paginationState[school._id]?.pageSize || 5,
+                    showSizeChanger: true,
+                    pageSizeOptions: ["5", "10", "20"],
+                    onChange: (current, pageSize) =>
+                      setPaginationState((prev) => ({
+                        ...prev,
+                        [school._id]: { current, pageSize },
+                      })),
+                  }}
+                  columns={[
+                    { title: "Username", dataIndex: "username" },
+                    { title: "Email", dataIndex: "email" },
+                    { title: "Class", dataIndex: "className" },
+                    { title: "Section", dataIndex: "section" },
+                    {
+                      title: "Action",
+                      render: (_, record) =>
+                        editingTeacher === record._id ? (
+                          <Space>
+                            <Button
+                              size="small"
+                              type="primary"
+                              onClick={() => handleSaveTeacher(record._id)}
+                            >
+                              Save
+                            </Button>
+                            <Button size="small" onClick={() => setEditingTeacher(null)}>
+                              Cancel
+                            </Button>
+                          </Space>
+                        ) : (
+                          <Space>
+                            <Button size="small" type="link" onClick={() => setEditingTeacher(record._id)}>
+                              Edit
+                            </Button>
+                            <Button
+                              size="small"
+                              danger
+                              onClick={() => handleDeleteTeacher(record._id)}
+                            >
+                              Delete
+                            </Button>
+                          </Space>
+                        ),
+                    },
+                  ]}
+                />
+              </Card>
+            </Col></Row>
+          );
+        })}
       </Row>
 
       {/* Add Teacher Modal */}
       <Modal
         title="Add Teacher"
         open={teacherModal.visible}
-        onOk={handleAddTeacher}
-        onCancel={() =>
-          setTeacherModal({
-            visible: false,
-            schoolId: null,
-            username: "",
-            email: "",
-            className: "",
-            section: "",
-          })
-        }
+        onOk={() => {}}
+        onCancel={() => setTeacherModal({ visible: false })}
+        width={screens.md ? 520 : "100%"}
       >
-        <Input
-          placeholder="Username"
-          value={teacherModal.username}
-          onChange={(e) => setTeacherModal({ ...teacherModal, username: e.target.value })}
-          style={{ marginBottom: 8 }}
-        />
-        <Input
-          placeholder="Email"
-          value={teacherModal.email}
-          onChange={(e) => setTeacherModal({ ...teacherModal, email: e.target.value })}
-          style={{ marginBottom: 8 }}
-        />
-        <Input
-          placeholder="Class"
-          value={teacherModal.className}
-          onChange={(e) => setTeacherModal({ ...teacherModal, className: e.target.value })}
-          style={{ marginBottom: 8 }}
-        />
-        <Input
-          placeholder="Section"
-          value={teacherModal.section}
-          onChange={(e) => setTeacherModal({ ...teacherModal, section: e.target.value })}
-          style={{ marginBottom: 8 }}
-        />
-        <p style={{ marginTop: 8, fontSize: 12, color: "#888" }}>
+        {["username", "email", "className", "section"].map((field) => (
+          <Input
+            key={field}
+            placeholder={field}
+            value={teacherModal[field]}
+            onChange={(e) =>
+              setTeacherModal({ ...teacherModal, [field]: e.target.value })
+            }
+            style={{ marginBottom: 8 }}
+          />
+        ))}
+        <p style={{ fontSize: 12, color: "#888" }}>
           Default password: <strong>default123</strong>
         </p>
       </Modal>

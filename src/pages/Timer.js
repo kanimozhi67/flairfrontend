@@ -1,95 +1,119 @@
-import React from "react";
-import { Card, Row, Col, Typography } from "antd";
+// import { Layout, Menu, Button, Drawer } from "antd";
+// import {
+//   PlusOutlined,
+//   UnorderedListOutlined,
+//   MenuOutlined,
+// } from "@ant-design/icons";
+// import { useState } from "react";
+// import CreateTask from "./CreateTask";
+// import AllTasks from "./AllTasks";
+// import TaskBoard from "./TaskBoard";
+// import SchoolBoard from "./SchoolBoard";
 
-const { Title } = Typography;
+// const { Header, Sider, Content } = Layout;
 
-const data = [
-  { value: 33, color: "#ff7a00" }, // orange
-  { value: 42, color: "#7ac943" }, // green
-  { value: 51, color: "#22a6b3" }, // teal
-  { value: 60, color: "#6c3483" }, // purple
-  { value: "❔", color: "#e53935" } // missing
-];
+// const AdminDashboard = () => {
+//   const [active, setActive] = useState("create");
+//   const [drawerOpen, setDrawerOpen] = useState(false);
 
-const size = 220;
-const strokeWidth = 45;
-const radius = (size - strokeWidth) / 2;
-const center = size / 2;
-const sliceAngle = 360 / data.length;
-const circumference = 2 * Math.PI * radius;
-const sliceLength = circumference / data.length;
+//   const menuItems = [
+//     { key: "create", icon: <PlusOutlined />, label: "Create Task" },
+//     { key: "tasks", icon: <UnorderedListOutlined />, label: "All Tasks" },
+//     { key: "board", icon: <UnorderedListOutlined />, label: "Task Board" },
+//     { key: "schools", icon: <UnorderedListOutlined />, label: "Schools" },
+//   ];
 
-export default function PuzzleWheel() {
-  let dashOffset = 0;
+//   const renderContent = () => {
+//     switch (active) {
+//       case "create":
+//         return <CreateTask />;
+//       case "tasks":
+//         return <AllTasks />;
+//       case "board":
+//         return <TaskBoard />;
+//       case "schools":
+//         return <SchoolBoard />;
+//       default:
+//         return null;
+//     }
+//   };
 
-  return (
-    <Card
-      style={{ border: "none", boxShadow: "none" }}
-      styles={{ body: { padding: 0 } }}
-    >
-      <Row align="middle" gutter={32}>
-        <Col>
-          {/* Rotate SVG once */}
-          <svg
-            width={size}
-            height={size}
-            style={{ transform: "rotate(-3deg)" }}
-          >
-            {data.map((item, index) => {
-              const startAngle = index * sliceAngle;
-              const midAngle = startAngle + sliceAngle / 2;
-              const rad = (midAngle * Math.PI) / 180;
+//   return (
+//     <Layout style={{ minHeight: "100vh" }}>
+//       {/* Desktop Sidebar */}
+//       <Sider
+//         breakpoint="lg"
+//         collapsedWidth="0"
+//         style={{ display: "none", }}
+//         className="desktop-sider"
+//       >
+//         <div style={{ color: "#fff", padding: 16, fontSize: 18 }}>
+//           Admin Panel
+//         </div>
+//         <Menu
+//           theme="dark"
+//           mode="inline"
+//           selectedKeys={[active]}
+//           onClick={(e) => setActive(e.key)}
+//           items={menuItems}
+//         />
+//       </Sider>
 
-              // text position (middle of slice)
-              const textRadius = radius;
-              const x = center + textRadius * Math.cos(rad);
-              const y = center + textRadius * Math.sin(rad);
+//       <Layout>
+//         <Header
+//           style={{
+//             background: "#fff",
+//             padding: "0 16px",
+//             display: "flex",
+//             alignItems: "center",
+//             justifyContent: "space-between",
+//           }}
+//         >
+//           {/* Mobile Menu Button */}
+//           <Button
+//             icon={<MenuOutlined />}
+//             type="text"
+//             onClick={() => setDrawerOpen(true)}
+//             style={{ fontSize: 20 }}
+//           />
 
-              const currentOffset = dashOffset;
-              dashOffset -= sliceLength;
+//           <span style={{ fontWeight: "bold", fontSize: 18 }}>
+//             Admin Dashboard
+//           </span>
+//         </Header>
 
-              return (
-                <g key={index}>
-                  {/* Slice */}
-                  <circle
-                    cx={center}
-                    cy={center}
-                    r={radius}
-                    fill="none"
-                    stroke={item.color}
-                    strokeWidth={strokeWidth}
-                    strokeDasharray={`${sliceLength} ${circumference}`}
-                    strokeDashoffset={currentOffset}
-                  />
+//         <Content
+//           style={{
+//             margin: 16,
+//             padding: 16,
+//             background: "#fff",
+//             borderRadius: 8,
+//           }}
+//         >
+//           {renderContent()}
+//         </Content>
+//       </Layout>
 
-                  {/* Value */}
-                  {item.value !== null && (
-                    <text
-                      x={x}
-                      y={y}
-                      textAnchor="middle"
-                      dominantBaseline="middle"
-                      fontSize="18"
-                      fontWeight="bold"
-                      fill="#000"
-                      style={{  transformOrigin: "center",zIndex:5 }}
+//       {/* Mobile Drawer */}
+//       <Drawer
+//         title="Admin Panel"
+//         placement="left"
+//         open={drawerOpen}
+//         onClose={() => setDrawerOpen(false)}
+//         bodyStyle={{ padding: 0 }}
+//       >
+//         <Menu
+//           mode="inline"
+//           selectedKeys={[active]}
+//           onClick={(e) => {
+//             setActive(e.key);
+//             setDrawerOpen(false);
+//           }}
+//           items={menuItems}
+//         />
+//       </Drawer>
+//     </Layout>
+//   );
+// };
 
-                    >
-                      {item.value}
-                    </text>
-                  )}
-                </g>
-              );
-            })}
-          </svg>
-        </Col>
-
-        <Col>
-          <Title level={3}>
-            What comes<br />next?
-          </Title>
-        </Col>
-      </Row>
-    </Card>
-  );
-}
+// export default AdminDashboard;

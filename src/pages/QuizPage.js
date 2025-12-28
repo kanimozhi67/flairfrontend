@@ -436,7 +436,8 @@ const categoryName = searchParams.get("category");
 
   // Helper: send points to backend and update UI
   const addPointsToBackend = async (points) => {
-handleComplete(points);
+    if(points!==0){
+handleComplete(points);}
     if (!user || !user._id) return;
     try {
       const res = await api.post("/quiz/progress/addpoints", { points });

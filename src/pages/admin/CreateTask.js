@@ -84,7 +84,7 @@ const CreateTask = () => {
                 rules={[{ required: true, message: "Please select a level" }]}
               >
                 <Radio.Group className="radio-group">
-                  <Radio value="kindergarden">Kindergarden</Radio>
+                  <Radio value="kindergarten">Kindergarten</Radio>
                   <Radio value="primary">Primary</Radio>
                 </Radio.Group>
               </Form.Item>

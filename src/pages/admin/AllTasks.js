@@ -7,30 +7,18 @@ import {
   Row,
   Col,
   Empty,
-  Switch,
   message,
-  Button
+  Button,
+  Space,
 } from "antd";
 import api from "../../api/axiosClient";
-  
+
 const AllTasks = () => {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedLevel, setSelectedLevel] = useState(null); // for filtering
 
-
-const handleDelete = async (taskId) => {
-  try {
-    await api.delete(`/admin/task/${taskId}`);
-    message.success("Task deleted successfully");
-    // optionally, refresh task list
-    fetchTasks();
-  } catch (err) {
-    message.error(err.response?.data?.message || "Failed to delete task");
-  }
-};
-
-
-
+  // Fetch tasks
   const fetchTasks = async () => {
     try {
       const res = await api.get("/admin/gettask");
@@ -46,63 +34,104 @@ const handleDelete = async (taskId) => {
     fetchTasks();
   }, []);
 
-  if (loading) {
-    return <Spin size="large" />;
-  }
+  // Delete task
+  const handleDelete = async (taskId) => {
+    try {
+      await api.delete(`/admin/task/${taskId}`);
+      message.success("Task deleted successfully");
+      fetchTasks();
+    } catch (err) {
+      message.error(err.response?.data?.message || "Failed to delete task");
+    }
+  };
 
-  if (!tasks.length) {
-    return <Empty description="No tasks created yet" />;
-  }
+  if (loading) return <Spin size="large" />;
+  if (!tasks.length) return <Empty description="No tasks created yet" />;
+
+  // Count tasks per level
+  const kindergartenCount = tasks.filter(t => t.level === "kindergarten").length;
+  const primaryCount = tasks.filter(t => t.level === "primary").length;
+
+  // Filter tasks by selected level
+  const filteredTasks = selectedLevel
+    ? tasks.filter((task) => task.level === selectedLevel)
+    : tasks;
 
   return (
-    <Row gutter={[16, 16]}>
+    <>
+      {/* Level Filter Buttons with Counts */}
+      <Space style={{ marginBottom: 20 }}>
+        <Button
+          type={selectedLevel === "kindergarten" ? "primary" : "default"}
+          onClick={() => setSelectedLevel("kindergarten")}
+        >
+          Kindergarten ({kindergartenCount})
+        </Button>
 
-      {tasks.map((task) => (
-        <Col xs={24} md={12} lg={8} key={task._id}>
-          <Card
-            title={task.title}
-            bordered
-            extra={
-              <Tag color={task.active ? "green" : "red"}>
-                {task.active ? "Active" : "Inactive"}
-              </Tag>
-            }
-          >
-            <p>
-              <strong>Date:</strong> {task.date}
-            </p>
+        <Button
+          type={selectedLevel === "primary" ? "primary" : "default"}
+          onClick={() => setSelectedLevel("primary")}
+        >
+          Primary ({primaryCount})
+        </Button>
 
-            {task.description && (
+        <Button onClick={() => setSelectedLevel(null)}>
+          All ({tasks.length})
+        </Button>
+      </Space>
+
+      <Row gutter={[16, 16]}>
+        {filteredTasks.map((task) => (
+          <Col xs={24} md={12} lg={8} key={task._id}>
+            <Card
+              title={task.title}
+              bordered
+              extra={
+                <Tag color={task.active ? "green" : "red"}>
+                  {task.active ? "Active" : "Inactive"}
+                </Tag>
+              }
+            >
               <p>
-                <strong>Description:</strong> {task.description}
+                <strong>Date:</strong> {task.date}
               </p>
-            )}
 
-            <p>
-              <strong>Categories:</strong>
-            </p>
+              {task.description && (
+                <p>
+                  <strong>Description:</strong> {task.description}
+                </p>
+              )}
 
-           {task.categories.map((cat) => (
-  <div key={cat._id}>
-    <Tag color="blue">{cat.name}</Tag>
-    {cat.levels.map((lvl) => (
-      <Tag color="purple">
-        {lvl.level} - Level {lvl.selectedLevel}
-      </Tag>
-    ))}
-  </div>
-))}
-<br></br>
-<Button type="primary" danger icon={<DeleteOutlined />}
-  onClick={() => handleDelete(task._id)} 
- >
-  Delete
-</Button>
+              <p>
+                <strong>Categories:</strong>
+              </p>
 
-          </Card>
-        </Col>
-      ))}
-    </Row>
+              {task.categories.map((cat) => (
+                <div key={cat._id}>
+                  <Tag color="blue">{cat.name}</Tag>
+                  {cat.levels.map((lvl, idx) => (
+                    <Tag color="purple" key={idx}>
+                      {lvl.level} - Level {lvl.selectedLevel}
+                    </Tag>
+                  ))}
+                </div>
+              ))}
+
+              <br />
+
+              <Button
+                type="primary"
+                danger
+                icon={<DeleteOutlined />}
+                onClick={() => handleDelete(task._id)}
+              >
+                Delete
+              </Button>
+            </Card>
+          </Col>
+        ))}
+      </Row>
+    </>
   );
 };
 

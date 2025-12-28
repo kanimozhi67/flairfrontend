@@ -53,13 +53,7 @@ const MyTask = () => {
                     key={`${cat.name}-${lvl.selectedLevel}`}
                     style={{ marginBottom: 12,textAlign:"center" ,}}
                   >
-                    {/* <p style={{textAlign:"center", background: "#ffbf00",
-                    color: "#4d3300",padding:10,fontSize:20,
-                      borderRadius:15,width:180}}>
-                     <strong>  {cat.name}<br></br>
-                    
-                     Level: {lvl.selectedLevel}</strong>
-                    </p> */}
+                  
 
                     {route ? (
                       <Link

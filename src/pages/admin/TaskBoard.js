@@ -1,13 +1,27 @@
 import { useEffect, useState } from "react";
-import { Card, Row, Col, Spin, Empty, Tag, Table, Button, Space } from "antd";
+import {
+  Card,
+  Row,
+  Col,
+  Spin,
+  Empty,
+  Tag,
+  Table,
+  Button,
+  Space,
+  Grid,
+} from "antd";
 import api from "../../api/axiosClient";
 
+const { useBreakpoint } = Grid;
+
 const TaskBoard = () => {
+  const screens = useBreakpoint();
+
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedLevel, setSelectedLevel] = useState(null);
 
-  // Fetch tasks from backend
   const fetchTaskBoard = async () => {
     try {
       const res = await api.get("/admin/taskboard");
@@ -24,18 +38,20 @@ const TaskBoard = () => {
   }, []);
 
   if (loading) return <Spin size="large" />;
-
   if (!tasks.length) return <Empty description="No tasks available" />;
 
-  // Filter tasks by selected level
   const filteredTasks = selectedLevel
     ? tasks.filter((task) => task.level === selectedLevel)
     : tasks;
 
   return (
     <>
-      {/* Level Filter Buttons */}
-      <Space style={{ marginBottom: 20 }}>
+      {/* Filters */}
+      <Space
+        wrap
+        size="middle"
+        style={{ marginBottom: 20 }}
+      >
         <Button
           type={selectedLevel === "kindergarten" ? "primary" : "default"}
           onClick={() => setSelectedLevel("kindergarten")}
@@ -55,15 +71,19 @@ const TaskBoard = () => {
 
       <Row gutter={[16, 16]}>
         {filteredTasks.map((task) => (
-          <Col xs={24} key={task.taskId}>
+          <Col
+            key={task.taskId}
+            xs={24}
+            md={24}
+            lg={20}
+            xl={16}
+            xxl={14}
+          >
             <Card
               title={task.title}
               style={{
-                width: "60%",
-                marginBottom: 16,
-                border: "1px solid #f0f0f0",
-                borderRadius: 6,
-                boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+                borderRadius: 8,
+                boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
               }}
               extra={
                 <Tag color={task.active ? "green" : "red"}>
@@ -71,26 +91,36 @@ const TaskBoard = () => {
                 </Tag>
               }
             >
-              <p>
-                <strong>Date:</strong> {task.date} &nbsp;
-                <strong>Level:</strong> {task.level}
-              </p>
+              <Row gutter={[8, 8]}>
+                <Col xs={24} sm={12}>
+                  <strong>Date:</strong> {task.date}
+                </Col>
+                <Col xs={24} sm={12}>
+                  <strong>Level:</strong> {task.level}
+                </Col>
+              </Row>
 
-              <p>
-                <strong>Categories:</strong> {task.categories.join(", ")}
+              <p style={{ marginTop: 8 }}>
+                <strong>Categories:</strong>{" "}
+                {task.categories.join(", ")}
               </p>
 
               <Table
                 dataSource={task.completedStudents}
-                columns={[
-                  { title: "Name", dataIndex: "username", key: "username" },
-                  { title: "Email", dataIndex: "email", key: "email" },
-                  { title: "Points", dataIndex: "totalPoints", key: "points" },
-                  { title: "Level", dataIndex: "level", key: "level" },
-                ]}
-                rowKey={(record) => record.email}
-                pagination={false}
+                rowKey="email"
+                size={screens.md ? "middle" : "small"}
+                pagination={{
+                  pageSize: screens.md ? 5 : 3,
+                  showSizeChanger: false,
+                }}
+                scroll={{ x: "max-content" }}
                 locale={{ emptyText: "No students completed this task yet" }}
+                columns={[
+                  { title: "Name", dataIndex: "username" },
+                  { title: "Email", dataIndex: "email" },
+                  { title: "Points", dataIndex: "totalPoints" },
+                  { title: "Level", dataIndex: "level" },
+                ]}
               />
             </Card>
           </Col>

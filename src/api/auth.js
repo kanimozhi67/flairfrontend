@@ -3,8 +3,14 @@ import axiosClient from "./axiosClient";
 export const signup = (data) =>
   axiosClient.post("/auth/signup", data);
 
+export const studentSignup = (data) =>
+  axiosClient.post("/auth/studentSignup", data);
+
 export const login = (data) =>
   axiosClient.post("/auth/login", data);
+
+export const studentlogin = (data) =>
+  axiosClient.post("/auth/studentlogin", data);
 
 export const logout = () =>
   axiosClient.post("/auth/logout");

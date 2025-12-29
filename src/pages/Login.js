@@ -63,67 +63,7 @@ const { Title } = Typography;
       </Button>
     </Form>
     </Card>
-    //  <div
-    //   style={{
-    //     display: "flex",
-    //     justifyContent: "center",
-    //     alignItems: "center",
-    //     minHeight: "100vh",
-    //     background: "#f0f2f5",
-    //     padding: 20,
-    //   }}
-    // >
-    //   <Card
-    //     style={{
-    //       width: 400,
-    //       borderRadius: 12,
-    //       boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
-    //     }}
-    //   >
-    //     <Title level={3} style={{ textAlign: "center", marginBottom: 30 }}>
-    //       Login
-    //     </Title>
-
-    //     <Form
-    //       onFinish={onFinish}
-    //       layout="vertical"
-    //       style={{ width: "100%" }}
-    //     >
-    //       <Form.Item
-    //         name="username"
-    //         label="Username"
-    //         rules={[{ required: true, message: "Please enter your username" }]}
-    //       >
-    //         <Input size="large" placeholder="Enter your username" />
-    //       </Form.Item>
-
-    //       <Form.Item
-    //         name="password"
-    //         label="Password"
-    //         rules={[{ required: true, message: "Please enter your password" }]}
-    //       >
-    //         <Input.Password size="large" placeholder="Enter your password" />
-    //       </Form.Item>
-
-    //       <Form.Item>
-    //         <Button
-    //           type="primary"
-    //           htmlType="submit"
-    //           block
-    //           size="large"
-    //           style={{
-    //             marginTop: 10,
-    //             borderRadius: 8,
-    //             background: "#1890ff",
-    //             borderColor: "#1890ff",
-    //           }}
-    //         >
-    //           Login
-    //         </Button>
-    //       </Form.Item>
-    //     </Form>
-    //   </Card>
-    // </div>
+  
   );
 };
 

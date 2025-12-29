@@ -10,20 +10,24 @@ import {
   message,
   Button,
   Space,
+  Grid,
 } from "antd";
 import api from "../../api/axiosClient";
 
+const { useBreakpoint } = Grid;
+
 const AllTasks = () => {
+  const screens = useBreakpoint();
+
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [selectedLevel, setSelectedLevel] = useState(null); // for filtering
+  const [selectedLevel, setSelectedLevel] = useState(null);
 
-  // Fetch tasks
   const fetchTasks = async () => {
     try {
       const res = await api.get("/admin/gettask");
       setTasks(res.data);
-    } catch (err) {
+    } catch {
       message.error("Failed to load tasks");
     } finally {
       setLoading(false);
@@ -34,7 +38,6 @@ const AllTasks = () => {
     fetchTasks();
   }, []);
 
-  // Delete task
   const handleDelete = async (taskId) => {
     try {
       await api.delete(`/admin/task/${taskId}`);
@@ -48,19 +51,21 @@ const AllTasks = () => {
   if (loading) return <Spin size="large" />;
   if (!tasks.length) return <Empty description="No tasks created yet" />;
 
-  // Count tasks per level
   const kindergartenCount = tasks.filter(t => t.level === "kindergarten").length;
   const primaryCount = tasks.filter(t => t.level === "primary").length;
 
-  // Filter tasks by selected level
   const filteredTasks = selectedLevel
     ? tasks.filter((task) => task.level === selectedLevel)
     : tasks;
 
   return (
     <>
-      {/* Level Filter Buttons with Counts */}
-      <Space style={{ marginBottom: 20 }}>
+      {/* Filters */}
+      <Space
+        wrap
+        size="middle"
+        style={{ marginBottom: 20 }}
+      >
         <Button
           type={selectedLevel === "kindergarten" ? "primary" : "default"}
           onClick={() => setSelectedLevel("kindergarten")}
@@ -82,15 +87,26 @@ const AllTasks = () => {
 
       <Row gutter={[16, 16]}>
         {filteredTasks.map((task) => (
-          <Col xs={24} md={12} lg={8} key={task._id}>
+          <Col
+            key={task._id}
+            xs={24}
+            sm={24}
+            md={12}
+            lg={8}
+            xl={6}
+          >
             <Card
               title={task.title}
-              bordered
               extra={
                 <Tag color={task.active ? "green" : "red"}>
                   {task.active ? "Active" : "Inactive"}
                 </Tag>
               }
+              style={{
+                height: "100%",
+                borderRadius: 8,
+                boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
+              }}
             >
               <p>
                 <strong>Date:</strong> {task.date}
@@ -102,30 +118,28 @@ const AllTasks = () => {
                 </p>
               )}
 
-              <p>
-                <strong>Categories:</strong>
-              </p>
+              <p><strong>Categories:</strong></p>
 
               {task.categories.map((cat) => (
-                <div key={cat._id}>
+                <div key={cat._id} style={{ marginBottom: 6 }}>
                   <Tag color="blue">{cat.name}</Tag>
                   {cat.levels.map((lvl, idx) => (
                     <Tag color="purple" key={idx}>
-                      {lvl.level} - Level {lvl.selectedLevel}
+                      {lvl.level} – Level {lvl.selectedLevel}
                     </Tag>
                   ))}
                 </div>
               ))}
 
-              <br />
-
               <Button
-                type="primary"
                 danger
+                type="primary"
+                block={!screens.md}
                 icon={<DeleteOutlined />}
+                style={{ marginTop: 12 }}
                 onClick={() => handleDelete(task._id)}
               >
-                Delete
+                Delete Task
               </Button>
             </Card>
           </Col>

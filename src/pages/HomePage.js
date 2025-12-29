@@ -7,9 +7,18 @@ import logo from "../images/fologo.png";
 import educate from "../images/educate.png";
 import Login from "./Login";
 import Signup from "./Signup";
+import SchoolLoginDropdown from "./SchoolLoginDropdown";
 import OnlinePage from "./OnlinePage";
 import HomeSection from "./HomeSection";
 import ContactFooter from "./ContactFooter";
+import {Dropdown } from "antd";
+import {
+  UserOutlined,
+  TeamOutlined,
+  SolutionOutlined,
+} from "@ant-design/icons";
+
+
 
 const { Option } = Select;
 
@@ -49,6 +58,10 @@ const HomePage = ({ user, setUser }) => {
   }, [setUser]);
 
   const floatingIcons = ["🧮", "🔢", "📐", "➗", "✏️", "🎲", "⭐", "🦄"];
+
+
+
+
 
   return (
     <div
@@ -131,7 +144,10 @@ const HomePage = ({ user, setUser }) => {
             ) : (
               <>
                 <Button  style={{fontSize:18} } onClick={() => { setIsLogin(false); setModalOpen(true); }}>Sign Up</Button>
-                <Button style={{fontSize:18} } type="primary" onClick={() => { setIsLogin(true); setModalOpen(true); }}>Login</Button>
+                <Button style={{fontSize:18} } type="primary"
+                 onClick={() => { setIsLogin(true); setModalOpen(true); }}>Login</Button>
+                <SchoolLoginDropdown setUser={setUser} />
+
               </>
             )}
           </div>

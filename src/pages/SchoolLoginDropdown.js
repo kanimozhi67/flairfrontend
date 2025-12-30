@@ -34,25 +34,42 @@ const SchoolLoginDropdown = ({ setUser }) => {
     </Space>
   );
 
-  return (
-    <>
-      <Popover content={popoverContent} trigger="click">
-        <Button type="primary">School Login</Button>
-      </Popover>
 
-      <Modal
-        open={studentModalOpen}
-        footer={null}
-        onCancel={() => setStudentModalOpen(false)}
-        centered
+return (
+  <>
+    <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
+      <Popover
+        content={popoverContent}
+        trigger="click"
+        placement="bottomRight"
+        getPopupContainer={(triggerNode) => triggerNode.parentElement}
       >
-        <SchoolLoginPage
-          setUser={setUser} // pass setUser down
-          onSuccess={() => setStudentModalOpen(false)}
-        />
-      </Modal>
-    </>
-  );
+        <Button
+          type="primary"
+         // shape="circle"
+          size="large"
+          style={{ background: "transparent" , border:"1px solid white" }}
+        >
+          🏫 School Login
+        </Button>
+      </Popover>
+    </div>
+    <Modal
+      open={studentModalOpen}
+      footer={null}
+      onCancel={() => setStudentModalOpen(false)}
+      centered
+    >
+      <SchoolLoginPage
+        setUser={setUser} 
+        onSuccess={() => setStudentModalOpen(false)}
+      />
+    </Modal>
+  </>
+);
+
+
+
 };
 
 export default SchoolLoginDropdown;

@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect, useRef } from "react";
-import { Button, Modal, Dropdown , Select} from "antd";
+import { Button, Modal, Dropdown , Select, Row} from "antd";
 import { useNavigate } from "react-router-dom";
 import { useWindowSize } from "react-use";
 import { UserOutlined, SolutionOutlined, TeamOutlined } from "@ant-design/icons";
@@ -38,6 +38,8 @@ const HomePage = ({ user, setUser }) => {
 
   const onlineRef = useRef(null);
   const contactRef = useRef(null);
+  const heroRef = useRef(null);
+
   useEffect(() => {
   const handler = (e) => {
     e.preventDefault();
@@ -63,24 +65,24 @@ const HomePage = ({ user, setUser }) => {
 
   /* ================= MOBILE MENU ================= */
   const mobileMenuItems = [
-    {
-      key: "login",
-      label: "Login",
-      icon: <UserOutlined />,
-      onClick: () => { setIsLogin(true); setModalOpen(true); },
-    },
+    // {
+    //   key: "login",
+    //   label: "Login",
+    //   icon: <UserOutlined />,
+    //   onClick: () => { setIsLogin(true); setModalOpen(true); },
+    // },
     {
       key: "signup",
       label: "Sign Up",
       icon: <SolutionOutlined />,
       onClick: () => { setIsLogin(false); setModalOpen(true); },
     },
-    {
-      key: "school",
-      label: "School Login",
-      icon: <TeamOutlined />,
-      onClick: () => { window.location.href = "/school-login"; },
-    },
+    // {
+    //   key: "school",
+    //   label: "School Login",
+    //   icon: <TeamOutlined />,
+    //   onClick: () => { window.location.href = "/school-login"; },
+    // },
     {
       key: "online",
       label: "Online Class",
@@ -146,6 +148,7 @@ const HomePage = ({ user, setUser }) => {
             justifyContent: "space-between",
             alignItems: "center",
             padding: "20px 50px",
+            paddingBottom:0,
             gap:  0,
             width: "100%",
             boxSizing: "border-box",
@@ -209,22 +212,13 @@ const HomePage = ({ user, setUser }) => {
       {/* ================= MOBILE HERO ================= */}
      {showMobileUI && (
         <div
-          // style={{
-          //   minHeight: "100vh",
-          //   backgroundImage: isMobile?`url(${mathBg})` : `url(${mathdBg})` ,
-          //   backgroundSize: "cover",
-          //   backgroundPosition: "center",
-          //   display: "flex",
-          //   flexDirection: "column",
-          //   justifyContent: "space-between",
-          //   padding: "20px",
-          //   position: "relative",
-            
-          // }}
+         ref={heroRef}
           style={{
   minHeight: "100vh",
-  width: "100vw",              // ✅ FORCE full width
-  marginLeft: "calc(-50vw + 50%)", // ✅ break out of parent
+  width: "100vw",      
+  left: "50%",
+transform: "translateX(-50%)",        // ✅ FORCE full width
+ // marginLeft: "calc(-50vw + 50%)", // ✅ break out of parent
   backgroundImage: isMobile?`url(${mathBg})` : `url(${mathdBg})` ,
   backgroundRepeat: "no-repeat",
   backgroundSize: "cover",     // ✅ spreads fully
@@ -234,17 +228,38 @@ const HomePage = ({ user, setUser }) => {
   justifyContent: "space-between",
   padding: "20px",
   position: "relative",
+  overflow: "visible", 
 }}
 
  
 
         >
           {/* Hamburger */}
-          <div style={{ position: "absolute", top: 16, right: 16, zIndex: 10 }}>
-            <Dropdown menu={{ items: mobileMenuItems }} placement="bottomRight" trigger={["click"]}>
-              <Button type="text" style={{ fontSize: 24, color: "#fff" }}>☰</Button>
-            </Dropdown>
-          </div>
+        {/* Hamburger + School Login */}
+<div
+  style={{
+    position: "absolute",
+    top: 16,
+    right: 16,
+    zIndex: 20,
+    display: "flex",       // ✅ flex row
+    gap: 12,               // space between buttons
+    alignItems: "center",  // vertically center
+  }}
+>
+  <SchoolLoginDropdown setUser={setUser} />  {/* Left */}
+  <Dropdown
+    menu={{ items: mobileMenuItems }}
+    placement="bottomRight"
+    trigger={["click"]}
+    getPopupContainer={() => heroRef.current}
+  >
+    <Button type="text" style={{ fontSize: 24, color: "#fff" }}>
+      ☰
+    </Button>
+  </Dropdown>
+</div>
+
 
           {/* Center Circle */}
           <div style={{ flex: 1, display: "flex", 
@@ -310,7 +325,11 @@ const HomePage = ({ user, setUser }) => {
           </div>
         </div>
       )}
-
+{/* {showMobileUI && (
+  <div style={{ position: "absolute", top: 16, left: 16, zIndex: 20 }}>
+    <SchoolLoginDropdown setUser={setUser} />
+  </div>
+)} */}
       {/* ================= DESKTOP / TABLET HERO ================= */}
     {!showMobileUI && (
            
@@ -325,6 +344,7 @@ const HomePage = ({ user, setUser }) => {
             padding: isMobile ? "40px 16px" : "80px 40px",
             maxWidth: "100%",
             position: "relative",
+            marginTop:-60
           }}
         >
           <img

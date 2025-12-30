@@ -26,6 +26,7 @@ const HomePage = ({ user, setUser }) => {
   window.navigator.standalone === true;
 
  const isMobile = width < 768;
+ const showMobileUI = isMobile || isStandalone;
 
   const isTablet = width >= 768 && width < 1024;
 
@@ -132,7 +133,7 @@ const HomePage = ({ user, setUser }) => {
         );
       })}
       {/* ================= HEADER ================= */}
-     { !isMobile &&  (
+    {!showMobileUI && (
     
  <header
           style={{
@@ -202,7 +203,7 @@ const HomePage = ({ user, setUser }) => {
       )}
 
       {/* ================= MOBILE HERO ================= */}
-      {isMobile &&  (
+     {showMobileUI && (
         <div
           style={{
             minHeight: "100vh",
@@ -214,7 +215,10 @@ const HomePage = ({ user, setUser }) => {
             justifyContent: "space-between",
             padding: "20px",
             position: "relative",
+            
           }}
+ 
+
         >
           {/* Hamburger */}
           <div style={{ position: "absolute", top: 16, right: 16, zIndex: 10 }}>
@@ -289,7 +293,7 @@ const HomePage = ({ user, setUser }) => {
       )}
 
       {/* ================= DESKTOP / TABLET HERO ================= */}
-     { !isMobile &&  (
+    {!showMobileUI && (
            
  
         <div

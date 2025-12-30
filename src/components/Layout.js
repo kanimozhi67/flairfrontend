@@ -493,7 +493,7 @@ const Layout = ({ user, setUser }) => {
           >
             <Avatar
               size={collapsed ? 90 : 120}
-              src={user?.avatar ? `http://localhost:5000${user.avatar}` || avat : avat}
+              src={user?.avatar ?  avat : avat}
               style={{ width: "30%" }}
             />
             <h2 style={{ fontSize: collapsed ? 16 : 22, marginBottom: 10 }}>

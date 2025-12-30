@@ -396,7 +396,21 @@ const Layout = ({ user, setUser }) => {
             boxShadow: "0 4px 20px rgba(0,0,0,0.15)",
           }}
         >
-          🎓 FLAIR OLYMPIAD ✨
+ <button
+  onClick={() => navigate("/")}
+  style={{
+    textDecoration: "none",
+    background: "transparent",
+    border: "none",
+    cursor: "pointer",
+    fontSize: 18,
+    fontWeight: 700,
+    color: "inherit",
+  }}
+>
+  🎓 FLAIR OLYMPIAD ✨
+</button>
+
         </Header>
       </motion.div>
 

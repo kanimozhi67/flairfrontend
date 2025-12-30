@@ -1,7 +1,7 @@
 /* Background */
 .create-task-container {
   min-height: 100vh;
-  padding: 24px;
+  /* padding: 24px; */
   display: flex;
   align-items: center;
   justify-content: center;

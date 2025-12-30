@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { Button, Modal, Dropdown , Select, Row} from "antd";
-import { useNavigate } from "react-router-dom";
+import { useNavigate ,Link, Navigate} from "react-router-dom";
 import { useWindowSize } from "react-use";
 import { UserOutlined, SolutionOutlined, TeamOutlined } from "@ant-design/icons";
 
@@ -181,8 +181,15 @@ const HomePage = ({ user, setUser }) => {
   </Button>
   {user ? (
     <>
-      <img src={user.avatar || avat} alt="avatar" style={{ width: 36, height: 36, borderRadius: "50%" }} />
-      <Button size="small" onClick={() => { localStorage.removeItem("token"); setUser(null); }}>Logout</Button>
+    <Button size="small" onClick={() => { localStorage.removeItem("token"); setUser(null); }}>Logout</Button>
+ 
+<Link to="/categories"> <strong style={{color:"white"}}>{user.username}</strong>
+  <img
+    src={user?.avatar ? `http://localhost:5000${user.avatar}` : avat}
+    style={{ maxWidth: 20, borderRadius: "50%", cursor: "pointer",border :"1px solid blue" }}
+    alt="avatar"
+  />
+</Link>
     </>
   ) : (
     <>
@@ -304,25 +311,55 @@ transform: "translateX(-50%)",        // ✅ FORCE full width
             </h1>
 <br></br>
           {/* CTA at Bottom */}
-          <div style={{ paddingBottom: 12 ,textAlign:"center"}}>
-            <Button
-              size="large"
-              style={{
-                width: "60%",
-                background: "#c40000",
-                border: "none",
-                height: 48,
-                borderRadius: 14,
-                fontSize: 16,
-                fontWeight: 700,
-                color: "#fff",
-                animation: "ctaBounce 3.2s infinite",
-              }}
-              onClick={() => { setIsLogin(true); setModalOpen(true); }}
-            >
-              LOGIN FOR MENTAL FEAST
-            </Button>
-          </div>
+   
+
+{!user ? (
+  /* USER NOT LOGGED IN */
+  <div style={{ paddingBottom: 12, textAlign: "center" }}>
+    <Button
+      size="large"
+      style={{
+        width: "60%",
+        background: "#c40000",
+        border: "none",
+        height: 48,
+        borderRadius: 14,
+        fontSize: 16,
+        fontWeight: 700,
+        color: "#fff",
+        animation: "ctaBounce 3.2s infinite",
+      }}
+      onClick={() => {
+        setIsLogin(true);
+        setModalOpen(true);
+      }}
+    >
+      LOGIN FOR MENTAL FEAST
+    </Button>
+  </div>
+) : (
+  /* USER LOGGED IN */
+  <div style={{ paddingBottom: 12, textAlign: "center" }}>
+    <Button
+      size="large"
+      style={{
+        width: "60%",
+        background: "#c40000",
+        border: "none",
+        height: 48,
+        borderRadius: 14,
+        fontSize: 16,
+        fontWeight: 700,
+        color: "#fff",
+        animation: "ctaBounce 3.2s infinite",
+      }}
+      onClick={() => navigate("/categories")}
+    >
+      {user.username}, Enter the Challenge 👉
+    </Button>
+  </div>
+)}
+
         </div>
       )}
 

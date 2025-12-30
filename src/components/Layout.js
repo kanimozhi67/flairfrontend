@@ -468,7 +468,7 @@ const Layout = ({ user, setUser }) => {
             </div>
             <Avatar
               size={windowWidth < 360 ? 32 : 40}
-              src={user?.avatar ? `http://localhost:5000${user.avatar}`  || avat : avat}
+              src={user?.avatar ? avat  : avat}
             />
           </div>
         </Header>

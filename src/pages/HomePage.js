@@ -185,7 +185,7 @@ const HomePage = ({ user, setUser }) => {
  
 <Link to="/categories"> <strong style={{color:"white"}}>{user.username}</strong>
   <img
-    src={user?.avatar ? `http://localhost:5000${user.avatar}` : avat}
+    src={user?.avatar ? avat : avat}
     style={{ maxWidth: 20, borderRadius: "50%", cursor: "pointer",border :"1px solid blue" }}
     alt="avatar"
   />

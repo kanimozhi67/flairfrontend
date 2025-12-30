@@ -531,12 +531,12 @@ const HomePage = ({ user, setUser }) => {
           <div style={{ flex: 1, display: "flex", 
           //  alignItems: "center", 
             justifyContent: "center",
-            marginTop:40
+            marginTop:80
             }}>
             <div
               style={{
-                width: 130,
-                height: 130,
+                width: 160,
+                height: 160,
                 borderRadius: "50%",
                 background: "#c40000",
                 display: "flex",
@@ -568,13 +568,13 @@ const HomePage = ({ user, setUser }) => {
               
               Minds
             </h1>
-
+<br></br>
           {/* CTA at Bottom */}
           <div style={{ paddingBottom: 12 ,textAlign:"center"}}>
             <Button
               size="large"
               style={{
-                width: "59%",
+                width: "60%",
                 background: "#c40000",
                 border: "none",
                 height: 48,

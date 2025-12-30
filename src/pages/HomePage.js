@@ -149,7 +149,7 @@ const HomePage = ({ user, setUser }) => {
             alignItems: "center",
             padding: "20px 50px",
             paddingBottom:0,
-            gap:  0,
+            gap:  0,zIndex: 1100, position: "relative",
             width: "100%",
             boxSizing: "border-box",
           }}
@@ -169,30 +169,31 @@ const HomePage = ({ user, setUser }) => {
             <img src={logo} alt="logo" style={{ width: 40, marginRight: 8 }} />
             FLAIR OLYMPIAD
           </div>
-          <div style={{ display: "flex", gap: 20, alignItems: "center" }}>
-            <Button type="text" style={{ color: "#fff", fontSize: 16 }} onClick={() => onlineRef.current?.scrollIntoView({ behavior: "smooth" })}>
-              Online Class
-            </Button>
-            <Button type="text" style={{ color: "#fff", fontSize: 16 }} onClick={() => contactRef.current?.scrollIntoView({ behavior: "smooth" })}>
-              Contact
-            </Button>
-            {user ? (
-              <>
-                <img src={user.avatar || avat}
-                 alt="avatar" 
-                 style={{ width: 36, height: 36, borderRadius: "50%" }} />
-                <Button size="small" 
-                onClick={() => { localStorage.removeItem("token"); 
-                setUser(null); }}>Logout</Button>
-              </>
-            ) : (
-              <>
-                <Button onClick={() => { setIsLogin(false); setModalOpen(true); }}>Sign Up</Button>
-                <Button type="primary" onClick={() => { setIsLogin(true); setModalOpen(true); }}>Login</Button>
-                <SchoolLoginDropdown setUser={setUser} />
-              </>
-            )}
-          </div>
+  
+    <div style={{ display: "flex", gap: 20, alignItems: "center" }}>
+  <Button type="text" style={{ color: "#fff", fontSize: 16 }} 
+    onClick={() => onlineRef.current?.scrollIntoView({ behavior: "smooth" })}>
+    Online Class
+  </Button>
+  <Button type="text" style={{ color: "#fff", fontSize: 16 }} 
+    onClick={() => contactRef.current?.scrollIntoView({ behavior: "smooth" })}>
+    Contact
+  </Button>
+  {user ? (
+    <>
+      <img src={user.avatar || avat} alt="avatar" style={{ width: 36, height: 36, borderRadius: "50%" }} />
+      <Button size="small" onClick={() => { localStorage.removeItem("token"); setUser(null); }}>Logout</Button>
+    </>
+  ) : (
+    <>
+      <Button onClick={() => { setIsLogin(false); setModalOpen(true); }}>Sign Up</Button>
+      <Button type="primary" onClick={() => { setIsLogin(true); setModalOpen(true); }}>Login</Button>
+      <SchoolLoginDropdown setUser={setUser} />
+    </>
+  )}
+</div>
+
+
           {!isStandalone && deferredPrompt && (
   <Button
     type="primary"
@@ -228,37 +229,35 @@ transform: "translateX(-50%)",        // ✅ FORCE full width
   justifyContent: "space-between",
   padding: "20px",
   position: "relative",
-  overflow: "visible", 
+ // overflow: "visible", 
 }}
 
- 
+   >
 
-        >
-          {/* Hamburger */}
-        {/* Hamburger + School Login */}
 <div
   style={{
     position: "absolute",
     top: 16,
     right: 16,
-    zIndex: 20,
-    display: "flex",       // ✅ flex row
-    gap: 12,               // space between buttons
-    alignItems: "center",  // vertically center
+    zIndex: 1100, // above hero and floating icons
+    display: "flex",
+    gap: 12,
+    alignItems: "center",
   }}
 >
-  <SchoolLoginDropdown setUser={setUser} />  {/* Left */}
+  <SchoolLoginDropdown setUser={setUser} /> {/* Left */}
   <Dropdown
     menu={{ items: mobileMenuItems }}
     placement="bottomRight"
     trigger={["click"]}
-    getPopupContainer={() => heroRef.current}
+    getPopupContainer={() => document.body} // ensures dropdown is above layers
   >
     <Button type="text" style={{ fontSize: 24, color: "#fff" }}>
       ☰
     </Button>
   </Dropdown>
 </div>
+
 
 
           {/* Center Circle */}
@@ -273,6 +272,7 @@ transform: "translateX(-50%)",        // ✅ FORCE full width
                 height: 160,
                 borderRadius: "50%",
                 background: "#c40000",
+              //  border:"1px solid yellow",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -325,11 +325,7 @@ transform: "translateX(-50%)",        // ✅ FORCE full width
           </div>
         </div>
       )}
-{/* {showMobileUI && (
-  <div style={{ position: "absolute", top: 16, left: 16, zIndex: 20 }}>
-    <SchoolLoginDropdown setUser={setUser} />
-  </div>
-)} */}
+
       {/* ================= DESKTOP / TABLET HERO ================= */}
     {!showMobileUI && (
            

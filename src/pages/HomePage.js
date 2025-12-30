@@ -9,6 +9,7 @@ import api from "../api/axiosClient";
 import logo from "../images/fologo.png";
 import educate from "../images/educate.png";
 import mathBg from "../images/math-bg.png";
+import mathdBg from "../images/mathd-bg.png";
 import avat from "../images/rabbitAvatar.png"
 import Login from "./Login";
 import Signup from "./Signup";
@@ -105,8 +106,11 @@ const HomePage = ({ user, setUser }) => {
         position: "relative",
         zIndex: 0,
         overflowX: "hidden", // prevent white gap on mobile
-        width: "100%",
+      //  width: "100%",
+       width: "100vw",
         boxSizing: "border-box",
+            margin: 0,
+    padding: 0,
         }}
          >
           
@@ -205,18 +209,33 @@ const HomePage = ({ user, setUser }) => {
       {/* ================= MOBILE HERO ================= */}
      {showMobileUI && (
         <div
-          style={{
-            minHeight: "100vh",
-            backgroundImage: `url(${mathBg})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "space-between",
-            padding: "20px",
-            position: "relative",
+          // style={{
+          //   minHeight: "100vh",
+          //   backgroundImage: isMobile?`url(${mathBg})` : `url(${mathdBg})` ,
+          //   backgroundSize: "cover",
+          //   backgroundPosition: "center",
+          //   display: "flex",
+          //   flexDirection: "column",
+          //   justifyContent: "space-between",
+          //   padding: "20px",
+          //   position: "relative",
             
-          }}
+          // }}
+          style={{
+  minHeight: "100vh",
+  width: "100vw",              // ✅ FORCE full width
+  marginLeft: "calc(-50vw + 50%)", // ✅ break out of parent
+  backgroundImage: isMobile?`url(${mathBg})` : `url(${mathdBg})` ,
+  backgroundRepeat: "no-repeat",
+  backgroundSize: "cover",     // ✅ spreads fully
+  backgroundPosition: "center",
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "space-between",
+  padding: "20px",
+  position: "relative",
+}}
+
  
 
         >

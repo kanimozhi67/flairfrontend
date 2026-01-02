@@ -315,11 +315,15 @@ transform: "translateX(-50%)",        // ✅ FORCE full width
 
 {!user ? (
   /* USER NOT LOGGED IN */
-  <div style={{ paddingBottom: 12, textAlign: "center" }}>
+  <div style={{ paddingBottom: 12,
+     textAlign: "center"
+
+
+   }}>
     <Button
       size="large"
       style={{
-        width: "60%",
+        width: "100%",
         background: "#c40000",
         border: "none",
         height: 48,
@@ -339,11 +343,13 @@ transform: "translateX(-50%)",        // ✅ FORCE full width
   </div>
 ) : (
   /* USER LOGGED IN */
-  <div style={{ paddingBottom: 12, textAlign: "center" }}>
+  <div style={{ paddingBottom: 12, 
+    textAlign: "center" 
+    }}>
     <Button
       size="large"
       style={{
-        width: "60%",
+        width: "100%",
         background: "#c40000",
         border: "none",
         height: 48,

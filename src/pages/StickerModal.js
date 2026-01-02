@@ -11,20 +11,24 @@ const StickerModal = ({ visible, stickers, onStickerClick, onCancel }) => {
   };
 
   return (
+
     <Modal
-      open={visible}
-      footer={null}
-      centered
-      onCancel={onCancel}
-      afterClose={() => setClicked(false)} // 🔄 reset when closed
-      width={400}
-      bodyStyle={{
-        backgroundColor: "#fff9c4",
-        borderRadius: 16,
-        textAlign: "center",
-        padding: "30px 20px",
-      }}
-    >
+  open={visible}
+  footer={null}
+  centered
+  onCancel={onCancel}
+  afterClose={() => setClicked(false)}
+  width={400}
+  className="custom-modal" // add a class for styling
+>
+  <div
+    style={{
+      backgroundColor: "#fff9c4",
+      borderRadius: 16,
+      textAlign: "center",
+      padding: "30px 20px",
+    }}
+  >
       <h2 style={{ marginBottom: 20, fontSize: 28 }}>
         🎉 Collect a Sticker!
       </h2>
@@ -54,6 +58,7 @@ const StickerModal = ({ visible, stickers, onStickerClick, onCancel }) => {
             {emoji}
           </span>
         ))}
+      </div>
       </div>
     </Modal>
   );

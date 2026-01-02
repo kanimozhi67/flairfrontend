@@ -343,7 +343,7 @@ const Layout = ({ user, setUser }) => {
     const fetchTodayScore = async () => {
       try {
         const res = await api.get("/quiz/progress/today");
-        setTodayScore(res.data?.points || 0);
+        setTodayScore(res.data?.todayPoints || 0);
       } catch {
         console.error("Failed to load today's progress");
       }

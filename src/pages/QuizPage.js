@@ -223,7 +223,7 @@ boxShadow: "0 12px 30px rgba(255, 160, 140, 0.45)",
     "Keep going—your story is unfolding beautifully! 🌙✨",
   ];
 
-  console.log(`level: ${level}`);
+ 
   const feedmsg = (score) => {
   let len = questions.length; // default
 
@@ -270,8 +270,8 @@ boxShadow: "0 12px 30px rgba(255, 160, 140, 0.45)",
       len = questions.length;
   }
 
-  console.log(`score: ${score} and len: ${len}`);
-  console.log(score === len);
+ 
+
 
   const feedback =
     score === len
@@ -303,7 +303,7 @@ boxShadow: "0 12px 30px rgba(255, 160, 140, 0.45)",
     try {
       let res;
       if (category === "sorting") {
-        console.log(`sorting category`);
+   
         if(level=== "primary"){
             if (selectedLevel === 1) res = await api.get("/quiz/sortp");
         else if (selectedLevel === 2) res = await api.get("/quiz/sortplevel2");
@@ -332,7 +332,7 @@ boxShadow: "0 12px 30px rgba(255, 160, 140, 0.45)",
         else res = await api.get("/quiz/divlevel3");
       
      }else if (category === "math") {
-        console.log(`add sub category`);
+     
         if (level === "primary") {
           if (selectedLevel === 1) res = await api.get("/quiz/mathp");
            if (selectedLevel === 2) res = await api.get("/quiz/mathp");
@@ -343,17 +343,17 @@ boxShadow: "0 12px 30px rgba(255, 160, 140, 0.45)",
           if (selectedLevel === 1) res = await api.get("/quiz/math");
           else if (selectedLevel === 2) res = await api.get("/quiz/math");
           else res = await api.get("/quiz/mathlevel3");
-          console.log(`addsub : ${res.data}`);
+        
         }
       } else if (category === "sudoku") {
-        console.log(`sudoku category`);
+      
         res = await api.get("/quiz/sudoku");
         setQuestions(res.data.questions || []);
         setPuzzleId(res.data.puzzleId); // Store puzzleId
         setAnswers({});
         //else if (selectedLevel === 2) res = await api.get("/quiz/sudokulevel2");
         // else res = await api.get("/quiz/sudokulevel3");
-        console.log(`sudoku : ${res.data}`);
+      
       } else {
         if (level === "primary") {
           res = await api.get(`/quiz/mathp?level=${selectedLevel}`);
@@ -440,7 +440,15 @@ const categoryName = searchParams.get("category");
 handleComplete(points);}
     if (!user || !user._id) return;
     try {
-      const res = await api.post("/quiz/progress/addpoints", { points });
+      console.log(`user: ${JSON.stringify(user)} , user._id: ${user._id}`)
+      // const res = await api.post("/quiz/progress/addpoints", { points });
+       const res = await api.post(
+      "/quiz/progress/addpoints",
+      {
+        studentId: user._id,   // 🔥 REQUIRED
+        points: points,
+      }
+    );
       const total = res?.data?.points ?? res?.data?.total ?? null;
 
       // Prefer React callback first, but still dispatch as fallback

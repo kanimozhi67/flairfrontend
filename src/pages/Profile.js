@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import api from "../api/axiosClient";
 import { useNavigate } from "react-router-dom";
 import { Button, Avatar, message, Card, Tag } from "antd";
+import avat from "../images/rabbitAvatar.png";
 
 const Profile = ({ setUser }) => {
   const navigate = useNavigate();
@@ -31,7 +32,8 @@ const Profile = ({ setUser }) => {
     const fetchTodayScore = async () => {
       try {
         const res = await api.get("/quiz/progress/today");
-        setTodayScore(res.data.points);
+          const today = res.data.todayPoints ?? 0;
+        setTodayScore(today);
       } catch (err) {
         console.error("Failed loading daily score");
       }
@@ -72,12 +74,13 @@ const Profile = ({ setUser }) => {
       >
         <Avatar
           size={140}
-          src={user.avatar ? `http://localhost:5000${user.avatar}` : "/default-avatar.png"}
+          src={user.avatar ? avat: avat}
           style={{ marginBottom: 20, border: "4px solid #ff9d2f" }}
         />
         <h1 style={{ fontSize: 28, fontWeight: "bold", marginBottom: 5 }}>{user.username}</h1>
         <p style={{ fontSize: 20, color: "#555", marginBottom: 15 }}>Email: {user.email}</p>
-        <p style={{ fontSize: 20, marginBottom: 15 }}>Today's Score: <span style={{ color: "#ff4e2fff", fontWeight: "bold" }}>{todayScore} ⭐</span></p>
+        <p style={{ fontSize: 20, marginBottom: 15 }}>
+        Today's Score: <span style={{ color: "#ff4e2fff", fontWeight: "bold" }}>{todayScore} ⭐</span></p>
       <p style={{ fontSize: 20, color: "#555", marginBottom: 15 }}>Level: {user.level}</p>
      
         <p style={{ fontSize: 20, marginBottom: 0 }}>

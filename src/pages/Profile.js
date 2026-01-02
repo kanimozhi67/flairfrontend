@@ -83,11 +83,10 @@ const Profile = ({ setUser }) => {
         Today's Score: <span style={{ color: "#ff4e2fff", fontWeight: "bold" }}>{todayScore} ⭐</span></p>
       <p style={{ fontSize: 20, color: "#555", marginBottom: 15 }}>Level: {user.level}</p>
      
-        <p style={{ fontSize: 20, marginBottom: 0 }}>
-          Your Stickers:{" "} <strong>{user.sticker.length }</strong>
-        
-          
-        </p>
+       <p style={{ fontSize: 20, marginBottom: 0 }}>
+  Your Sticker{user?.sticker?.length !== 1 ? "s" : ""}: <strong>{user?.sticker?.length || 0}</strong>
+</p>
+
 
         <Button 
           type="primary" 

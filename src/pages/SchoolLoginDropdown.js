@@ -5,11 +5,13 @@ import { SolutionOutlined, TeamOutlined, UserOutlined } from "@ant-design/icons"
 import { useNavigate } from "react-router-dom";
 import SchoolLoginPage from "./SchoolLoginPage";
 import SchoolTeacherLoginPage from "./SchoolTeacherLoginPage";
+import SchoolAdminLogin from "./SchoolAdminLogin";
 
 const SchoolLoginDropdown = ({ setUser }) => {
   const navigate = useNavigate();
   const [studentModalOpen, setStudentModalOpen] = useState(false);
   const [teacherModalOpen, setTeacherModalOpen] = useState(false);
+  const [schoolAdminModalOpen, setSchoolAdminModalOpen] = useState(false);
 
   const popoverContent = (
     <Space direction="vertical">
@@ -30,7 +32,7 @@ const SchoolLoginDropdown = ({ setUser }) => {
       <Button
         icon={<UserOutlined />}
         type="text"
-        onClick={() => navigate("/school-admin-login")}
+        onClick={() => setSchoolAdminModalOpen(true)}
       >
         School Admin Login
       </Button>
@@ -73,6 +75,14 @@ const SchoolLoginDropdown = ({ setUser }) => {
         centered
       >
         <SchoolTeacherLoginPage setUser={setUser} onSuccess={() => setTeacherModalOpen(false)} />
+      </Modal>
+      <Modal
+        open={schoolAdminModalOpen}
+        footer={null}
+        onCancel={() => setSchoolAdminModalOpen(false)}
+        centered
+      >
+        <SchoolAdminLogin setUser={setUser} onSuccess={() => setTeacherModalOpen(false)} />
       </Modal>
     </>
   );

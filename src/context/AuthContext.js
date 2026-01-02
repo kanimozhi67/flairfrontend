@@ -4,6 +4,7 @@ import {
   login as apiLogin,
   studentlogin as apiStudentLogin,
   teacherlogin as apiTeacherLogin,
+  schooladminlogin as apiSchoolAdminLogin,
   signup as apiSignup,
   studentSignup as apiStudentSignup,
   logout as apiLogout,
@@ -27,6 +28,11 @@ export const AuthProvider = ({ children }) => {
   };
   const teacherlogin = async (values) => {
     const res = await apiTeacherLogin(values);
+    if (!res.data.error) setLoggedIn(true);
+    return res.data;
+  };
+  const schooladminlogin = async (values) => {
+    const res = await apiSchoolAdminLogin(values);
     if (!res.data.error) setLoggedIn(true);
     return res.data;
   };

@@ -32,6 +32,14 @@ const SchoolBoard = () => {
   const [paginationState, setPaginationState] = useState({});
 
   const [newSchool, setNewSchool] = useState("");
+  const [schoolAdminModal, setSchoolAdminModal] = useState({
+    visible: false,
+    schoolId: null,
+    username: "",
+    email: "",
+    password: "",
+  
+  });
   const [teacherModal, setTeacherModal] = useState({
     visible: false,
     schoolId: null,
@@ -71,6 +79,9 @@ const SchoolBoard = () => {
   useEffect(() => {
     fetchSchools();
   }, []);
+const schoolAdmins = schools.flatMap((school) =>
+  school.teachers?.filter((t) => t.role === "SchoolAdmin") || []
+);
 
   const handleAddSchool = async () => {
     if (!newSchool) return;
@@ -131,7 +142,43 @@ const SchoolBoard = () => {
       message.error("Failed to delete teacher");
     }
   };
+  const handleAddSchoolAdmin = async () => {
+    const { schoolId, username, email,password } = schoolAdminModal;
+    if (!username || !email || !password) return;
 
+    try {
+      await api.post("/admin/schoolAdmin", {
+        schoolId,
+        username,
+        email,
+        password,
+       
+      });
+      message.success("School Admin added!");
+      setSchoolAdminModal({
+        visible: false,
+        schoolId: null,
+        username: "",
+        email: "",
+       password: "",
+      });
+      fetchSchools();
+    } catch {
+      message.error("Failed to add schoolAdmin");
+    }
+  };
+
+  
+  // const handleSaveSchoolAdmin = async (id) => {
+  //   try {
+  //     await api.put(`/admin/teacheredit/${id}`, editableTeacherValues[id]);
+  //     message.success("Teacher updated!");
+  //     setEditingTeacher(null);
+  //     fetchSchools();
+  //   } catch {
+  //     message.error("Failed to update teacher");
+  //   }
+  // };
   const handleSaveTeacher = async (id) => {
     try {
       await api.put(`/admin/teacheredit/${id}`, editableTeacherValues[id]);
@@ -257,15 +304,25 @@ const SchoolBoard = () => {
 
       <Row gutter={[16, 16]}>
         {filteredSchools.map((school) => {
-          const searchTeacher = teacherSearch[school._id] || "";
+        //  const searchTeacher = teacherSearch[school._id] || "";
           const searchStudent = studentSearch[school._id] || "";
 
-          const filteredTeachers = school.teachers.filter((t) =>
-            [t.username, t.email, t.className, t.section]
-              .join(" ")
-              .toLowerCase()
-              .includes(searchTeacher.toLowerCase())
-          );
+          // const filteredTeachers = school.teachers.filter((t) =>
+          //   [t.username, t.email, t.className, t.section]
+          //     .join(" ")
+          //     .toLowerCase()
+          //     .includes(searchTeacher.toLowerCase())
+          // );
+<Search
+  placeholder="Search teachers"
+  allowClear
+  onChange={(e) =>
+    setTeacherSearch((prev) => ({
+      ...prev,
+      [school._id]: e.target.value,
+    }))
+  }
+/>
 
           const filteredStudents =
             school.students?.filter((s) =>
@@ -274,7 +331,22 @@ const SchoolBoard = () => {
                 .toLowerCase()
                 .includes(searchStudent.toLowerCase())
             ) || [];
+const schoolAdminColumns = [
+  { title: "Username", dataIndex: "username" },
+  { title: "Email", dataIndex: "email" },
+  {
+    title: "Action",
+    render: (_, record) => (
+      <Button danger size="small">
+        Delete
+      </Button>
+    ),
+  },
+];
 
+
+           
+        
           const teacherColumns = [
             { title: "Username", dataIndex: "username" },
             { title: "Email", dataIndex: "email" },
@@ -305,20 +377,35 @@ const SchoolBoard = () => {
                   </Button>
                 }
               >
-                <Tabs defaultActiveKey="teachers">
-                  {/* Teachers Tab */}
-                  <TabPane tab="Teachers" key="teachers">
+                <Tabs defaultActiveKey="schooladmin">
+<TabPane tab="School Admin" key="schooladmin">
+
                     <Space style={{ marginBottom: 12 }}>
-                      <Search
-                        placeholder="Search teachers"
-                        allowClear
-                        onChange={(e) =>
-                          setTeacherSearch((prev) => ({
-                            ...prev,
-                            [school._id]: e.target.value,
-                          }))
+                     
+                      <Button
+                        type="dashed"
+                        onClick={() =>
+                          setSchoolAdminModal({
+                            ...schoolAdminModal,
+                            visible: true,
+                            schoolId: school._id,
+                          })
                         }
-                      />
+                      >
+                        Add School Admin
+                      </Button> </Space>
+                      
+<Table
+  dataSource={schoolAdmins}
+  columns={schoolAdminColumns}
+  rowKey="_id"
+  pagination={false}
+/>
+  </TabPane></Tabs>
+<Tabs defaultActiveKey="teachers">
+<TabPane tab="Teachers" key="teachers">
+
+                    <Space style={{ marginBottom: 12 }}>
                       <Button
                         type="dashed"
                         onClick={() =>
@@ -524,6 +611,37 @@ const SchoolBoard = () => {
         })}
       </Row>
 
+      {/* School Admin Modal */}
+      <Modal
+        title="Add School Admin"
+        open={schoolAdminModal.visible}
+        onOk={handleAddSchoolAdmin}
+        onCancel={() =>
+          setSchoolAdminModal({
+            visible: false,
+            schoolId: null,
+            username: "",
+            email: "",
+          password:""
+          })
+        }
+        width={screens.md ? 520 : "100%"}
+      >
+        {["username", "email", "password"].map((field) => (
+          <Input
+            key={field}
+            placeholder={field}
+            value={schoolAdminModal[field]}
+            onChange={(e) =>
+              setSchoolAdminModal({ ...schoolAdminModal, [field]: e.target.value })
+            }
+            style={{ marginBottom: 8 }}
+          />
+        ))}
+        <p style={{ fontSize: 12, color: "#888" }}>
+          Default password: <strong>sadmin123</strong>
+        </p>
+      </Modal>
       {/* Teacher Modal */}
       <Modal
         title="Add Teacher"

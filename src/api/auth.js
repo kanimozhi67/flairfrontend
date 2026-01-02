@@ -15,6 +15,9 @@ export const studentlogin = (data) =>
 export const teacherlogin = (data) =>
   axiosClient.post("/auth/teacherlogin", data);
 
+export const schooladminlogin = (data) =>
+  axiosClient.post("/auth/schooladminlogin", data);
+
 export const logout = () =>
   axiosClient.post("/auth/logout");
 

@@ -254,7 +254,8 @@ transform: "translateX(-50%)",        // ✅ FORCE full width
 >
   <SchoolLoginDropdown setUser={setUser} /> {/* Left */}
   {user &&
-  <Button size="small" onClick={() => { localStorage.removeItem("token"); setUser(null); }}>Logout</Button>}
+  <Button size="small" onClick={() => { localStorage.removeItem("token"); setUser(null); }}>Logout
+  </Button>}
   <Dropdown
     menu={{ items: mobileMenuItems }}
     placement="bottomRight"

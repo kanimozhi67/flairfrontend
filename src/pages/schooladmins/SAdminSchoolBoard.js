@@ -20,7 +20,7 @@ const { useBreakpoint } = Grid;
 const { Search } = Input;
 const { TabPane } = Tabs;
 
-const SchoolBoard = () => {
+const SAdminSchoolBoard = () => {
   const screens = useBreakpoint();
 
   const [schools, setSchools] = useState([]);
@@ -503,4 +503,4 @@ const SchoolBoard = () => {
   );
 };
 
-export default SchoolBoard;
+export default SAdminSchoolBoard;

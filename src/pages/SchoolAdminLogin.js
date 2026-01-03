@@ -4,12 +4,12 @@ import { Form, Input, Button, message, Card, Select } from "antd";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import api from "../api/axiosClient";
-//import { schooladminlogin } from "../api/axiosClient";
+//import { schooladminlogin } from "../api/auth" ;
 
 const { Option } = Select;
 
 const SchoolAdminLogin = ({ setUser, onSuccess }) => {
-  const { schooladminlogin } = useContext(AuthContext);
+ const { schooladminlogin } = useContext(AuthContext);
   const [loading, setLoading] = useState(false);
   const [schools, setSchools] = useState([]);
   const [schoolsLoading, setSchoolsLoading] = useState(true);
@@ -34,15 +34,16 @@ const SchoolAdminLogin = ({ setUser, onSuccess }) => {
     try {
       const res = await schooladminlogin(values);
 
-      if (!res?.token || !res?.teacher) {
+     if (!res?.token || !res?.admin) {
         message.error(res?.message || "Login failed");
         return;
       }
-
+localStorage.setItem("token", res.token);
       // Save token & teacher in localStorage
-      localStorage.setItem("token", res.token);
-      localStorage.setItem("user", JSON.stringify(res.teacher));
-      setUser(res.teacher);
+    localStorage.setItem("user", JSON.stringify(res.admin));
+setUser(res.admin);
+
+    
 
       message.success("Login successful");
       onSuccess?.();

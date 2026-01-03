@@ -18,6 +18,8 @@ import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminRoute from "./components/AdminRoute";
 import MyTask from "./pages/MyTask";
 import SchoolLoginPage from "./pages/SchoolLoginPage";
+import SchoolAdminDashboard from "./pages/schooladmins/SchoolAdminDashboard"
+import SchoolAdminRoute from "./components/SchoolAdminRoute";
 
 const App = () => {
   const [user, setUser] = useState(null);
@@ -160,6 +162,14 @@ useEffect(() => {
             <AdminRoute user={user}>
               <AdminDashboard />
             </AdminRoute>
+          }
+        />
+        <Route
+          path="/schooladmin"
+          element={
+            <SchoolAdminRoute user={user}>
+              <SchoolAdminDashboard />
+            </SchoolAdminRoute>
           }
         />
 

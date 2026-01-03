@@ -60,6 +60,7 @@ export const AuthProvider = ({ children }) => {
         loggedIn,
         login,
         studentlogin,
+        schooladminlogin,
         teacherlogin,
         signup,
         studentSignup,

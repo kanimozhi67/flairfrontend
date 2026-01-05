@@ -15,7 +15,10 @@ const { Title } = Typography;
       // Save token and userId in localStorage
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("userId", userData.id);
-
+localStorage.setItem("user", JSON.stringify({
+  ...userData,
+  model: "User"
+}));
       // Set user in app state
       if (setUser) setUser(userData);
 

@@ -14,6 +14,9 @@ const Profile = ({ setUser }) => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
+          const token = localStorage.getItem("token");
+
+    if (!token) return; // ⛔ stop auto-login
         const res = await api.get("/auth/getMe");
         setLocalUser(res.data);
         if (setUser) setUser(res.data);

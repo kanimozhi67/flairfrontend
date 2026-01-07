@@ -3,15 +3,15 @@ import { Layout, Menu, Button, Drawer, Grid } from "antd";
 import { PlusOutlined, MenuOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 
-import SAdminSchoolBoard from "./SAdminSchoolBoard";
-import SCreateTask from "./SCreateTask";
-import SAllTask from "./SAllTask";
-import STaskBoard from "./STaskBoard";
+import TSchoolBoard from "./TSchoolBoard";
+import TCreateTask from "./TCreateTask";
+import TAllTask from "./TAllTask";
+import TTaskBoard from "./TTaskBoard";
 
 const { Header, Sider, Content } = Layout;
 const { useBreakpoint } = Grid;
 
-const SchoolAdminDashboard = ({ user }) => {
+const TeacherDashboard = ({ user }) => {
   const navigate = useNavigate();
   const [active, setActive] = useState("create");
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -24,20 +24,20 @@ const SchoolAdminDashboard = ({ user }) => {
     { key: "create", icon: <PlusOutlined />, label: "Create Task" },
     { key: "tasks", icon: <span>📚</span>, label: "All Tasks" },
     { key: "board", icon: <span>📝</span>, label: "Task Board" },
-    { key: "schools", icon: <span>🏫</span>, label: "Schools" },
+    { key: "students", icon: <span>🏫</span>, label: "Students" },
     { key: "back", icon: <span>🔙</span>, label: "Back" },
   ];
 
   const renderContent = () => {
     switch (active) {
       case "create":
-        return <SCreateTask user={user} />;
+        return <TCreateTask user={user} />;
       case "tasks":
-        return <SAllTask  user={user} />;
+        return <TAllTask user={user}/>;
       case "board":
-        return <STaskBoard user={user} />;
-      case "schools":
-        return <SAdminSchoolBoard user={user} />;
+        return <TTaskBoard user={user}/>;
+      case "students":
+        return <TSchoolBoard user={user} />;
       default:
         return null;
     }
@@ -134,4 +134,4 @@ const SchoolAdminDashboard = ({ user }) => {
   );
 };
 
-export default SchoolAdminDashboard;
+export default TeacherDashboard;

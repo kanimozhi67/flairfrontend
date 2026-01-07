@@ -20,6 +20,7 @@ import MyTask from "./pages/MyTask";
 import SchoolLoginPage from "./pages/SchoolLoginPage";
 import SchoolAdminDashboard from "./pages/schooladmins/SchoolAdminDashboard"
 import SchoolAdminRoute from "./components/SchoolAdminRoute";
+import TeacherDashboard from "./pages/teacher/TeacherDashboard";
 
 const App = () => {
   const [user, setUser] = useState(null);
@@ -60,9 +61,13 @@ const App = () => {
       try {
         const res = await api.get("/auth/getMe");
         setUser(res.data);
+              localStorage.setItem("user", JSON.stringify(res.data));
+      
       } catch (err) {
         console.error(err);
         setUser(null);
+         localStorage.removeItem("token");
+      localStorage.removeItem("user");
       } finally {
         setLoadingUser(false);
       }
@@ -71,12 +76,12 @@ const App = () => {
     fetchTasks();
   }, []);
 
-useEffect(() => {
-  const savedUser = localStorage.getItem("user");
-  if (savedUser) {
-    setUser(JSON.parse(savedUser));
-  }
-}, []);
+// useEffect(() => {
+//   const savedUser = localStorage.getItem("user");
+//   if (savedUser) {
+//     setUser(JSON.parse(savedUser));
+//   }
+// }, []);
 
 
   if (loadingUser) return <div>Loading user...</div>;
@@ -153,6 +158,7 @@ useEffect(() => {
               </PrivateRoute>
             }
           />
+       
         </Route>
 
         {/* Admin routes */}
@@ -164,11 +170,19 @@ useEffect(() => {
             </AdminRoute>
           }
         />
+            <Route
+          path="/teacher"
+          element={
+              <PrivateRoute user={user}>
+              <TeacherDashboard user={user} />
+         </PrivateRoute>
+          }
+        />
         <Route
           path="/schooladmin"
           element={
             <SchoolAdminRoute user={user}>
-              <SchoolAdminDashboard />
+              <SchoolAdminDashboard user={user} />
             </SchoolAdminRoute>
           }
         />

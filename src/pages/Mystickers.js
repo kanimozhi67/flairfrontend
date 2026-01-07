@@ -12,6 +12,9 @@ const Mystickers = ({ setUser }) => {
   // Fetch user info
   useEffect(() => {
     const fetchUser = async () => {
+        const token = localStorage.getItem("token");
+
+    if (!token) return; // ⛔ stop auto-login
       try {
         const res = await api.get("/auth/getMe");
         setLocalUser(res.data);

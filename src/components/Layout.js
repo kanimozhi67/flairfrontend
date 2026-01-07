@@ -25,6 +25,8 @@ const Layout = ({ user, setUser }) => {
       ? [{ key: "admin", label: "🛠 Admin Panel", path: "/admin" }]
       : user?.role === "SchoolAdmin" 
       ? [{ key: "schooladmin", label: "🛠 School Admin Panel", path: "/schooladmin" }]
+      : user?.role === "Teacher" 
+      ? [{ key: "teacher", label: "🛠 Teacher Panel", path: "/teacher" }]
        :[{ key: "task", label: "🎯 Today's Task", path: "/task" },
          { key: "mystickers", label: "👝 My Stickers", path: "/mystickers" },
       ]),
@@ -63,6 +65,9 @@ const Layout = ({ user, setUser }) => {
 
   useEffect(() => {
     const restoreUser = async () => {
+        const token = localStorage.getItem("token");
+
+    if (!token) return; // ⛔ stop auto-login
       try {
         const res = await api.get("/auth/getMe");
         setUser(res.data);
@@ -124,19 +129,24 @@ const Layout = ({ user, setUser }) => {
         <Header
           style={{
             display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
+           justifyContent: "center",
+           alignItems: "center",
             padding: "10px 16px",
             background: "linear-gradient(135deg, #9B59B6, #6D3FAF)",
             color: "#fff",
             fontWeight: 900,
             fontSize: windowWidth < 360 ? 18 : 24,
             boxShadow: "0 4px 20px rgba(0,0,0,0.15)",
+            position: "relative", // allows absolute positioning for the back button
           }}
         >
+          <div  style={{ display: "flex",
+           justifyContent: "center",
+            alignItems: "center" }}>
  <button
   onClick={() => navigate("/")}
   style={{
+    
     textDecoration: "none",
     background: "transparent",
     border: "none",
@@ -147,8 +157,25 @@ const Layout = ({ user, setUser }) => {
   }}
 >
   🎓 FLAIR OLYMPIAD ✨
+</button></div>
+<div  style={{ display: "flex", justifyContent: "flex-end", alignItems: "center" }}>
+ <button
+  onClick={() => navigate("/")}
+  style={{
+     position: "absolute",
+      right: 1, // distance from right edge
+    textDecoration: "none",
+   // background: "transparent",
+    border: "none",
+    cursor: "pointer",
+    fontSize: 24,
+    fontWeight: 700,
+    color: "inherit",
+  }}
+>
+  🔙
 </button>
-
+</div>
         </Header>
       </motion.div>
 

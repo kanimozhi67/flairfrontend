@@ -69,6 +69,7 @@ const SchoolBoard = () => {
     try {
       const res = await api.get("/admin/schools");
       setSchools(res.data);
+      
     } catch {
       message.error("Failed to fetch schools");
     } finally {
@@ -229,7 +230,8 @@ const SchoolBoard = () => {
   if (!schools.length) return <Empty description="No schools found" />;
 
   const filteredSchools = schools.filter((school) =>
-    school.name.toLowerCase().includes(schoolSearch.toLowerCase())
+   school.name.toLowerCase().includes(schoolSearch.toLowerCase())
+  
   );
 
   return (
@@ -313,9 +315,320 @@ const SchoolBoard = () => {
                     </Space>
                     <Table dataSource={filteredAdmins} columns={schoolAdminColumns} rowKey="_id" pagination={false} />
                   </TabPane>
+{/* Teachers Tab */}
+<TabPane tab="Teachers" key="teachers">
+  <Space style={{ marginBottom: 12 }}>
+    <Search
+      placeholder="Search teachers"
+      allowClear
+      onChange={(e) =>
+        setTeacherSearch((prev) => ({ ...prev, [school._id]: e.target.value }))
+      }
+    />
+    <Button
+      type="dashed"
+      onClick={() => setTeacherModal({ ...teacherModal, visible: true, schoolId: school._id })}
+    >
+      Add Teacher
+    </Button>
+    <Button
+      type="default"
+      onClick={() => exportCSV(filteredTeachers, teacherColumns, `${school.name}_teachers.csv`)}
+    >
+      Download CSV
+    </Button>
+  </Space>
+
+  <Table
+    dataSource={filteredTeachers}
+    rowKey="_id"
+    size={screens.md ? "middle" : "small"}
+    scroll={{ x: "max-content" }}
+    pagination={{
+      current: paginationState[school._id]?.teacherCurrent || 1,
+      pageSize: paginationState[school._id]?.teacherPageSize || 5,
+      showSizeChanger: true,
+      pageSizeOptions: ["5", "10", "20"],
+      onChange: (current, pageSize) =>
+        setPaginationState((prev) => ({
+          ...prev,
+          [school._id]: { ...prev[school._id], teacherCurrent: current, teacherPageSize: pageSize },
+        })),
+    }}
+    columns={[
+      {
+        title: "Username",
+        dataIndex: "username",
+        render: (_, record) =>
+          editingTeacher === record._id ? (
+            <Input
+              value={editableTeacherValues[record._id]?.username}
+              onChange={(e) =>
+                setEditableTeacherValues((prev) => ({
+                  ...prev,
+                  [record._id]: { ...prev[record._id], username: e.target.value },
+                }))
+              }
+            />
+          ) : (
+            record.username
+          ),
+      },
+      {
+        title: "Email",
+        dataIndex: "email",
+        render: (_, record) =>
+          editingTeacher === record._id ? (
+            <Input
+              value={editableTeacherValues[record._id]?.email}
+              onChange={(e) =>
+                setEditableTeacherValues((prev) => ({
+                  ...prev,
+                  [record._id]: { ...prev[record._id], email: e.target.value },
+                }))
+              }
+            />
+          ) : (
+            record.email
+          ),
+      },
+      {
+        title: "Class",
+        dataIndex: "className",
+        render: (_, record) =>
+          editingTeacher === record._id ? (
+            <Input
+              value={editableTeacherValues[record._id]?.className}
+              onChange={(e) =>
+                setEditableTeacherValues((prev) => ({
+                  ...prev,
+                  [record._id]: { ...prev[record._id], className: e.target.value },
+                }))
+              }
+            />
+          ) : (
+            record.className
+          ),
+      },
+      {
+        title: "Section",
+        dataIndex: "section",
+        render: (_, record) =>
+          editingTeacher === record._id ? (
+            <Input
+              value={editableTeacherValues[record._id]?.section}
+              onChange={(e) =>
+                setEditableTeacherValues((prev) => ({
+                  ...prev,
+                  [record._id]: { ...prev[record._id], section: e.target.value },
+                }))
+              }
+            />
+          ) : (
+            record.section
+          ),
+      },
+      {
+        title: "Action",
+        render: (_, record) =>
+          editingTeacher === record._id ? (
+            <Space>
+              <Button size="small" type="primary" onClick={() => handleSaveTeacher(record._id)}>
+                Save
+              </Button>
+              <Button size="small" onClick={() => setEditingTeacher(null)}>
+                Cancel
+              </Button>
+            </Space>
+          ) : (
+            <Space>
+              <Button
+                size="small"
+                type="link"
+                onClick={() => {
+                  setEditingTeacher(record._id);
+                  setEditableTeacherValues((prev) => ({ ...prev, [record._id]: { ...record } }));
+                }}
+              >
+                Edit
+              </Button>
+              <Button size="small" danger onClick={() => handleDeleteTeacher(record._id)}>
+                Delete
+              </Button>
+            </Space>
+          ),
+      },
+    ]}
+  />
+</TabPane>
+
+{/* Students Tab */}
+<TabPane tab="Students" key="students">
+  <Space style={{ marginBottom: 12 }}>
+    <Search
+      placeholder="Search students"
+      allowClear
+      onChange={(e) =>
+        setStudentSearch((prev) => ({ ...prev, [school._id]: e.target.value }))
+      }
+    />
+    <Button
+      type="dashed"
+      onClick={() => setStudentModal({ ...studentModal, visible: true, schoolId: school._id })}
+    >
+      Add Student
+    </Button>
+    <Button
+      type="default"
+      onClick={() => exportCSV(filteredStudents, studentColumns, `${school.name}_students.csv`)}
+    >
+      Download CSV
+    </Button>
+  </Space>
+
+  <Table
+    dataSource={filteredStudents}
+    rowKey="_id"
+    size={screens.md ? "middle" : "small"}
+    scroll={{ x: "max-content" }}
+    pagination={{
+      current: paginationState[school._id]?.studentCurrent || 1,
+      pageSize: paginationState[school._id]?.studentPageSize || 5,
+      showSizeChanger: true,
+      pageSizeOptions: ["5", "10", "20"],
+      onChange: (current, pageSize) =>
+        setPaginationState((prev) => ({
+          ...prev,
+          [school._id]: { ...prev[school._id], studentCurrent: current, studentPageSize: pageSize },
+        })),
+    }}
+    columns={[
+      {
+        title: "Username",
+        dataIndex: "username",
+        render: (_, record) =>
+          editingStudent === record._id ? (
+            <Input
+              value={editableStudentValues[record._id]?.username}
+              onChange={(e) =>
+                setEditableStudentValues((prev) => ({
+                  ...prev,
+                  [record._id]: { ...prev[record._id], username: e.target.value },
+                }))
+              }
+            />
+          ) : (
+            record.username
+          ),
+      },
+      {
+        title: "Roll No",
+        dataIndex: "rollNo",
+        render: (_, record) =>
+          editingStudent === record._id ? (
+            <Input
+              value={editableStudentValues[record._id]?.rollNo}
+              onChange={(e) =>
+                setEditableStudentValues((prev) => ({
+                  ...prev,
+                  [record._id]: { ...prev[record._id], rollNo: e.target.value },
+                }))
+              }
+            />
+          ) : (
+            record.rollNo
+          ),
+      },
+      {
+        title: "Class",
+        dataIndex: "className",
+        render: (_, record) =>
+          editingStudent === record._id ? (
+            <Input
+              value={editableStudentValues[record._id]?.className}
+              onChange={(e) =>
+                setEditableStudentValues((prev) => ({
+                  ...prev,
+                  [record._id]: { ...prev[record._id], className: e.target.value },
+                }))
+              }
+            />
+          ) : (
+            record.className
+          ),
+      },
+      {
+        title: "Section",
+        dataIndex: "section",
+        render: (_, record) =>
+          editingStudent === record._id ? (
+            <Input
+              value={editableStudentValues[record._id]?.section}
+              onChange={(e) =>
+                setEditableStudentValues((prev) => ({
+                  ...prev,
+                  [record._id]: { ...prev[record._id], section: e.target.value },
+                }))
+              }
+            />
+          ) : (
+            record.section
+          ),
+      },
+      {
+        title: "Level",
+        dataIndex: "level",
+        render: (_, record) =>
+          editingStudent === record._id ? (
+            <Input
+              value={editableStudentValues[record._id]?.level}
+              onChange={(e) =>
+                setEditableStudentValues((prev) => ({
+                  ...prev,
+                  [record._id]: { ...prev[record._id], level: e.target.value },
+                }))
+              }
+            />
+          ) : (
+            record.level
+          ),
+      },
+      {
+        title: "Action",
+        render: (_, record) =>
+          editingStudent === record._id ? (
+            <Space>
+              <Button size="small" type="primary" onClick={() => handleSaveStudent(record._id)}>
+                Save
+              </Button>
+              <Button size="small" onClick={() => setEditingStudent(null)}>
+                Cancel
+              </Button>
+            </Space>
+          ) : (
+            <Space>
+              <Button
+                size="small"
+                type="link"
+                onClick={() => {
+                  setEditingStudent(record._id);
+                  setEditableStudentValues((prev) => ({ ...prev, [record._id]: { ...record } }));
+                }}
+              >
+                Edit
+              </Button>
+              <Button size="small" danger onClick={() => handleDeleteStudent(record._id)}>
+                Delete
+              </Button>
+            </Space>
+          ),
+      },
+    ]}
+  />
+</TabPane>
 
                   {/* Teachers Tab */}
-                  <TabPane tab="Teachers" key="teachers">
+                  {/* <TabPane tab="Teachers" key="teachers">
                     <Space style={{ marginBottom: 12 }}>
                       <Search placeholder="Search teachers" allowClear onChange={(e) =>
                         setTeacherSearch((prev) => ({ ...prev, [school._id]: e.target.value }))
@@ -334,7 +647,8 @@ const SchoolBoard = () => {
                         showSizeChanger: true,
                         pageSizeOptions: ["5", "10", "20"],
                         onChange: (current, pageSize) =>
-                          setPaginationState((prev) => ({ ...prev, [school._id]: { ...prev[school._id], teacherCurrent: current, teacherPageSize: pageSize } })),
+setPaginationState((prev) => ({ ...prev, [school._id]: { ...prev[school._id],
+   teacherCurrent: current, teacherPageSize: pageSize } })),
                       }}
                       columns={[
                         ...teacherColumns,
@@ -343,22 +657,37 @@ const SchoolBoard = () => {
                           render: (_, record) =>
                             editingTeacher === record._id ? (
                               <Space>
-                                <Button size="small" type="primary" onClick={() => handleSaveTeacher(record._id)}>Save</Button>
-                                <Button size="small" onClick={() => setEditingTeacher(null)}>Cancel</Button>
+                                <Button size="small" type="primary"
+                                 onClick={() => handleSaveTeacher(record._id)}>Save</Button>
+                                <Button size="small"
+                                 onClick={() => setEditingTeacher(null)}>Cancel</Button>
                               </Space>
                             ) : (
                               <Space>
-                                <Button size="small" type="link" onClick={() => setEditingTeacher(record._id)}>Edit</Button>
-                                <Button size="small" danger onClick={() => handleDeleteTeacher(record._id)}>Delete</Button>
+                                <Button size="small" type="link" 
+                                onClick={() => 
+                                {
+                                  // When "Edit" is clicked
+setEditingTeacher(record._id);
+setEditableTeacherValues({
+  ...editableTeacherValues,
+  [record._id]: { ...record } // start with existing values
+});
+
+                               // setEditingTeacher(record._id)
+                                }
+                                }>Edit</Button>
+                                <Button size="small" danger 
+                                onClick={() => handleDeleteTeacher(record._id)}>Delete</Button>
                               </Space>
                             ),
                         },
                       ]}
                     />
-                  </TabPane>
+                  </TabPane> */}
 
                   {/* Students Tab */}
-                  <TabPane tab="Students" key="students">
+                  {/* <TabPane tab="Students" key="students">
                     <Space style={{ marginBottom: 12 }}>
                       <Search placeholder="Search students" allowClear onChange={(e) =>
                         setStudentSearch((prev) => ({ ...prev, [school._id]: e.target.value }))
@@ -386,19 +715,22 @@ const SchoolBoard = () => {
                           render: (_, record) =>
                             editingStudent === record._id ? (
                               <Space>
-                                <Button size="small" type="primary" onClick={() => handleSaveStudent(record._id)}>Save</Button>
+                                <Button size="small" type="primary"
+                                 onClick={() => handleSaveStudent(record._id)}>Save</Button>
                                 <Button size="small" onClick={() => setEditingStudent(null)}>Cancel</Button>
                               </Space>
                             ) : (
                               <Space>
-                                <Button size="small" type="link" onClick={() => setEditingStudent(record._id)}>Edit</Button>
+                                <Button size="small" type="link" 
+                                
+                                onClick={() => setEditingStudent(record._id)}>Edit</Button>
                                 <Button size="small" danger onClick={() => handleDeleteStudent(record._id)}>Delete</Button>
                               </Space>
                             ),
                         },
                       ]}
                     />
-                  </TabPane>
+                  </TabPane> */}
                 </Tabs>
               </Card>
             </Col>

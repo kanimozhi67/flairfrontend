@@ -9,6 +9,9 @@ const DashboardWrapper = () => {
 
   useEffect(() => {
     const fetchUser = async () => {
+        const token = localStorage.getItem("token");
+
+    if (!token) return; // ⛔ stop auto-login
       setLoadingUser(true);
       try {
         const res = await api.get("/auth/getMe"); // fetch logged-in user

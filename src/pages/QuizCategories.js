@@ -35,6 +35,9 @@ const QuizCategories = ({ setUser }) => {
 
   useEffect(() => {
     const fetchUser = async () => {
+        const token = localStorage.getItem("token");
+
+   // if (!token) return; // ⛔ stop auto-login
       try {
         const res = await api.get("/auth/getMe");
         setUser(res.data);

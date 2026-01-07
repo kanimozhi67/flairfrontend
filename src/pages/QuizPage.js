@@ -381,6 +381,9 @@ boxShadow: "0 12px 30px rgba(255, 160, 140, 0.45)",
   // Ensure user loaded
   useEffect(() => {
     const fetchUser = async () => {
+    //     const token = localStorage.getItem("token");
+
+    // if (!token) return; // ⛔ stop auto-login
       if (user) return;
       try {
         const res = await api.get("/auth/getMe");
@@ -417,7 +420,9 @@ const categoryName = searchParams.get("category");
     return;
   }
     try {
-      await api.post("/users/completetask", {
+      console.log("user role in quizpage",user.role)
+    if(user.role=== "Student"){
+        await api.post("/users/completetaskstudent", {
         userTaskId,
         categoryName,
         selectedLevel,
@@ -425,6 +430,16 @@ const categoryName = searchParams.get("category");
         points: score,
       });
  message.success("🎉 Task level completed!");
+    }else{
+        await api.post("/users/completetask", {
+        userTaskId,
+        categoryName,
+        selectedLevel,
+        score,   // calculate real score here
+        points: score,
+      });
+ message.success("🎉 Task level completed!");
+    }
      
       //navigate("/my-tasks"); // go back to task list
     } catch (err) {
@@ -436,8 +451,10 @@ const categoryName = searchParams.get("category");
 
   // Helper: send points to backend and update UI
   const addPointsToBackend = async (points) => {
+
     if(points!==0){
 handleComplete(points);}
+
     if (!user || !user._id) return;
     try {
       console.log(`user: ${JSON.stringify(user)} , user._id: ${user._id}`)

@@ -14,7 +14,7 @@ import { Navigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 
 const PrivateRoute = ({ children }) => {
-  const { user } = useContext(AuthContext);
+ const { user } = useContext(AuthContext);
 
   // Fallback to localStorage for first render
   const currentUser = user || JSON.parse(localStorage.getItem("user"));

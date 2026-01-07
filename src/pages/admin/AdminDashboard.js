@@ -15,13 +15,16 @@ import CreateTask from "./CreateTask";
 import AllTasks from "./AllTasks";
 import TaskBoard from "./TaskBoard";
 import SchoolBoard from "./SchoolBoard";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const { Header, Sider, Content } = Layout;
 const { useBreakpoint } = Grid;
 
 const AdminDashboard = () => {
+  const navigate= useNavigate();
   const [active, setActive] = useState("create");
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [collapsed, setCollapsed] = useState(false);
   const screens = useBreakpoint();
 
   const isMobile = !screens.md;
@@ -29,9 +32,10 @@ const AdminDashboard = () => {
 
   const menuItems = [
     { key: "create", icon: <PlusOutlined />, label: "Create Task" },
-    { key: "tasks", icon: <UnorderedListOutlined />, label: "All Tasks" },
-    { key: "board", icon: <UnorderedListOutlined />, label: "Task Board" },
-    { key: "schools", icon: <UnorderedListOutlined />, label: "Schools" },
+    { key: "tasks", icon: "📚  ", label: "All Tasks" },
+    { key: "board", icon: "📝 ", label: "Task Board" },
+    { key: "schools", icon: "🏫 ", label: "Schools" },
+    { key: "back", icon: "🔙 ", label: "back" },
   ];
 
   const renderContent = () => {
@@ -44,6 +48,8 @@ const AdminDashboard = () => {
         return <TaskBoard />;
       case "schools":
         return <SchoolBoard />;
+      case "back":
+        return navigate("/categories");
       default:
         return null;
     }
@@ -55,7 +61,9 @@ const AdminDashboard = () => {
       {!isMobile && (
         <Sider
           collapsible
-          collapsed={isTablet}
+           collapsed={collapsed}
+  onCollapse={(value) => setCollapsed(value)}
+          // collapsed={isTablet}
           width={220}
           style={{ position: "sticky", top: 0, height: "100vh" }}
         >
@@ -112,13 +120,15 @@ const AdminDashboard = () => {
       </Layout>
 
       {/* Mobile Drawer */}
-      <Drawer
-        title="Admin Panel"
-        placement="left"
-        open={drawerOpen}
-        onClose={() => setDrawerOpen(false)}
-        bodyStyle={{ padding: 0 }}
-      >
+    <Drawer
+  title="Admin Panel"
+  placement="left"
+  open={drawerOpen}
+  onClose={() => setDrawerOpen(false)}
+  style={{ width: 300 }} // sets drawer width
+  className="custom-drawer"
+>
+  <div style={{ padding: 0 }}> 
         <Menu
           mode="inline"
           selectedKeys={[active]}
@@ -128,6 +138,7 @@ const AdminDashboard = () => {
           }}
           items={menuItems}
         />
+        </div>
       </Drawer>
     </Layout>
   );

@@ -15,13 +15,21 @@ export default function Fraction({ level, selectedLevel, user, addPointsToBacken
     setAnswers([]);
     setSelected("");
     setStep(0);
- const endpoint =
-     
-        selectedLevel === 1
+
+    const endpoint =
+      level==="primary" ? (
+          selectedLevel === 1
           ? "/quiz/fraction"
           : selectedLevel === 2
           ? "/quiz/fraction2"
-          : "quiz//quiz/fraction3"
+          : "/quiz/fraction3"
+      ) : (
+         selectedLevel === 1
+          ? "/quiz/fractionk"
+          : selectedLevel === 2
+          ? "/quiz/fractionk2"
+          : "/quiz/fractionk3")
+
       
     const res = await api.get(endpoint);
     setQuestions(res.data.questions);
@@ -130,12 +138,40 @@ export default function Fraction({ level, selectedLevel, user, addPointsToBacken
   return (
     <div style={styles.card}>
       <h3 style={styles.step}>
-     🌈   Question {step + 1} / {questions.length}
+     🌈   Question   {step + 1} / {questions.length}
       </h3>
 <hr></hr><br></br>
-      <p style={styles.mainQuestion}>{current.question}</p>
+{level==="primary" && selectedLevel ===1 && (
+<p style={{fontSize: "clamp(18px, 3vw, 26px)"}}>What fraction is represented ?</p>)}
+{level==="primary" && selectedLevel ===1 ? (
+<p style={styles.mainQuestion}>{current.question}</p> 
+) : (
+      <p style={styles.mainQuestion1}>{current.question}</p> )}
 
-      {current.options.map((opt) => (
+{ level!=="primary"   ? (
+      current.options.map((opt) => (
+       // <label key={opt} style={styles.option1}>
+      <label
+  key={opt}
+  style={{
+    ...styles.option1,
+    color: levelColors[selectedLevel] || "#4af017ff",
+  }}
+>
+
+          <input
+            type="radio"
+            name="option"
+            value={opt}
+            checked={selected === opt}
+            onChange={() => setSelected(opt)}
+          />
+          <span style={{ marginLeft: 10 }}>{opt}</span>
+        </label>
+      ))
+    ): 
+    (
+      current.options.map((opt) => (
         <label key={opt} style={styles.option}>
           <input
             type="radio"
@@ -146,7 +182,8 @@ export default function Fraction({ level, selectedLevel, user, addPointsToBacken
           />
           <span style={{ marginLeft: 10 }}>{opt}</span>
         </label>
-      ))}
+      )))
+    }
 
       <button style={styles.button} onClick={handleNext}>
         {step === questions.length - 1 ? "🎯 Submit" : "➡ Next"}
@@ -158,6 +195,11 @@ export default function Fraction({ level, selectedLevel, user, addPointsToBacken
 //
 // 🎨 RESPONSIVE + KIDS FRIENDLY STYLES
 //
+const levelColors = {
+  1: "#f01758ff",
+  2: "#f09217ff",
+  3: "#4af017ff",
+};
 const styles = {
   loading: {
     textAlign: "center",
@@ -185,8 +227,16 @@ const styles = {
   },
 
   mainQuestion: {
-    fontSize: "clamp(20px, 2.5vw, 30px)",
-    marginBottom: 20
+    fontSize: "clamp(25px, 3.5vw, 35px)",
+    marginBottom: 20,
+    border:"2px solid  #f01758ff",
+    padding:10
+  },
+  mainQuestion1: {
+    fontSize: "clamp(18px, 2vw, 28px)",
+    marginBottom: 20,
+    //border:"2px solid  #f01758ff",
+   // padding:10
   },
 
   option: {
@@ -196,7 +246,14 @@ const styles = {
     fontSize: "clamp(18px, 4vw, 26px)",
     cursor: "pointer"
   },
+option1: {
+  display: "flex",
+  alignItems: "center",
+  margin: "12px 0",
+  fontSize: "clamp(68px, 44vw, 76px)",
+  cursor: "pointer",
 
+},
   button: {
     marginTop: 25,
     padding: "clamp(10px, 2vw, 16px) clamp(22px, 4vw, 38px)",

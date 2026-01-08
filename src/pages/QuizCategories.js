@@ -11,7 +11,7 @@ const categories = [
   { id: 5, name: "Sudoku", path: "/quiz/sudoku" },
   { id: 6, name: "Puzzles", path: "/quiz/puzzles" },
    { id: 7, name: "Shapes", path: "/quiz/shapes" },
-
+  { id: 8, name: "Fraction", path: "/quiz/fraction" },
 ];
 const categories2 = [
   { id: 1, name: "Addition & Subtraction", path: "/quiz/math" },

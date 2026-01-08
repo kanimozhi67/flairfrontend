@@ -24,6 +24,7 @@ import PuzzleWheel from "./PuzzleWheel.js";
 import PuzzleWheelKinder from "./PuzzleWheelKinder.js";
 import MoneyQuiz from "./MoneyQuiz.js";
 import Measurement from "./Measurement.js";
+import ShapesQuiz from "./ShapesQuiz.js";
 
 const QuizPage = ({ user, setUser }) => {
     const navigate = useNavigate();
@@ -164,12 +165,12 @@ boxShadow: "0 12px 30px rgba(255, 160, 140, 0.45)",
     "🌈",
     "🐱",
     "🦊",
-    "🐵",
+    "🧸",
     "🐼",
     "🐨",
     "🍩",
     "🍕",
-    "🍓",
+    "🍓", 
     "🌟",
     "👸",
     "🍦",
@@ -177,6 +178,7 @@ boxShadow: "0 12px 30px rgba(255, 160, 140, 0.45)",
     "💕",
     "🐤",
     "🐧",
+    "🍭"
   ];
 
   const guideList = [
@@ -232,6 +234,7 @@ boxShadow: "0 12px 30px rgba(255, 160, 140, 0.45)",
     case "math":
     case "multiplication":
     case "division":
+    case "shapes":
       if (level === "primary" && category === "multiplication" && selectedLevel === 3) {
         len = 9;
       } else if (category === "math" && selectedLevel === 3) {
@@ -586,7 +589,7 @@ handleComplete(points);}
         ? adviceList[Math.floor(Math.random() * adviceList.length)]
         : guideList;
 
-    setFeedbackMessage(`🎉 You scored ${score} points! ${feedback}`);
+    setFeedbackMessage(`🎉  ${user?.username} You scored ${score} points! ${feedback}`);
     if (score === questions.length) setShowGift(true);
     else setShowNoGift(true);
   };
@@ -663,14 +666,39 @@ useEffect(() => {
           setShowMotivation(false);
           fetchQuiz();
         }}
+        user={user}
       />
     );
   }
 
   return (
+    <div style={{    background: "linear-gradient(135deg, #ffe680, #f08c8cff)",
+ 
+boxShadow: "0 12px 30px rgba(255, 160, 140, 0.45)",}}>
+           <button
+  onClick={() => window.location.reload()}
+  style={{
+  
+    height: "40px",
+   // zIndex: 1000,
+    backgroundColor:"#fff",
+  
+    fontSize:18,
+    fontWeight:"bold",
+    border:"0px ",
+    color:"blue",
+    cursor:"pointer"
+  }}
+>
+  👉Change level
+</button>
+
     <div style={containerStyle}>
+ 
       <div style={innerStyle}>
+      
         <div style={quizCardStyle}>
+          
           {category === "sorting" ? (
             <SortingQuizCard
               level={level}
@@ -766,6 +794,14 @@ useEffect(() => {
             addPointsToBackend={addPointsToBackend}
             setResults={setResults}
 />
+        ): category=== "shapes" ? (
+<ShapesQuiz
+user={user}
+     level={level}
+     selectedLevel={selectedLevel}
+            addPointsToBackend={addPointsToBackend}
+            setResults={setResults}
+/>
 
         ):category==="measure" ?(
 <Measurement  
@@ -813,6 +849,7 @@ useEffect(() => {
         showNoGift={showNoGift}
         setShowNoGift={setShowNoGift}
         setShowResultModal={setShowResultModal}
+        user={user}
       />
 
       <StickerModal
@@ -832,6 +869,7 @@ useEffect(() => {
           fetchQuiz();
         }}
         speakLine={speakLine}
+        user={user}
       />
 
       <FlyingSticker
@@ -839,6 +877,7 @@ useEffect(() => {
         setShowResultModal={setShowResultModal}
       />
       {/* <Basket basket={basket} /> */}
+    </div>
     </div>
   );
 };

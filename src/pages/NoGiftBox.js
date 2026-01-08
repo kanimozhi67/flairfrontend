@@ -8,6 +8,7 @@ const NoGiftBox = ({
   showNoGift,
   setShowNoGift,
   setShowResultModal,
+  user
 }) => {
   const { width, height } = useWindowSize();
 
@@ -15,7 +16,7 @@ const NoGiftBox = ({
  const hasSpoken = useRef(false);
 useEffect(() => {
   if (showNoGift && speakLine && !hasSpoken.current) {
-    speakLine("Sorry! No gift. You can do it. Try next time!");
+    speakLine(`Sorry! No gift.  ${user?.username} .  You can do it. Try next time!`);
     hasSpoken.current = true;
   }
 }, [showNoGift, speakLine]);

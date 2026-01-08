@@ -5,7 +5,7 @@ import { useWindowSize } from "react-use";
 
 
 
-const MotivationScreen = ({ message, onStart }) => {
+const MotivationScreen = ({ message, onStart ,user}) => {
   const { width, height } = useWindowSize();
   const [showStartButton, setShowStartButton] = useState(false);
 
@@ -13,7 +13,7 @@ const MotivationScreen = ({ message, onStart }) => {
   let utterance;
 
   const speakMotivation = () => {
-    utterance = new SpeechSynthesisUtterance(`You are ${message}! You can do it! `);
+    utterance = new SpeechSynthesisUtterance(`${user?.username} , You are ${message}! You can do it! `);
     utterance.pitch = 1.5;
     utterance.rate = 1.2;
 

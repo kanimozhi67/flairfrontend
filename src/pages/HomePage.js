@@ -475,7 +475,7 @@ transform: "translateX(-50%)",        // ✅ FORCE full width
         </div>
 
         {isLogin ? (
-          <Login onSuccess={() => setModalOpen(false)} setUser={setUser} />
+          <Login onSuccess={() => setModalOpen(false)} setUser={setUser}/>
         ) : (
           <Signup onSuccess={() => setModalOpen(false)} setUser={setUser} />
         )}

@@ -9,11 +9,12 @@ const ResultModal = ({
   onClose,
   onClose2,
   speakLine,
+  user
 }) => {
   // Speak when modal opens
   useEffect(() => {
     if (visible && speakLine) {
-      speakLine(`🤖  Score Box 🎉 ${feedback}`);
+      speakLine(` ${user?.username} . ${feedback}`);
     }
   }, [visible, speakLine, score, feedback]);
 

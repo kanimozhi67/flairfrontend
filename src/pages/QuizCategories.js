@@ -10,6 +10,7 @@ const categories = [
   { id: 4, name: "Logical Questions", path: "/quiz/logic" },
   { id: 5, name: "Sudoku", path: "/quiz/sudoku" },
   { id: 6, name: "Puzzles", path: "/quiz/puzzles" },
+   { id: 7, name: "Shapes", path: "/quiz/shapes" },
 
 ];
 const categories2 = [

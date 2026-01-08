@@ -15,11 +15,18 @@ export default function ShapesQuiz({ level, selectedLevel, user, addPointsToBack
   const fetchQuestions = async () => {
     try {
       const endpoint =
+      level==="primary" ? (
+        selectedLevel === 1
+          ? "quiz/shapep1"
+          : selectedLevel === 2
+          ? "quiz/shapep2"
+          : "quiz/shapep3"
+      ) : (
         selectedLevel === 1
           ? "quiz/shape"
           : selectedLevel === 2
           ? "quiz/shape2"
-          : "quiz/shape3";
+          : "quiz/shape3")
       const res = await api.get(endpoint);
       setQuestions(res.data.questions);
     } catch (err) {
@@ -77,7 +84,7 @@ export default function ShapesQuiz({ level, selectedLevel, user, addPointsToBack
         setScore((prev) => prev + 1);
         setFeedback("✅ Correct! 🎉");
       } else {
-        setFeedback(`❌ Wrong. Correct Answer: ${res.data.correctAnswer}`);
+        setFeedback(`❌ .   Correct Answer: ${res.data.correctAnswer}`);
       }
 
       setTimeout(() => {
@@ -144,8 +151,11 @@ export default function ShapesQuiz({ level, selectedLevel, user, addPointsToBack
           width: "600px",
         }}
       >
-        <h2 style={{ textAlign: "center", fontSize: "clamp(1.2rem, 2vw, 1.5rem)" }}>
-          {selectedLevel === 1 ? " 🧠 Identify the Shape 🎉" : " 🧠 How many edges are there? 🎉"}
+        <h2 style={{ textAlign: "center", fontSize: "clamp(1.4rem, 2.2vw, 1.7rem)" }}>
+          { level==="primary" ? (selectedLevel === 1 ? " 🧠  How many faces are there? 🎉" 
+          : " 🧠 How many edges and vertices are there? 🎉")
+          : (selectedLevel === 1 ? " 🧠 Identify the Shape 🎉" : " 🧠 How many edges are there? 🎉")
+          }
         </h2>
         <hr />
 
@@ -154,15 +164,23 @@ export default function ShapesQuiz({ level, selectedLevel, user, addPointsToBack
             textAlign: "center",
             marginTop: "1rem",
             borderRadius: "1rem",
-            background: "white",
+            background: "#32dd96ff",
             boxShadow: "0 8px 20px rgba(100,7,46,0.25)",
             fontWeight: "bold",
-            fontSize: "clamp(0.9rem, 1.2vw, 1.2rem)",
-            padding: "0.2rem",
+            fontSize: "clamp(1.1rem, 1.4vw, 1.4rem)",
+           // padding: "0.2rem",
           }}
         >
           {feedback || (
-            <p>
+            <p style={{ textAlign: "center",
+            marginTop: "1rem",
+            borderRadius: "1rem",
+            background: "#ebf1efff",
+            boxShadow: "0 8px 20px rgba(100,7,46,0.25)",
+            fontWeight: "bold",
+            fontSize: "clamp(1.1rem, 1.4vw, 1.4rem)",
+          //  padding: "0.2rem",
+            }}>
               Question {currentIndex + 1} of {questions.length}
             </p>
           )}
@@ -204,7 +222,7 @@ export default function ShapesQuiz({ level, selectedLevel, user, addPointsToBack
                 disabled={isAnswered}
                 style={{
                   padding: "0.8rem",
-                  fontSize: "clamp(1rem, 1.5vw, 1.2rem)",
+                  fontSize: "clamp(1.2rem, 1.7vw, 1.4rem)",
                   borderRadius: 12,
                   cursor: isAnswered ? "not-allowed" : "pointer",
                   backgroundColor: "#f0f0f0",

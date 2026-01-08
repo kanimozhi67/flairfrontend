@@ -25,6 +25,7 @@ import PuzzleWheelKinder from "./PuzzleWheelKinder.js";
 import MoneyQuiz from "./MoneyQuiz.js";
 import Measurement from "./Measurement.js";
 import ShapesQuiz from "./ShapesQuiz.js";
+import Fraction from "./Fraction.js";
 
 const QuizPage = ({ user, setUser }) => {
     const navigate = useNavigate();
@@ -805,6 +806,13 @@ user={user}
 
         ):category==="measure" ?(
 <Measurement  
+ level={level}
+     selectedLevel={selectedLevel}
+            addPointsToBackend={addPointsToBackend}
+            setResults={setResults}
+/>
+        ):category==="fraction" ?(
+<Fraction  
  level={level}
      selectedLevel={selectedLevel}
             addPointsToBackend={addPointsToBackend}

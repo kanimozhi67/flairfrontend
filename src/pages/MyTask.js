@@ -5,7 +5,7 @@ import api from "../api/axiosClient";
 import { categoryRouteMap } from "../utils/categoryRouteMap";
 
 const MyTask = ({user}) => {
-  console.log("user in MyTask" , user);
+ // console.log("user in MyTask" , user);
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
 

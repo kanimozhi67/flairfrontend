@@ -1,7 +1,7 @@
 
 
 // export default TimeQuiz
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { Input, Button, message,Card ,Typography} from "antd";
  import SvgClock from './SvgClock';
 
@@ -24,15 +24,46 @@ const clocks = [
 export default function TimeQuiz({ category, level, selectedLevel, user, addPointsToBackend }) {
   const [index, setIndex] = useState(0);
   const [answer, setAnswer] = useState("");
+//const [clocks, setClocks] = useState(clocks1);
+ 
+  const [score, setScore] = useState(0);
+  const [iteration, setIteration] = useState(1);
 
+  /* Handle level change */
+  useEffect(() => {
+   // setClocks(selectedLevel === 3 ? clocks3 : selectedLevel === 2 ? clocks2 : clocks1);
+    setIndex(0);
+    setScore(0);
+    setIteration(1);
+  }, [selectedLevel]);
   const checkAnswer = () => {
+       let nextScore = score;
+    let nextIteration = iteration + 1;
+
     if (answer.trim() === clocks[index].time) {
       message.success("Correct 🎉");
+        nextScore += 1;
       setIndex((i) => (i + 1) % clocks.length);
       setAnswer("");
     } else {
       message.error("Try again ⏱️");
     }
+       setScore(nextScore);
+    setIteration(nextIteration);
+
+    if (nextIteration > 4) {
+        if(nextScore){
+      addPointsToBackend(nextScore);
+      setScore(0);
+      setIteration(1);
+    }
+      else{
+      addPointsToBackend();
+      setScore(0);
+      setIteration(1);}  
+      
+    }
+
   };
 
   return (
@@ -48,11 +79,9 @@ export default function TimeQuiz({ category, level, selectedLevel, user, addPoin
         margin: "auto"
       }}
     >
-     <Title
-
-  style={{ textAlign: "center", fontWeight: "bold" }}
->
-  🧠 Find the time  🎉
+    <Title style={{ fontWeight: "bold",fontSize: 35 }}>
+          🧠 Q{iteration}. {selectedLevel === 2 ? "Find the clock ⏰" : "Find the time ⏰"}
+        
   <br />
   <hr />
 </Title>

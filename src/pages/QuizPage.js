@@ -665,7 +665,7 @@ handleComplete(points);}
 
 useEffect(() => {
   if (urlSelectedLevel) {
-    setMotivationMessage("🔥 Great choice! Let’s start your challenge!");
+    setMotivationMessage("🔥.  Great choice! Let’s start your challenge!");
     setShowMotivation(true);
   }
 }, [urlSelectedLevel]);
@@ -842,7 +842,7 @@ category ={category}
             addPointsToBackend={addPointsToBackend}
             setResults={setResults}
 />
-        ):category==="time" && level==="primary"? (
+        ):category==="time" && level==="primary" && selectedLevel ===1? (
 <TimeQuiz
 category ={category}
  level={level}
@@ -850,7 +850,7 @@ category ={category}
             addPointsToBackend={addPointsToBackend}
             setResults={setResults}
 />
-        ):category==="time" && level!=="primary"? (
+        ):(category==="time" && (( level!=="primary") || (level==="primary" && selectedLevel !==1))) ? (
 <TimeOption
 category ={category}
  level={level}

@@ -20,6 +20,110 @@ const clocks1 = [
   { emoji: <SvgClock hour={11} minute={0} />, correct: "11:00", options: ["8:00", "9:00", "11:00"] },
 ];
 
+const clocks3p = [
+  {
+   correct: "Half past 3 ",
+    emoji: <SvgClock hour={3} minute={30} />,
+    options: ["Half past 3 ", "Quarter past 3 "],
+  },
+  {
+   correct: "Quarter past 8 ",
+    emoji: <SvgClock hour={8} minute={15} />,
+    options: ["Quarter past 8 ", "Quarter to 8 "],
+  },
+  {
+   correct: "20 minutes past 2 ",
+    emoji: <SvgClock hour={2} minute={20} />,
+    options: ["20 minutes past 2 ", "Quarter past 2 "],
+  },
+  {
+   correct: "Quarter to 5 ",
+    emoji: <SvgClock hour={4} minute={45} />,
+    options: ["Quarter to 5 ", "Quarter past 5 "],
+  },
+  {
+   correct: "Quarter past 8 ",
+    emoji:<SvgClock hour={8} minute={15} />,
+    options: ["Quarter past 8 ", "Quarter to 8 "],
+  },
+  {
+   correct: "Half past 9 ",
+    emoji: <SvgClock hour={9} minute={30} />,
+    options: ["Half past 9 ", "45 minutes past 9 "],
+  },
+   {
+   correct: "Quarter to 10 ",
+    emoji: <SvgClock hour={9} minute={45} />,
+    options: ["Quarter to 10 ", "Quarter past 10 "],
+  },
+   {
+   correct: "Quarter past 12 ",
+    emoji: <SvgClock hour={12} minute={15} />,
+    options: ["Quarter past 12 ","Quarter to 12 "],
+  },
+  {
+   correct: "Half past 11 ",
+    emoji: <SvgClock hour={11} minute={30} />,
+    options: ["Half past 11 ", "20 minutes past 11 "],
+  },
+   {
+   correct: "Quarter to 1 ",
+    emoji: <SvgClock hour={12} minute={45} />,
+    options: ["Quarter to 1 ", "Quarter past 1 "],
+  },
+]
+const clocks2p = [
+  {
+    emoji: "Half past 3 ",
+    correct: { hour: 3, minute: 30},
+    options: [{ hour: 3, minute: 30 }, { hour: 3, minute: 15 }],
+  },
+  {
+    emoji: "Quarter past 8 ",
+    correct: { hour: 8, minute: 15},
+    options: [{ hour: 3, minute: 30 }, { hour: 8, minute: 15 }],
+  },
+  {
+    emoji: "20 minutes past 2 ",
+    correct: { hour: 2, minute: 20},
+    options: [{ hour: 2, minute: 20 }, { hour: 8, minute: 15 }],
+  },
+  {
+    emoji: "Quarter to 5 ",
+    correct: { hour: 4, minute: 45},
+    options: [{ hour: 3, minute: 30 }, { hour: 4, minute: 45 }],
+  },
+  {
+    emoji: "Quarter past 8 ",
+    correct: { hour: 8, minute: 15},
+    options: [{ hour: 8, minute: 15 }, { hour: 3, minute: 45 }],
+  },
+  {
+    emoji: "Half past 9 ",
+    correct: { hour: 9, minute: 30},
+    options: [{ hour: 9, minute: 30 }, { hour: 3, minute: 15 }],
+  },
+   {
+    emoji: "Quarter to 10 ",
+    correct: { hour: 9, minute: 45},
+    options: [{ hour: 3, minute: 30 }, { hour: 9, minute: 45 }],
+  },
+   {
+    emoji: "Quarter past 12 ",
+    correct: { hour: 12, minute: 15},
+    options: [{ hour: 12, minute: 15 }, { hour: 3, minute: 45 }],
+  },
+  {
+    emoji: "Half past 11 ",
+    correct: { hour: 11, minute: 30},
+    options: [{ hour: 11, minute: 40 }, { hour: 11, minute: 30 }],
+  },
+   {
+    emoji: "Quarter to 1 ",
+    correct: { hour: 12, minute: 45},
+    options: [{ hour: 3, minute: 30 }, { hour: 12, minute: 45 }],
+  },
+]
 // LEVEL 2 – Text → Clock
 const clocks2 = [
   {
@@ -90,15 +194,23 @@ const clocks3 = [
 
 /* -------------------- COMPONENT -------------------- */
 
-export default function TimeOption({ selectedLevel, addPointsToBackend }) {
+export default function TimeOption({ level,selectedLevel, addPointsToBackend }) {
   const [clocks, setClocks] = useState(clocks1);
   const [index, setIndex] = useState(0);
   const [score, setScore] = useState(0);
   const [iteration, setIteration] = useState(1);
+const [width, setWidth] = useState(window.innerWidth);
 
+useEffect(() => {
+  const handleResize = () => setWidth(window.innerWidth);
+  window.addEventListener("resize", handleResize);
+  return () => window.removeEventListener("resize", handleResize);
+}, []);
   /* Handle level change */
   useEffect(() => {
-    setClocks(selectedLevel === 3 ? clocks3 : selectedLevel === 2 ? clocks2 : clocks1);
+    
+    setClocks((level==="primary" ? ( selectedLevel===2 ? clocks2p : clocks3p) :
+    selectedLevel === 3 ? clocks3 : selectedLevel === 2 ? clocks2 : clocks1));
     setIndex(0);
     setScore(0);
     setIteration(1);
@@ -154,12 +266,12 @@ export default function TimeOption({ selectedLevel, addPointsToBackend }) {
           margin: "auto",
         }}
       >
-        <Title style={{ fontWeight: "bold",fontSize: 35 }}>
+        <Title style={{ fontWeight: "bold",fontSize: 35 ,color:"green"}}>
           🧠 Q{iteration}. {selectedLevel === 2 ? "Find the clock ⏰" : "Find the time ⏰"}
           <hr />
         </Title>
 
-        <div style={{ fontSize: 60 }}>{clocks[index].emoji}</div>
+        <div style={{ fontSize: width<420 ? 30 : 50 }}>{clocks[index].emoji}</div>
 
         <div style={{ marginTop: 20 }}>
           {clocks[index].options.map((opt, i) => (

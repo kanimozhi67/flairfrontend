@@ -834,7 +834,7 @@ user={user}
             addPointsToBackend={addPointsToBackend}
             setResults={setResults}
 />
-        ):category==="fraction" || (category === "puzzles" && selectedLevel !==1 ) ?(
+        ):category==="fraction" || (category === "puzzles" && level === "kindergarten" && selectedLevel !==1 ) ?(
 <Fraction  
 category ={category}
  level={level}

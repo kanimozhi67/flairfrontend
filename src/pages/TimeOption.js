@@ -154,8 +154,8 @@ export default function TimeOption({ selectedLevel, addPointsToBackend }) {
           margin: "auto",
         }}
       >
-        <Title style={{ fontWeight: "bold" }}>
-          🧠 Q{iteration}. {selectedLevel === 2 ? "Find the clock" : "Find the time"}
+        <Title style={{ fontWeight: "bold",fontSize: 35 }}>
+          🧠 Q{iteration}. {selectedLevel === 2 ? "Find the clock ⏰" : "Find the time ⏰"}
           <hr />
         </Title>
 
@@ -169,7 +169,7 @@ export default function TimeOption({ selectedLevel, addPointsToBackend }) {
               style={{
                 margin: 8,
                 minWidth: 100,
-                padding: selectedLevel === 2 ? 80 : 10,
+                padding: selectedLevel === 2 ? "80px 0px": "10px 0px",
                 background: selectedLevel === 2 ? "transparent" : "blue",
               }}
               type="primary"

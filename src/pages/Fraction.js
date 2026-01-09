@@ -143,11 +143,14 @@ export default function Fraction({ category, level, selectedLevel, user, addPoin
      🌈   Question   {step + 1} / {questions.length}
       </h3>
 <hr></hr><br></br>
-{level!=="fraction" && selectedLevel ===3 && ( 
+
+{category!=="fraction" && selectedLevel ===3 && ( 
   <p style={{fontSize: "clamp(18px, 3vw, 26px)"}}> Find the symmetric one</p>)}
+
+
 {level==="primary" && selectedLevel ===1 && (
 <p style={{fontSize: "clamp(18px, 3vw, 26px)"}}>What fraction is represented ?</p>)}
-{level==="primary" && selectedLevel ===1 ? (
+{level==="primary" && selectedLevel ===1 || category!=="fraction" && selectedLevel ===3 ? (
 <p style={styles.mainQuestion}>{current.question}</p> 
 ) : (
       <p style={styles.mainQuestion1}>{current.question}</p> )}

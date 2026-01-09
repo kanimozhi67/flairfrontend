@@ -6,19 +6,7 @@ import { Input, Button, message,Card ,Typography} from "antd";
  import SvgClock from './SvgClock';
 
  const { Title } = Typography;
-const clocksk3 = [
-  { emoji: <SvgClock hour={5} minute={0} />, time: "5:00" },
-  { emoji: <SvgClock hour={1} minute={0} />, time: "1:00" },
-  { emoji: <SvgClock hour={12} minute={0} />, time: "12:00" },
-  { emoji: <SvgClock hour={9} minute={0} />, time: "9:00" },
-  { emoji: <SvgClock hour={3} minute={0} />, time: "3:00" },
-  { emoji: <SvgClock hour={7} minute={0} />, time: "7:00" },
-  { emoji: <SvgClock hour={2} minute={0} />, time: "2:00" },
-  { emoji: <SvgClock hour={4} minute={0} />, time: "4:00" },
-  { emoji: <SvgClock hour={8} minute={0} />, time: "8:00" },
-  { emoji: <SvgClock hour={6} minute={0} />, time: "6:00" },
-  { emoji: <SvgClock hour={11} minute={0} />, time: "11:00" },
-];
+
 const clocks = [
   { emoji: <SvgClock hour={5} minute={10} />, time: "5:10" },
   { emoji: <SvgClock hour={1} minute={35} />, time: "1:35" },

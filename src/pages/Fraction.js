@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import api from "../api/axiosClient";
 
-export default function Fraction({ level, selectedLevel, user, addPointsToBackend }) {
+export default function Fraction({ category, level, selectedLevel, user, addPointsToBackend }) {
   const [questions, setQuestions] = useState([]);
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState([]);
@@ -17,7 +17,9 @@ export default function Fraction({ level, selectedLevel, user, addPointsToBacken
     setStep(0);
 
     const endpoint =
-      level==="primary" ? (
+    category === "puzzles" ? ( selectedLevel===2 ?  "/quiz/puzzlelevel2" :  "/quiz/puzzlelevel3" ) :
+
+    (  level==="primary" ? (
           selectedLevel === 1
           ? "/quiz/fraction"
           : selectedLevel === 2
@@ -28,7 +30,7 @@ export default function Fraction({ level, selectedLevel, user, addPointsToBacken
           ? "/quiz/fractionk"
           : selectedLevel === 2
           ? "/quiz/fractionk2"
-          : "/quiz/fractionk3")
+          : "/quiz/fractionk3"))
 
       
     const res = await api.get(endpoint);
@@ -141,6 +143,8 @@ export default function Fraction({ level, selectedLevel, user, addPointsToBacken
      🌈   Question   {step + 1} / {questions.length}
       </h3>
 <hr></hr><br></br>
+{level!=="fraction" && selectedLevel ===3 && ( 
+  <p style={{fontSize: "clamp(18px, 3vw, 26px)"}}> Find the symmetric one</p>)}
 {level==="primary" && selectedLevel ===1 && (
 <p style={{fontSize: "clamp(18px, 3vw, 26px)"}}>What fraction is represented ?</p>)}
 {level==="primary" && selectedLevel ===1 ? (

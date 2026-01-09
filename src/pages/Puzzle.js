@@ -21,6 +21,15 @@ export default function Puzzle({
  const [message, setMessage] = useState({ type: "", text: "" });
   const [inputToIcon, setInputToIcon] = useState({});
   const [clicked,setClicked] =useState(false)
+const [width, setWidth] = useState(window.innerWidth);
+
+useEffect(() => {
+  const handleResize = () => setWidth(window.innerWidth);
+  window.addEventListener("resize", handleResize);
+  return () => window.removeEventListener("resize", handleResize);
+}, []);
+
+
   // Map each input to an icon
   const icons =  ["🍎", "🍌", "🍇", "🍊", "🥝", "🍍", "🍑", "🍒", "🥭"];
   //const inputToIcon = {};
@@ -50,17 +59,16 @@ export default function Puzzle({
      setClicked(false);
      setSubmitted(false);
       try {
-        if(selectedLevel ===1){
+      
         const res = await api.get("/quiz/puzzle");
         addData(res);
-       }
-
-else if(selectedLevel ===2){
-        const res = await api.get("/quiz/puzzlelevel2");
-       addData(res); }
-   else {
-        const res = await api.get("/quiz/puzzlelevel3");
-         addData(res); }
+       
+// else if(selectedLevel ===2){
+//         const res = await api.get("/quiz/puzzlelevel2");
+//        addData(res); }
+//    else {
+//         const res = await api.get("/quiz/puzzlelevel3");
+//          addData(res); }
 
        
       
@@ -156,8 +164,13 @@ if (typeof val === "string" && inputs.includes(val)) {
 
   return (
     <div  >
-        <h1 style ={{ fontSize: 26 , color:"blue" }}>"Solve the Puzzle 🧺"</h1>
-    <Card  style={{width: "580px",  backgroundColor: "lightcoral"}}>
+        
+    <Card  style={{ maxWidth: 600, minWidth:360,
+    width: "100%",
+    margin: "0 auto",   borderRadius: 28,padding:0,
+ background: "linear-gradient(90deg, #f01758ff, #db1154ff)",
+  boxShadow: "0 0 25px rgba(228, 217, 71, 0.6)",}}>
+    <h1 style ={{ fontSize: 26 , color:"yellow", textAlign: width<361 ? "start" : "center" }}>"Solve the Puzzle 🧺"</h1><hr></hr><br></br>
       {equations.map((eq, eqIdx) => (
 eqIdx===1 ?(
         <Row key={eqIdx} gutter={16} align="middle" style={{ marginBottom: 12 , fontSize: 28 , border:"1px solid gray"}}>

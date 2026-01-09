@@ -163,6 +163,7 @@ boxShadow: "0 12px 30px rgba(255, 160, 140, 0.45)",
     "🎈",
     "🐶",
     "🚀",
+    "🎂",
     "⭐",
     "🌈",
     "🐱",
@@ -259,6 +260,8 @@ boxShadow: "0 12px 30px rgba(255, 160, 140, 0.45)",
       break;
 
     case "puzzles":
+       len = selectedLevel === 1 ? 3 : 5;
+        break;
     case "logic":
       len = 3;
       break;
@@ -692,7 +695,7 @@ boxShadow: "0 12px 30px rgba(255, 160, 140, 0.45)",}}>
     cursor:"pointer"
   }}
 >
-  👉Change level
+  👉Change level from {selectedLevel}
 </button>
 
     <div style={containerStyle}>
@@ -743,7 +746,7 @@ boxShadow: "0 12px 30px rgba(255, 160, 140, 0.45)",}}>
               selectedLevel={selectedLevel}
               addPointsToBackend={addPointsToBackend}
             />
-          ) : category === "puzzles" ? (
+          ) : category === "puzzles" && selectedLevel===1 ? (
             <div style={{ fontSize: "28px", fontWeight: "bold" }}>
               <Puzzle
                 selectedLevel={selectedLevel}
@@ -812,8 +815,9 @@ user={user}
             addPointsToBackend={addPointsToBackend}
             setResults={setResults}
 />
-        ):category==="fraction" ?(
+        ):category==="fraction" || (category === "puzzles" && selectedLevel !==1 ) ?(
 <Fraction  
+category ={category}
  level={level}
      selectedLevel={selectedLevel}
             addPointsToBackend={addPointsToBackend}

@@ -26,6 +26,8 @@ import MoneyQuiz from "./MoneyQuiz.js";
 import Measurement from "./Measurement.js";
 import ShapesQuiz from "./ShapesQuiz.js";
 import Fraction from "./Fraction.js";
+import TimeQuiz from "./TimeQuiz.js";
+import TimeOption from "./TimeOption.js";
 
 const QuizPage = ({ user, setUser }) => {
     const navigate = useNavigate();
@@ -165,6 +167,18 @@ boxShadow: "0 12px 30px rgba(255, 160, 140, 0.45)",
     "🚀",
     "🎂",
     "⭐",
+    "🤴",
+    "👛",
+    "🐯",
+    "🦁",
+    "🐣",
+    "🐥",
+    "🦜",
+    "🦩",
+    "🐇",
+    "🚗",
+    "🛩",
+    "🪆",
     "🌈",
     "🐱",
     "🦊",
@@ -262,6 +276,11 @@ boxShadow: "0 12px 30px rgba(255, 160, 140, 0.45)",
     case "puzzles":
        len = selectedLevel === 1 ? 3 : 5;
         break;
+
+    case "time" :
+       len = 4;
+      break;
+
     case "logic":
       len = 3;
       break;
@@ -458,14 +477,14 @@ const categoryName = searchParams.get("category");
   };
 
   // Helper: send points to backend and update UI
-  const addPointsToBackend = async (points) => {
+  const addPointsToBackend = async (points=0) => {
 
     if(points!==0){
 handleComplete(points);}
 
     if (!user || !user._id) return;
     try {
-      console.log(`user: ${JSON.stringify(user)} , user._id: ${user._id}`)
+   //   console.log(`user: ${JSON.stringify(user)} , user._id: ${user._id}`)
       // const res = await api.post("/quiz/progress/addpoints", { points });
        const res = await api.post(
       "/quiz/progress/addpoints",
@@ -817,6 +836,22 @@ user={user}
 />
         ):category==="fraction" || (category === "puzzles" && selectedLevel !==1 ) ?(
 <Fraction  
+category ={category}
+ level={level}
+     selectedLevel={selectedLevel}
+            addPointsToBackend={addPointsToBackend}
+            setResults={setResults}
+/>
+        ):category==="time" && level==="primary"? (
+<TimeQuiz
+category ={category}
+ level={level}
+     selectedLevel={selectedLevel}
+            addPointsToBackend={addPointsToBackend}
+            setResults={setResults}
+/>
+        ):category==="time" && level!=="primary"? (
+<TimeOption
 category ={category}
  level={level}
      selectedLevel={selectedLevel}

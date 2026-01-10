@@ -27,7 +27,7 @@ const App = () => {
   const [loadingUser, setLoadingUser] = useState(true);
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
-
+const[todayTaskCount,setTodayTaskCount]=useState(0);
   // Fetch tasks assigned to the user
   const fetchTasks = async () => {
     try {
@@ -97,7 +97,7 @@ const App = () => {
         <Route path="/auth/signup" element={<Signup setUser={setUser} />} />
 
         {/* Protected routes */}
-        <Route element={<Layout user={user} setUser={setUser} />}>
+        <Route element={<Layout user={user} setUser={setUser} todayTaskCount={todayTaskCount} />}>
           <Route
             path="/categories"
             element={
@@ -154,6 +154,8 @@ const App = () => {
                   setUser={setUser}
                   fetchTasks={fetchTasks}
                   taskcompleted={taskCompleted}
+                  todayTaskCount={todayTaskCount}
+                  setTodayTaskCount={setTodayTaskCount}
                 />
               </PrivateRoute>
             }

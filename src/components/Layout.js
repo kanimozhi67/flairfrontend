@@ -1,7 +1,7 @@
 
 
 import React, { useEffect, useState } from "react"; 
-import { Layout as AntLayout, Avatar, Menu, Dropdown, Button } from "antd";
+import { Layout as AntLayout, Avatar, Menu, Dropdown, Button ,Badge} from "antd";
 import { useNavigate, useLocation, Outlet } from "react-router-dom";
 import { motion } from "framer-motion";
 import { MenuOutlined } from "@ant-design/icons";
@@ -10,7 +10,7 @@ import avat from "../images/rabbitAvatar.png";
 
 const { Header, Sider, Content } = AntLayout;
 
-const Layout = ({ user, setUser }) => {
+const Layout = ({ user, setUser,todayTaskCount }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -18,6 +18,16 @@ const Layout = ({ user, setUser }) => {
   const [todayScore, setTodayScore] = useState(0);
   const [initializing, setInitializing] = useState(true);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+//const todayTaskCount=3;
+  const TaskBadge = ({ count, isMobile }) => (
+  <Badge
+    count={count}
+    size="small"
+    offset={isMobile ? [8, -2] : [4, -4]}
+  >
+    <span style={{ fontSize: isMobile ? 16 : 18 }}></span>
+  </Badge>
+);
 
   const menuItems = [
     { key: "home", label: "🏠 Home", path: "/categories" },
@@ -27,7 +37,22 @@ const Layout = ({ user, setUser }) => {
       ? [{ key: "schooladmin", label: "🛠 School Admin Panel", path: "/schooladmin" }]
       : user?.role === "Teacher" 
       ? [{ key: "teacher", label: "🛠 Teacher Panel", path: "/teacher" }]
-       :[{ key: "task", label: "🎯 Today's Task", path: "/task" },
+       :[
+        // { key: "task", label: "🎯 Today's Task", path: "/task" },
+{
+  key: "task",
+  label: (
+    <span style={{ display: "flex",marginLeft:30,
+     alignItems: "center", gap: 8 
+     }}>
+    🎯 Today's Task<TaskBadge count={todayTaskCount} isMobile={false} />
+    
+    </span>
+  ),
+  path: "/task",
+},
+
+
          { key: "mystickers", label: "👝 My Stickers", path: "/mystickers" },
       ]),
     { key: "dashboard", label: "🏆 Dashboard", path: "/quiz/progress" },
@@ -41,8 +66,24 @@ const Layout = ({ user, setUser }) => {
       ? [{ key: "admin", label: "🛠", path: "/admin" }]
       : user?.role === "SchoolAdmin" 
       ? [{ key: "schooladmin", label: "🛠S", path: "/schooladmin" }]
-      : [{ key: "task", label: "🎯 ", path: "/task" },
-         { key: "mystickers", label: "👝 ", path: "/mystickers" },
+      : [
+        
+       
+      //  { key: "task", label: "🎯 ", path: "/task" },
+{
+  key: "task",
+  label: (
+    <span style={{ display: "flex",
+     alignItems: "center", gap: 8 
+     }}>
+    🎯<TaskBadge count={todayTaskCount} isMobile={true} />
+    
+    </span>
+  ),
+  path: "/task",
+},
+ { key: "mystickers", label: "👝 ", path: "/mystickers" },
+
       ]),
     { key: "dashboard", label: "🏆 ", path: "/quiz/progress" },
    

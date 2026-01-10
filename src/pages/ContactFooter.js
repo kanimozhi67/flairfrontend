@@ -1,4 +1,5 @@
-import React from "react";
+import React ,{useState} from "react";
+import api from "../api/axiosClient";
 import { Typography, Input, Button, Row, Col, Space } from "antd";
 import {
   MailOutlined,
@@ -12,7 +13,22 @@ import {
 const { Title, Paragraph } = Typography;
 const { TextArea } = Input;
 
-const ContactFooter = ({scrollToOnline3}) => {
+const ContactFooter = ({scrollToOnline3 }) => {
+  const [formData1, setFormData1] = useState({
+    name: "",
+    email: "",
+     message:"",
+  });
+  
+    const handleSubmitfeedback = async () => {
+  try {
+    await api.post("/admin/feedback", formData1);
+    alert("your message sent successfully!");
+  } catch (error) {
+    alert("Failed to send details");
+  }
+};
+
   return (
     <div
       style={{
@@ -60,13 +76,24 @@ const ContactFooter = ({scrollToOnline3}) => {
           <Title level={4} style={{ color: "white" }}>
             Send Us a Message
           </Title>
-          <Space direction="vertical" size="middle" style={{ width: "100%" }}>
-            <Input placeholder="Your Name" />
-            <Input placeholder="Your Email" />
-            <TextArea rows={4} placeholder="Your Message" />
+          <Space direction="vertical" size="middle" style={{ width: "100%" ,color:"black"}}>
+                    <input
+  placeholder="Name"
+  
+  onChange={(e) => setFormData1({ ...formData1, name: e.target.value })}
+/>
+            <input
+  placeholder="Email"
+  onChange={(e) => setFormData1({ ...formData1, email: e.target.value })}
+/>
+
+            <TextArea rows={4} placeholder="Your Message"
+             onChange={(e) => setFormData1({ ...formData1, message: e.target.value })}
+            />
             <Button
               type="primary"
               style={{ backgroundColor: "#1890ff", border: "none", width: "100%" }}
+              onClick={()=>handleSubmitfeedback()}
             >
               Send Message
             </Button>

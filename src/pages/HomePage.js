@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect, useRef } from "react";
-import { Button, Modal, Dropdown , Select, Row} from "antd";
+import { Button, Modal, Dropdown , Select, Row, message} from "antd";
 import { useNavigate ,Link, Navigate} from "react-router-dom";
 import { useWindowSize } from "react-use";
 import { UserOutlined, SolutionOutlined, TeamOutlined } from "@ant-design/icons";
@@ -34,12 +34,23 @@ const HomePage = ({ user, setUser }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [isLogin, setIsLogin] = useState(true);
   const [deferredPrompt, setDeferredPrompt] = useState(null);
+const [formData, setFormData] = useState({
+  name: "",
+  email: "",
+  mobile: "",
+  grade: "",
+  country: "",
+
+});
 
 
   const onlineRef = useRef(null);
   const contactRef = useRef(null);
   const heroRef = useRef(null);
-
+    const onlineRef3 = useRef(null);
+  const scrollToOnline3 = () => {
+    onlineRef3.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
   useEffect(() => {
   const handler = (e) => {
     e.preventDefault();
@@ -62,6 +73,16 @@ const HomePage = ({ user, setUser }) => {
     };
     fetchUser();
   }, [setUser]);
+
+  const handleSubmitJoinform = async () => {
+  try {
+    await api.post("/admin/joinform", formData);
+    alert("Details sent successfully!");
+  } catch (error) {
+    alert("Failed to send details");
+  }
+};
+
 
   /* ================= MOBILE MENU ================= */
   const mobileMenuItems = [
@@ -154,7 +175,8 @@ const HomePage = ({ user, setUser }) => {
             boxSizing: "border-box",
           }}
         >
-          <div
+          {/* <div */}
+           <div ref={onlineRef3} id="header"
             style={{
               display: "flex",
               alignItems: "center",
@@ -241,7 +263,8 @@ transform: "translateX(-50%)",        // ✅ FORCE full width
 
    >
 
-<div
+{/* <div */}
+ <div ref={onlineRef3} id="header"
   style={{
     position: "absolute",
     top: 16,
@@ -427,7 +450,7 @@ transform: "translateX(-50%)",        // ✅ FORCE full width
             }}
           >
             <h2 style={{ fontSize: isMobile ? 22 : 28, fontWeight: "bold" }}>Join FLAIR OLYMPIAD</h2>
-            <p style={{ fontSize: isMobile ? 12 : 16, marginBottom: 20 }}>Enter your details to get started:</p>
+            {/* <p style={{ fontSize: isMobile ? 12 : 16, marginBottom: 20 }}>Enter your details to get started:</p>
             <form style={{ display: "flex", flexDirection: "column", gap: 12 }}>
               <input placeholder="Name" style={inputStyle} />
               <input placeholder="Email" style={inputStyle} />
@@ -440,7 +463,54 @@ transform: "translateX(-50%)",        // ✅ FORCE full width
               {["US", "UAE", "India","Other"].map((city) => <Option key={city}>{city}</Option>)}
             </Select>
               <Button type="primary" style={{ borderRadius: 10 }}>Submit</Button>
-            </form>
+            </form> */}
+            <p style={{ fontSize: isMobile ? 12 : 16, marginBottom: 20 }}>Enter your details to get started:</p>
+            <form style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+            <input
+  placeholder="Name"
+  style={inputStyle}
+  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+/>
+
+<input
+  placeholder="Email"
+  style={inputStyle}
+  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+/>
+
+<input
+  placeholder="Mobile No"
+  style={inputStyle}
+  onChange={(e) => setFormData({ ...formData, mobile: e.target.value })}
+/>
+
+<Select
+  placeholder="Grade"
+  onChange={(value) => setFormData({ ...formData, grade: value })}
+>
+  {["KG1","KG2","Grade1","Grade2","Grade3","Grade4","Grade5","Grade6","Grade7","Grade8","Grade9","Grade10","Grade11","Grade12"]
+    .map((item) => (
+      <Option key={item} value={item}>{item}</Option>
+  ))}
+</Select>
+
+<Select
+  placeholder="Country"
+  onChange={(value) => setFormData({ ...formData, country: value })}
+>
+  {["US", "UAE", "India", "Other"].map((c) => (
+    <Option key={c} value={c}>{c}</Option>
+  ))}
+</Select>
+<Button
+  type="primary"
+  style={{ borderRadius: 10 }}
+  onClick={()=>handleSubmitJoinform()}
+>
+  Submit
+</Button>
+
+</form>
           </div>
         </div>
       )}
@@ -460,7 +530,10 @@ transform: "translateX(-50%)",        // ✅ FORCE full width
       >
       <HomeSection /></div>
       <div ref={onlineRef}><OnlinePage /></div>
-      <div ref={contactRef}><ContactFooter /></div>
+      <div ref={contactRef}><ContactFooter
+       scrollToOnline3={scrollToOnline3}
+     
+       /></div>
 
       {/* ================= AUTH MODAL ================= */}
        {/* Auth Modal */}

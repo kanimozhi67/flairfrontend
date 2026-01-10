@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import api from "../api/axiosClient";
 import { categoryRouteMap } from "../utils/categoryRouteMap";
 
-const MyTask = ({user}) => {
+const MyTask = ({user,todayTaskCount,setTodayTaskCount}) => {
  // console.log("user in MyTask" , user);
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -16,11 +16,15 @@ const MyTask = ({user}) => {
       {
         const res = await api.get("/users/todaytaskstudent");
       setTasks(res.data);
+      console.log(tasks);
+      setTodayTaskCount((res.data).length)
         }
       
         else{
       const res = await api.get("/users/todaytask");
       setTasks(res.data);
+       console.log((res.data).length)
+       setTodayTaskCount((res.data).length)
         }
     } catch (err) {
       message.error("Failed to load tasks");

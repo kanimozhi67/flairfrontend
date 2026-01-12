@@ -21,6 +21,7 @@ import SchoolLoginPage from "./pages/SchoolLoginPage";
 import SchoolAdminDashboard from "./pages/schooladmins/SchoolAdminDashboard"
 import SchoolAdminRoute from "./components/SchoolAdminRoute";
 import TeacherDashboard from "./pages/teacher/TeacherDashboard";
+import PaymentWrapper from "./pages/PaymentWrapper";
 
 const App = () => {
   const [user, setUser] = useState(null);
@@ -103,6 +104,14 @@ const[todayTaskCount,setTodayTaskCount]=useState(0);
             element={
               <PrivateRoute user={user}>
                 <QuizCategories user={user} setUser={setUser} />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/payment"
+            element={
+              <PrivateRoute user={user}>
+                <PaymentWrapper user={user} setUser={setUser} />
               </PrivateRoute>
             }
           />

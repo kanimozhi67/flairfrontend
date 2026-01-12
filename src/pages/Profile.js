@@ -89,7 +89,16 @@ const Profile = ({ setUser }) => {
        <p style={{ fontSize: 20, marginBottom: 0 }}>
   Your Sticker{user?.sticker?.length !== 1 ? "s" : ""}: <strong>{user?.sticker?.length || 0}</strong>
 </p>
+ <p style={{ fontSize: 20, color: "#555", marginBottom: 15 }}>Premium :
+  <button onClick={()=>navigate("/payment")}
+   style={{textDecoration:"none", border:0,backgroundColor: "beige",cursor:"pointer"
 
+   }}>   
+ <span 
+ style={{ color: "rgb(13, 153, 9)", fontWeight: "bold" }}>
+  {user.isPremium===false?"Get Premium":"Premium Member"}</span>
+ </button>  </p>
+     
 
         <Button 
           type="primary" 

@@ -103,6 +103,14 @@ const handleLogout = async () => {
   Your Sticker{user?.sticker?.length !== 1 ? "s" : ""}: <strong>{user?.sticker?.length || 0}</strong>
 </p>
  <p style={{ fontSize: 20, color: "#555", marginBottom: 0 }}>Premium :&nbsp;
+
+<span  style={{ border:"1px solid #f0a2a2",
+    borderRadius: 12,backgroundColor: "#faeded",
+color: "rgb(20, 163, 15)", fontWeight: "bold",width:"inline"
+   }}> 
+  {user.isPremium===true?
+    (
+    " Premium Member  🎉" ): (
   <button onClick={()=>navigate("/payment")}
    style={{textDecoration:"none", border:"1px solid #f0a2a2", 
     borderRadius: 12,backgroundColor: "#faeded",cursor:"pointer",
@@ -110,10 +118,10 @@ const handleLogout = async () => {
    }}>   
  <span 
  style={{ color: "rgb(20, 163, 15)", fontWeight: "bold" }}> 
-  {user.isPremium===false?"Get Premium":"Premium Member"}</span>
- </button>  </p>
-     
-
+  Get Premium</span>
+ </button> 
+  )}
+ </span></p>
         <Button 
           type="primary" 
           onClick={handleLogout}

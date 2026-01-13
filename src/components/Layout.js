@@ -57,7 +57,7 @@ const Layout = ({ user, setUser,todayTaskCount }) => {
       ]),
     { key: "dashboard", label: "🏆 Dashboard", path: "/quiz/progress" },
    
-    { key: "getMe", label: "👶 My Profile", path: "/auth/getMe" },
+    { key: "getMe", label: "👶 My Profile", path: "/profile" },
   ];
 
   const menuItems2 = [
@@ -87,7 +87,7 @@ const Layout = ({ user, setUser,todayTaskCount }) => {
       ]),
     { key: "dashboard", label: "🏆 ", path: "/quiz/progress" },
    
-    { key: "getMe", label: "👶 ", path: "/auth/getMe" },
+    { key: "getMe", label: "👶 ", path: "/profile" },
   ];
 
   const noSidebarRoutes = ["/login", "/signup", "/"];

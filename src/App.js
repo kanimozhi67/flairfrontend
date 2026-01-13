@@ -132,7 +132,7 @@ const[todayTaskCount,setTodayTaskCount]=useState(0);
             }
           />
           <Route
-            path="/auth/getMe"
+            path="/profile"
             element={
               <PrivateRoute user={user}>
                 <Profile user={user} setUser={setUser} />

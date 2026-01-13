@@ -1,10 +1,12 @@
 import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
 import { Button, Card, message } from "antd";
 import api from "../api/axiosClient";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const PaymentPage = () => {
   const stripe = useStripe();
   const elements = useElements();
+  const navigate=useNavigate();
 const styles = {
   wrapper: {
     minHeight: "100vh",
@@ -55,6 +57,8 @@ const styles = {
     try {
       const res = await api.post("/payment/createcheckoutsession");
       window.location.href = res.data.url;
+      console.log(res.data)
+     // navigate("/profile")
     } catch (err) {
       message.error("Oops! Payment didn’t work 😢");
     }
@@ -68,8 +72,8 @@ const styles = {
           Safe & secure payment made just for kids 💖
         </p>
 
-        <div style={styles.cardBox}>
-          <CardElement
+         {/* <div style={styles.cardBox}>
+         <CardElement
             options={{
               style: {
                 base: {
@@ -80,7 +84,7 @@ const styles = {
               },
             }}
           />
-        </div>
+        </div>  */}
 
         <Button
           type="primary"

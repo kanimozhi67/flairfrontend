@@ -26,9 +26,13 @@ const Dashboard = ({ userId }) => {
 
       // 2️⃣ Fetch global leaderboard
       const resLeaderboard = await api.get(`/quiz/progress/leaderbd?userId=${userId}`);
-      const top5 = (resLeaderboard.data.top5 || []).filter(
-        (u) => (u.userId || u.studentId) && u.username !== "Unknown"
-      );
+    const top5 = (resLeaderboard.data.top5 || []).filter(
+  (u) =>
+    (u.userId || u.studentId) &&
+    u.username !== "Unknown" &&
+    !["Admin", "SchoolAdmin", "Teacher"].includes(u.role)
+);
+console.log(resLeaderboard.data.top5)
       setLeaderboard(top5);
 
       // 3️⃣ Setup current user object

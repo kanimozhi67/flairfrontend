@@ -74,7 +74,7 @@ const[todayTaskCount,setTodayTaskCount]=useState(0);
       }
     };
     fetchUser();
-    fetchTasks();
+   // fetchTasks();
   }, []);
 
 // useEffect(() => {

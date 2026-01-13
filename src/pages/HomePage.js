@@ -74,6 +74,18 @@ const [formData, setFormData] = useState({
     fetchUser();
   }, [setUser]);
 
+  const handleLogout = async () => {
+  try {
+    await api.post("/auth/logout"); // clears cookie/session on backend
+  } catch (e) {}
+
+  localStorage.removeItem("token");
+  localStorage.removeItem("user"); // if still used anywhere
+  setUser(null);
+  navigate("/login");
+};
+
+
   const handleSubmitJoinform = async () => {
   try {
     await api.post("/admin/joinform", formData);
@@ -203,7 +215,7 @@ const [formData, setFormData] = useState({
   </Button>
   {user ? (
     <>
-    <Button size="small" onClick={() => { localStorage.removeItem("token"); setUser(null); }}>Logout</Button>
+    <Button size="small" onClick={handleLogout }>Logout</Button>
  
 <Link to="/categories"> <strong style={{color:"white"}}>{user.username}</strong>
   <img

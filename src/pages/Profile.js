@@ -44,13 +44,23 @@ const Profile = ({ setUser }) => {
     fetchTodayScore();
   }, []);
 
-  const handleLogout = async() => {
-   // await api.post("auth/logout")
-    localStorage.removeItem("token");
-    setUser(null);
-    message.success("Logged out successfully!");
-    navigate("/profile");
-  };
+  // const handleLogout = async() => {
+  //  // await api.post("auth/logout")
+  //   localStorage.removeItem("token");
+  //   setUser(null);
+  //   message.success("Logged out successfully!");
+  //   navigate("/profile");
+  // };
+const handleLogout = async () => {
+  try {
+    await api.post("/auth/logout"); // clears cookie/session on backend
+  } catch (e) {}
+
+  localStorage.removeItem("token");
+  localStorage.removeItem("user"); // if still used anywhere
+  setUser(null);
+  navigate("/login");
+};
 
 
 

@@ -35,7 +35,7 @@ const[todayTaskCount,setTodayTaskCount]=useState(0);
       const res = await api.get(`/users/todaytask`);
       setTasks(res.data);
     } catch (err) {
-      message.error("Failed to load tasks");
+      //message.error("Failed to load tasks");
     } finally {
       setLoading(false);
     }

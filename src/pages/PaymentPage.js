@@ -57,7 +57,7 @@ const styles = {
     try {
       const res = await api.post("/payment/createcheckoutsession");
       window.location.href = res.data.url;
-      console.log(res.data)
+    
      // navigate("/profile")
     } catch (err) {
       message.error("Oops! Payment didn’t work 😢");

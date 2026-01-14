@@ -17,7 +17,8 @@ export default function Fraction({ category, level, selectedLevel, user, addPoin
     setStep(0);
 
     const endpoint =
-    category === "puzzles" ? ( selectedLevel===2 ?  "/quiz/puzzlelevel2" :  "/quiz/puzzlelevel3" ) :
+    (category === "puzzles" && level==="primary")? ( selectedLevel===2 ?  "/quiz/puzzleplevel2" :  "/quiz/puzzleplevel3" ) :
+   ( category === "puzzles" && level==="kindergarten")? ( selectedLevel===2 ?  "/quiz/puzzlelevel2" :  "/quiz/puzzlelevel3" ) :
     category === "logic" ? ( selectedLevel===2 ?  "/quiz/logicplevel2" :  "/quiz/logicplevel3" ) :
 
     (  level==="primary" ? (

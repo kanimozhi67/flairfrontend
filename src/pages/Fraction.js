@@ -18,6 +18,7 @@ export default function Fraction({ category, level, selectedLevel, user, addPoin
 
     const endpoint =
     category === "puzzles" ? ( selectedLevel===2 ?  "/quiz/puzzlelevel2" :  "/quiz/puzzlelevel3" ) :
+    category === "logic" ? ( selectedLevel===2 ?  "/quiz/logicplevel2" :  "/quiz/logicplevel3" ) :
 
     (  level==="primary" ? (
           selectedLevel === 1
@@ -68,6 +69,22 @@ export default function Fraction({ category, level, selectedLevel, user, addPoin
       finishQuiz();
     }
   };
+
+  const renderQuestion = (question) => {
+  // If question contains 🧩, split and show each on new line
+  if (question.includes("🧩")) {
+    return question.split("🧩").map((part, index) =>
+      part.trim() ? (
+        <div key={index}>🧩 {part.trim()} <br></br>
+        </div>
+      ) : null
+    );
+  }
+
+  // Default rendering
+  return question;
+};
+
 
   const finishQuiz = async () => {
     const response = await api.post("/quiz/checkfraction", {
@@ -144,16 +161,27 @@ export default function Fraction({ category, level, selectedLevel, user, addPoin
       </h3>
 <hr></hr><br></br>
 
-{category!=="fraction" && selectedLevel ===3 && ( 
+{category=="puzzles" && selectedLevel ===3 && ( 
   <p style={{fontSize: "clamp(18px, 3vw, 26px)"}}> Find the symmetric one</p>)}
+{category==="logic" && selectedLevel ===3 && ( 
+  <p style={{fontSize: "clamp(18px, 3vw, 26px)"}}> Find the missing number</p>)}
 
 
 {level==="primary" && selectedLevel ===1 && (
 <p style={{fontSize: "clamp(18px, 3vw, 26px)"}}>What fraction is represented ?</p>)}
-{level==="primary" && selectedLevel ===1 || category!=="fraction" && selectedLevel ===3 ? (
+
+{level==="primary" && selectedLevel ===1 || (category!=="fraction" && selectedLevel ===3 ) &&
+( category!=="logic"  && selectedLevel ===2 )? (
 <p style={styles.mainQuestion}>{current.question}</p> 
-) : (
-      <p style={styles.mainQuestion1}>{current.question}</p> )}
+) : (category==="logic" && selectedLevel ===3)?(
+<div style={styles.mainQuestion}>
+  {renderQuestion(current.question)}
+</div>
+
+
+
+): (
+    <p style={styles.mainQuestion1}>   {current.question}</p> )}
 
 { level!=="primary"   ? (
       current.options.map((opt) => (

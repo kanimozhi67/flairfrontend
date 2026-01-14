@@ -282,7 +282,12 @@ boxShadow: "0 12px 30px rgba(255, 160, 140, 0.45)",
       break;
 
     case "logic":
-      len = 3;
+       if (level === "primary") {
+      len = selectedLevel === 1 ? 3 : 5;
+       }
+       else{
+         len = 3;
+       }
       break;
 
     case "money":
@@ -780,7 +785,7 @@ boxShadow: "0 12px 30px rgba(255, 160, 140, 0.45)",}}>
                 addPointsToBackend={addPointsToBackend}
               />
             </div>
-          ) : category === "logic" ? (
+          ) : category === "logic" && (level==="kindergarten" || (level==="primary" && selectedLevel===1) )? (
             <Logics
             level={level}
               selectedLevel={selectedLevel}
@@ -834,7 +839,8 @@ user={user}
             addPointsToBackend={addPointsToBackend}
             setResults={setResults}
 />
-        ):category==="fraction" || (category === "puzzles" && level === "kindergarten" && selectedLevel !==1 ) ?(
+        ):category==="fraction" || (category === "puzzles" && level === "kindergarten" && selectedLevel !==1 ) ||
+        (category==="logic" && selectedLevel!==1)?(
 <Fraction  
 category ={category}
  level={level}

@@ -94,7 +94,8 @@ const handleLogout = async () => {
         />
         <h1 style={{ fontSize: 28, fontWeight: "bold", marginBottom: 5 }}>{user.username}</h1>
         <p style={{ fontSize: 20, color: "#555", marginBottom: 5 }}>Email: {user.email}</p>
-        <p style={{ fontSize: 20, color: "#555", marginBottom: 5 }}>Level: {user.level}</p>
+        {user.level &&
+        <p style={{ fontSize: 20, color: "#555", marginBottom: 5 }}>Level: {user.level}</p>}
         <p style={{ fontSize: 20, marginBottom: 5 }}>
         Today's Score: <span style={{ color: "#ff4e2fff", fontWeight: "bold" }}>{todayScore} ⭐</span></p>
       

@@ -93,7 +93,7 @@ const styles = {
           style={styles.button}
           onClick={handlePay}
         >
-          🚀 Pay $50 & Start Learning
+          🚀 Pay $5 & Start Learning
         </Button>
 
         <p style={styles.footer}>🔒 100% Secure Payment</p>

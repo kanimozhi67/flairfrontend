@@ -104,18 +104,13 @@ const [formData, setFormData] = useState({
     //   icon: <UserOutlined />,
     //   onClick: () => { setIsLogin(true); setModalOpen(true); },
     // },
-    {
-      key: "signup",
-      label: "Sign Up",
-      icon: <SolutionOutlined />,
-      onClick: () => { setIsLogin(false); setModalOpen(true); },
-    },
     // {
-    //   key: "school",
-    //   label: "School Login",
-    //   icon: <TeamOutlined />,
-    //   onClick: () => { window.location.href = "/school-login"; },
+    //   key: "signup",
+    //   label: "Sign Up",
+    //   icon: <SolutionOutlined />,
+    //   onClick: () => { setIsLogin(false); setModalOpen(true); },
     // },
+   
     {
       key: "online",
       label: "Online Class",
@@ -124,7 +119,8 @@ const [formData, setFormData] = useState({
     },
     {
       key: "contact",
-      label: "Contact",
+      label: "📞 Contact",
+      
       onClick: () => contactRef.current?.scrollIntoView({ behavior: "smooth" }),
     },
   ];
@@ -287,11 +283,20 @@ transform: "translateX(-50%)",        // ✅ FORCE full width
     alignItems: "center",
   }}
 >
-  <SchoolLoginDropdown setUser={setUser} /> {/* Left */}
+  {!user && <SchoolLoginDropdown setUser={setUser} /> }  {/* Left */}
   {user &&
+  <>
   <Button size="small" onClick={() => { localStorage.removeItem("token"); setUser(null); }}>Logout
-  </Button>}
-  
+  </Button>
+  <Link to="/categories"> <strong style={{color:"white"}}>{user?.username}</strong>
+  <img
+    src={user?.avatar ? avat : avat}
+    style={{ maxWidth: 20, borderRadius: "50%", cursor: "pointer",border :"1px solid blue" }}
+    alt="avatar"
+  />
+</Link>
+</>
+}
   <Dropdown
     menu={{ items: mobileMenuItems }}
     placement="bottomRight"
@@ -377,7 +382,7 @@ transform: "translateX(-50%)",        // ✅ FORCE full width
         setModalOpen(true);
       }}
     >
-      LOGIN FOR MENTAL FEAST
+      LOGIN / SIGNUP FOR MENTAL FEAST
     </Button>
   </div>
 ) : (

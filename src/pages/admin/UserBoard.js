@@ -39,7 +39,7 @@ const UserBoard = () => {
         ...u,
         _id: u._id || u.userId,
       }));
-
+console.log(normalized)
       setAllUser(normalized);
       setFilteredUser(normalized);
     } catch (err) {
@@ -159,20 +159,50 @@ const UserBoard = () => {
       key: "sticker",
       render: (_, record) => (
         <Button type="link">
-          🎖️ {record.sticker?.length || 0}
+         {record.sticker?.length || 0}
         </Button>
       ),
     },
     {
       title: "Score",
-      dataIndex: "points",
+     // dataIndex: "points",
       key: "points",
+       render: (_, record) => (
+        <Button type="link" style={{color:"green"}}>
+          🎖️ {record.points }
+        </Button>
+      ),
     },
     {
       title: "Level",
       dataIndex: "level",
       key: "level",
     },
+   {
+  title: "Premium",
+  dataIndex: "isPremium",
+  key: "isPremium",
+  render: (isPremium) => (
+    isPremium ? "⭐ Premium" : "—"
+  ),
+},
+
+      {
+      title: "Plan",
+      dataIndex: "plan",
+      key: "plan",
+        render: (plan) => (
+    plan ? plan : "—"
+  ),
+    },
+    {
+  title: "Expiry Date",
+  dataIndex: "expiresAt",
+  key: "expiresAt",
+  render: (date) =>
+    date ? new Date(date).toISOString().split("T")[0] : "—",
+},
+
     {
       title: "Actions",
       key: "actions",
@@ -206,14 +236,14 @@ const UserBoard = () => {
             placeholder="Search by username or email"
             allowClear
             onChange={(e) => handleSearch(e.target.value)}
-            style={{ marginBottom: 16, maxWidth: 300 }}
+            style={{ marginBottom: 16, maxWidth: 300 ,}}
           />
 
           <div style={{ marginBottom: 16 }}>
             Total Users:{" "}
             <span style={{ color: "red" }}>{allUser.length}</span>
           </div>
-
+<div style={{overflow:"scroll"}}>
           {loading ? (
             <Spin />
           ) : filteredUser.length === 0 ? (
@@ -226,6 +256,7 @@ const UserBoard = () => {
               pagination={{ pageSize: 10 }}
             />
           )}
+          </div>
         </Col>
       </Row>
 

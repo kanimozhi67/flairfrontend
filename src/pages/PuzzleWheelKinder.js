@@ -18,6 +18,9 @@ export default function PuzzleWheelKinder({ level,addPointsToBackend, setResults
   const [correctAnswers, setCorrectAnswers] = useState(null);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState(null);
+  const [aiExplanation, setAiExplanation] = useState(null);
+const [loadingExplanation, setLoadingExplanation] = useState(false);
+
 
   /* ------------------- LOWER LEVEL: COMPUTE MISSING VALUE ------------------- */
   const computeMissingValue = (qArray) => {
@@ -75,6 +78,8 @@ export default function PuzzleWheelKinder({ level,addPointsToBackend, setResults
 
       setMeta({ id: qObj.id, qArray: qObj.q });
       setOptions(makeOptionsForMissing(qObj.q));
+setAiExplanation(null);
+setLoadingExplanation(false);
 
       setUserAnswer(null);
       setCorrectAnswers(null);
@@ -91,32 +96,75 @@ export default function PuzzleWheelKinder({ level,addPointsToBackend, setResults
   }, []);
 
   /* ------------------- SUBMIT ------------------- */
-  const submitQuiz = async (answer) => {
-    if (!meta || submitted) return;
+  // const submitQuiz = async (answer) => {
+  //   if (!meta || submitted) return;
 
-    try {
-      const res = await api.post("quiz/checkmathlevel3", {
-        userId: "demoUser",
-        answers: [{ id: meta.id, answer }]
+  //   try {
+  //     const res = await api.post("quiz/checkmathlevel3", {
+  //       userId: "demoUser",
+  //       answers: [{ id: meta.id, answer }]
+  //     });
+
+  //     addPointsToBackend(res.data.score);
+
+  //     const correct = res.data.results?.[meta.id];
+  //     if (!correct) {
+  //       setError("No result returned");
+  //       return;
+  //     }
+
+  //     setCorrectAnswers(correct);
+  //     setSubmitted(true);
+  //     setResults(res.data.results);
+  //   } catch (err) {
+  //     console.error(err);
+  //     setError("Failed to submit quiz");
+  //     setSubmitted(true);
+  //   }
+  // };
+const submitQuiz = async (answer) => {
+  if (!meta || submitted) return;
+
+  try {
+    const res = await api.post("quiz/checkmathlevel3", {
+      userId: "demoUser",
+      answers: [{ id: meta.id, answer }]
+    });
+
+    addPointsToBackend(res.data.score);
+
+    const result = res.data.results?.[meta.id];
+    if (!result) {
+      setError("No result returned");
+      return;
+    }
+
+    setCorrectAnswers(result);
+    setSubmitted(true);
+    setResults(res.data.results);
+
+    // 👇 CALL OPENAI ONLY IF WRONG
+    if (Number(answer) !== Number(result.correctAnswer)) {
+      setLoadingExplanation(true);
+
+      const explainRes = await api.post("/quiz/explain", {
+        question: meta.qArray.join(", "),
+        correctAnswer: result.correctAnswer,
+        userAnswer: answer,
+        level
       });
 
-      addPointsToBackend(res.data.score);
-
-      const correct = res.data.results?.[meta.id];
-      if (!correct) {
-        setError("No result returned");
-        return;
-      }
-
-      setCorrectAnswers(correct);
-      setSubmitted(true);
-      setResults(res.data.results);
-    } catch (err) {
-      console.error(err);
-      setError("Failed to submit quiz");
-      setSubmitted(true);
+    
+    } else {
+      setAiExplanation(null);
     }
-  };
+
+  } catch (err) {
+    console.error(err);
+    setError("Failed to submit quiz");
+    setSubmitted(true);
+  }
+};
 
   /* ------------------- HANDLE OPTION CLICK ------------------- */
   const handleSelect = (value) => {
@@ -241,18 +289,26 @@ export default function PuzzleWheelKinder({ level,addPointsToBackend, setResults
             </Row>
           )}
 
-          {submitted && correctAnswers && (
-            <div
-              style={{
-                marginTop: 20,
-                background: "#f0fbff",
-                borderRadius: 16,
-                padding: 16,
-                fontSize:20
-              }}
-            >
-              <strong>📋 Review</strong>
+          {/* {submitted && correctAnswers && ( */}
+         {submitted && correctAnswers && userAnswer !== correctAnswers.correctAnswer && (
+  <div
+    style={{
+      marginTop: 16,
+      background: "#fff6d6",
+      borderRadius: 16,
+      padding: 16,
+      fontSize: 18
+    }}
+  >  <strong>📋 Review</strong>
               <hr />
+    <strong>🤖 Explanation</strong>
+    <hr />
+    {loadingExplanation ? "Thinking… 🤔" : <pre>{aiExplanation}</pre>}
+  
+
+
+       <hr />
+            
               <div>
                 <span style={getAnswerStyle(userAnswer, correctAnswers.correctAnswer)}>
                   {userAnswer === correctAnswers.correctAnswer ? "✅" : "❌"} {userAnswer}

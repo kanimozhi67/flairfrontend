@@ -20,6 +20,9 @@ export default function Measurement({level,selectedLevel,addPointsToBackend}) {
   const [results, setResults] = useState([]);
   const inputRef = useRef(null);
    const [submitted, setSubmitted] = useState(false);
+    const [loading, setLoading] = useState(true);
+       const [aiExplanations, setAiExplanations] = useState({});
+const [loadingExplanation, setLoadingExplanation] = useState(false);
 
   const fetchQuestions = async () => {
       try {
@@ -34,6 +37,7 @@ export default function Measurement({level,selectedLevel,addPointsToBackend}) {
     const res = await api.get(endpoint);
       
         setQuestions(res.data.questions);
+       
       } catch (err) {
         message.error("Failed to load quiz");
       }
@@ -83,29 +87,93 @@ const startNewGame = async () => {
    
   };
 
+  // const finishQuiz = async () => {
+  //    setSubmitted(true);
+  //   try {
+  //           const endpoint =
+  //     selectedLevel === 1
+  //       ?"quiz/checkmeasure"
+  //       : selectedLevel === 2
+  //       ? "quiz/checkmeasure2"
+  //       : "quiz/checkmeasure3";
+  //     const res = await api.post(endpoint, {
+  //       answers: userAnswers
+  //     });
+
+  //     setResults(res.data.results);
+  //     message.success(
+  //       `Score: ${res.data.score}/${res.data.total}`
+      
+  //     );
+  //      addPointsToBackend(res.data.score);
+
+  //      const explanations = {};
+
+  // for (const item of [...userAnswers, { id: current.id, question: current.question, answer: selected }]) {
+  //   const correct = res.data.correctAnswers?.[item.id];
+
+  //   if (String(item.answer) !== String(correct)) {
+  //     const explainRes = await api.post("/quiz/explain2", {
+  //       question: item.question,
+  //       correctAnswer: correct,
+  //       userAnswer: item.answer
+  //     });
+
+  //     explanations[item.id] = explainRes.data.explanation;
+  //   }
+  // }
+
+  // setAiExplanations(explanations);
+  //   } catch (err) {
+  //     message.error("Failed to submit quiz");
+  //   }
+  // };
   const finishQuiz = async () => {
-     setSubmitted(true);
-    try {
-            const endpoint =
+  setSubmitted(true);
+
+  try {
+    const endpoint =
       selectedLevel === 1
-        ?"quiz/checkmeasure"
+        ? "quiz/checkmeasure"
         : selectedLevel === 2
         ? "quiz/checkmeasure2"
         : "quiz/checkmeasure3";
-      const res = await api.post(endpoint, {
-        answers: userAnswers
-      });
 
-      setResults(res.data.results);
-      message.success(
-        `Score: ${res.data.score}/${res.data.total}`
-      
-      );
-       addPointsToBackend(res.data.score);
-    } catch (err) {
-      message.error("Failed to submit quiz");
+    const res = await api.post(endpoint, {
+      answers: userAnswers,
+    });
+
+    setResults(res.data.results);
+
+    message.success(`Score: ${res.data.score}/${res.data.total}`);
+    addPointsToBackend(res.data.score);
+
+    const explanations = {};
+
+    for (const item of userAnswers) {
+      const correct = res.data.correctAnswers?.[item.id];
+
+      if (String(item.answer) !== String(correct)) {
+        const questionText =
+          questions.find(q => q.id === item.id)?.question || "";
+
+        const explainRes = await api.post("/quiz/explain2", {
+          question: questionText,
+          correctAnswer: correct,
+          userAnswer: item.answer,
+        });
+
+        explanations[item.id] = explainRes.data.explanation;
+      }
     }
-  };
+
+    setAiExplanations(explanations);
+
+  } catch (err) {
+    message.error("Failed to submit quiz");
+  }
+};
+
 
   if (!questions.length) return <p style={{ textAlign: "center" }}>Loading...</p>;
 
@@ -144,6 +212,15 @@ const startNewGame = async () => {
     boxShadow: "0 6px 14px rgba(0,0,0,0.1)"
   }}
           >
+
+              <hr style={{ marginBottom: 12 }} />
+{!r.isCorrect && (
+aiExplanations[r.id] && (
+  <div style={{ marginTop: 10 }}>
+    <strong>🤖 Explanation</strong><br></br>
+    <pre>{aiExplanations[r.id]}</pre>
+  </div>
+))}
             <div style={{ fontSize: 18, marginBottom: 8 }}>
               <strong style={{ color: r.isCorrect ? "#389e0d" : "#cf1322" }}>
 Q{i + 1}:</strong> {questions[i].question}

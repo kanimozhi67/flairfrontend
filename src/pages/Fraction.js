@@ -8,6 +8,8 @@ export default function Fraction({ category, level, selectedLevel, user, addPoin
   const [selected, setSelected] = useState("");
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(true);
+    const [aiExplanations, setAiExplanations] = useState({});
+  const [loadingExplanation, setLoadingExplanation] = useState(false);
 
   const fetchFractionQuiz = async () => {
     setLoading(true);
@@ -38,6 +40,7 @@ export default function Fraction({ category, level, selectedLevel, user, addPoin
     const res = await api.get(endpoint);
     setQuestions(res.data.questions);
     setLoading(false);
+    
   };
 
   useEffect(() => {
@@ -87,18 +90,65 @@ export default function Fraction({ category, level, selectedLevel, user, addPoin
 };
 
 
-  const finishQuiz = async () => {
-    const response = await api.post("/quiz/checkfraction", {
-      userId: user?._id || "demo-user",
-      answers: [...answers, { id: current.id, question: current.question, answer: selected }]
-    });
+  // const finishQuiz = async () => {
+  //   const response = await api.post("/quiz/checkfraction", {
+  //     userId: user?._id || "demo-user",
+  //     answers: [...answers, { id: current.id, question: current.question, answer: selected }]
+  //   });
 
-    setResult(response.data);
+  //   setResult(response.data);
 
-    if (addPointsToBackend) {
-      addPointsToBackend(response.data.score);
+  //   if (addPointsToBackend) {
+  //     addPointsToBackend(response.data.score);
+  //   }
+  //   if (Number(answer) !== Number(correct.correctAnswer)) {
+  //     setLoadingExplanation(true);
+
+  //     const explainRes = await api.post("/quiz/explain", {
+  //       question: meta.qArray.join(", "),
+  //       correctAnswer: correct.correctAnswer,
+  //       userAnswer: answer,
+  //     //  level
+  //     });
+
+  //     setAiExplanation(explainRes.data.explanation);
+  //    if(aiExplanation) console.log(aiExplanation)
+  //     setLoadingExplanation(false);
+  //   } else {
+  //     setAiExplanation(null);
+  //   }
+  // };
+const finishQuiz = async () => {
+  const response = await api.post("/quiz/checkfraction", {
+    userId: user?._id || "demo-user",
+    answers: [...answers, { id: current.id, question: current.question, answer: selected }]
+  });
+
+  setResult(response.data);
+
+  if (addPointsToBackend) {
+    addPointsToBackend(response.data.score);
+  }
+
+  const explanations = {};
+
+  for (const item of [...answers, { id: current.id, question: current.question, answer: selected }]) {
+    const correct = response.data.correctAnswers?.[item.id];
+
+    if (String(item.answer) !== String(correct)) {
+      const explainRes = await api.post("/quiz/explain2", {
+        question: item.question,
+        correctAnswer: correct,
+        userAnswer: item.answer
+      });
+
+      explanations[item.id] = explainRes.data.explanation;
     }
-  };
+  }
+
+  setAiExplanations(explanations);
+};
+
 
   // 🌈 RESULT SCREEN
   if (result) {
@@ -109,7 +159,9 @@ export default function Fraction({ category, level, selectedLevel, user, addPoin
         <p style={styles.score}>
           You scored <strong>{result.score}</strong> out of {result.total} ⭐
         </p>
+       
 
+  
         {answers.map((item, index) => {
           const correct = result.correctAnswers?.[item.id];
           const isCorrect = item.answer === correct;
@@ -122,6 +174,16 @@ export default function Fraction({ category, level, selectedLevel, user, addPoin
                 borderColor: isCorrect ? "#22c55e" : "#ef4444"
               }}
             >
+  <hr style={{ marginBottom: 12 }} />
+{level==="primary" && selectedLevel!==1 &&
+aiExplanations[item.id] && (
+  <div style={{ marginTop: 10 }}>
+    <strong>🤖 Explanation</strong><br></br>
+    <pre>{aiExplanations[item.id]}</pre>
+  </div>
+)}
+
+
               <p style={styles.question}>
                 {index + 1}. {item.question}
               </p>
@@ -163,7 +225,7 @@ export default function Fraction({ category, level, selectedLevel, user, addPoin
 <hr></hr><br></br>
 
 {category=="puzzles" && selectedLevel ===3 && ( 
-  <p style={{fontSize: "clamp(18px, 3vw, 26px)"}}> Find the symmetric one</p>)}
+  <p style={{fontSize: "clamp(18px, 3vw, 26px)"}}> Find the  other symmetric half</p>)}
 {category==="logic" && selectedLevel ===3 && ( 
   <p style={{fontSize: "clamp(18px, 3vw, 26px)"}}> Find the missing number</p>)}
 

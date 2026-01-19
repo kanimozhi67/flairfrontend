@@ -16,6 +16,8 @@ export default function PuzzleWheel({ addPointsToBackend, setResults }) {
   const [correctAnswers, setCorrectAnswers] = useState(null);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState(null);
+    const [aiExplanation, setAiExplanation] = useState(null);
+const [loadingExplanation, setLoadingExplanation] = useState(false);
 
   // ------------------- COMPUTE MISSING VALUE -------------------
   const computeMissingValue = (qArray, mul, skip) => {
@@ -76,6 +78,8 @@ export default function PuzzleWheel({ addPointsToBackend, setResults }) {
 
       setOptions(makeOptionsForMissing(qObj.q, qObj.mul, qObj.skip));
       setStep(1);
+      setAiExplanation(null);
+setLoadingExplanation(false);
       setUserAnswer(null);
       setUserMul(null);
       setUserSkip(null);
@@ -125,6 +129,22 @@ export default function PuzzleWheel({ addPointsToBackend, setResults }) {
       setSubmitted(true);
       setResults(res.data.results);
 
+ if (Number(answer) !== Number(correct.correctAnswer)) {
+      setLoadingExplanation(true);
+
+      const explainRes = await api.post("/quiz/explain", {
+        question: meta.qArray.join(", "),
+        correctAnswer: correct.correctAnswer,
+        userAnswer: answer,
+      //  level
+      });
+
+      setAiExplanation(explainRes.data.explanation);
+     if(aiExplanation) console.log(aiExplanation)
+      setLoadingExplanation(false);
+    } else {
+      setAiExplanation(null);
+    }
     } catch (err) {
       console.error("Submit error:", err.response?.data || err.message);
       setError("Failed to submit quiz.");
@@ -293,7 +313,7 @@ export default function PuzzleWheel({ addPointsToBackend, setResults }) {
       )}
 
  
-      {submitted && correctAnswers && (
+     {submitted && correctAnswers && userAnswer !== correctAnswers.correctAnswer && (
   <div
     style={{
       marginTop: 20,
@@ -309,6 +329,10 @@ export default function PuzzleWheel({ addPointsToBackend, setResults }) {
     </div>
 
     <hr style={{ marginBottom: 12 }} />
+ <strong>🤖 Explanation</strong>
+    <hr />
+    {loadingExplanation ? "Thinking… 🤔" : <pre>{aiExplanation}</pre>}
+  <hr />
 
     {/* 1. Missing Value */}
     <div style={{ marginBottom: 10 }}>
@@ -337,7 +361,7 @@ export default function PuzzleWheel({ addPointsToBackend, setResults }) {
       </span>
       {Number(userMul) !== Number(correctAnswers.correctMul) && (
         <span style={{ marginLeft: 8, color: "#2ecc71", fontWeight: "bold" }}>
-          👉 Correct: {correctAnswers.correctMul}
+          👉 Correct: {correctAnswers.correctMul}. <br></br> {correctAnswers.correctMul} Table is multiplied with all numbers.
         </span>
       )}
     </div>
@@ -353,7 +377,7 @@ export default function PuzzleWheel({ addPointsToBackend, setResults }) {
       </span>
       {Number(userSkip) !== Number(correctAnswers.correctSkip) && (
         <span style={{ marginLeft: 8, color: "#2ecc71", fontWeight: "bold" }}>
-          👉 Correct: {correctAnswers.correctSkip}
+          👉 Correct: {correctAnswers.correctSkip}.<br></br>{correctAnswers.correctSkip} is added to all numbers.
         </span>
       )}
     </div>

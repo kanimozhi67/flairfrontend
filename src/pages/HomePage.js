@@ -353,7 +353,8 @@ transform: "translateX(-50%)",        // ✅ FORCE full width
               
               Minds
             </h1>
-<br></br>
+<br>
+</br>
           {/* CTA at Bottom */}
    
 

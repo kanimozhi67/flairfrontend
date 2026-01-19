@@ -28,6 +28,7 @@ import ShapesQuiz from "./ShapesQuiz.js";
 import Fraction from "./Fraction.js";
 import TimeQuiz from "./TimeQuiz.js";
 import TimeOption from "./TimeOption.js";
+import Robot from "./Robot.js";
 
 const QuizPage = ({ user, setUser }) => {
     const navigate = useNavigate();
@@ -675,7 +676,7 @@ useEffect(() => {
   }
 }, [urlSelectedLevel]);
   // Render flows
-  if (!selectedLevel) {
+  if (!selectedLevel &&  category!=="robot") {
     return (
       <LevelSelection
         onSelectLevel={(lvl, msg) => {
@@ -685,7 +686,7 @@ useEffect(() => {
         }}
       />
     );
-  }
+  {}}
 
   if (showMotivation) {
     return (
@@ -704,6 +705,7 @@ useEffect(() => {
     <div style={{    background: "linear-gradient(135deg, #ffe680, #f08c8cff)",
  
 boxShadow: "0 12px 30px rgba(255, 160, 140, 0.45)",}}>
+{ category!=="robot" &&
            <button
   onClick={() => window.location.reload()}
   style={{
@@ -719,9 +721,9 @@ boxShadow: "0 12px 30px rgba(255, 160, 140, 0.45)",}}>
     cursor:"pointer"
   }}
 >
-  👉Change level from {selectedLevel}
+   👉Change level from {selectedLevel}
 </button>
-
+}
     <div style={containerStyle}>
  
       <div style={innerStyle}>
@@ -864,7 +866,8 @@ category ={category}
             addPointsToBackend={addPointsToBackend}
             setResults={setResults}
 />
-
+        ): category==="robot" ?(
+          <Robot />
  ):(
             <QuizCard
               level={level}

@@ -12,6 +12,8 @@ const MoneyQuiz = ({ selectedLevel , addPointsToBackend }) => {
   const [result, setResult] = useState(null);
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+    const [aiExplanations, setAiExplanations] = useState({});
+    const [loadingExplanation, setLoadingExplanation] = useState(false);
 
   const inputRef = useRef(null);
 
@@ -94,6 +96,30 @@ const MoneyQuiz = ({ selectedLevel , addPointsToBackend }) => {
       addPointsToBackend?.(res.data.score);
 
       message.success(`Score: ${res.data.score}`);
+      const explanations = {};
+
+
+
+for (const q of questions) {
+  const userAnswer = finalAnswers[q.id];
+  const correct = res.data.correctAnswers?.[q.id];
+
+  if (
+    userAnswer !== undefined &&
+    normalize(userAnswer) !== normalize(correct)
+  ) {
+    const explainRes = await api.post("/quiz/explain2", {
+      question: q.question,
+      correctAnswer: correct,
+      userAnswer,
+    });
+
+    explanations[q.id] = explainRes.data.explanation;
+  }
+}
+
+setAiExplanations(explanations);
+
     } catch (err) {
       message.error("Failed to submit quiz");
     } finally {
@@ -189,6 +215,14 @@ const MoneyQuiz = ({ selectedLevel , addPointsToBackend }) => {
                     background: isCorrect ? "#dcfce7" : "#fee2e2",
                   }}
                 >
+                    <hr style={{ marginBottom: 12 }} />
+{selectedLevel!==2 &&
+aiExplanations[q.id] && (
+  <div style={{ marginTop: 10 }}>
+    <strong>🤖 Explanation</strong><br></br>
+    <pre>{aiExplanations[q.id]}</pre>
+  </div>
+)}
                   <Text strong>
                     Q{i + 1}. {q.question}
                   </Text>

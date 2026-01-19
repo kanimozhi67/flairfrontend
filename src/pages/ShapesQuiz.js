@@ -10,6 +10,8 @@ export default function ShapesQuiz({ level, selectedLevel, user, addPointsToBack
   const [feedback, setFeedback] = useState("");
   const [isAnswered, setIsAnswered] = useState(false);
   const scoreSentRef = useRef(false);
+    const [aiExplanations, setAiExplanations] = useState({});
+    const [loadingExplanation, setLoadingExplanation] = useState(false);
 
   /* ------------------ Fetch Questions ------------------ */
   const fetchQuestions = async () => {
@@ -70,31 +72,92 @@ export default function ShapesQuiz({ level, selectedLevel, user, addPointsToBack
   const currentQuestion = questions[currentIndex];
 
   /* ------------------ Handle Answer ------------------ */
+  // const handleOptionClick = async (option) => {
+  //   if (isAnswered) return;
+  //   setIsAnswered(true);
+
+  //   try {
+  //     const res = await api.post("quiz/checkshape", {
+  //       userId: user._id,
+  //       answer: { id: currentQuestion.id, selectedOption: option },
+  //     });
+
+  //     if (res.data.isCorrect) {
+  //       setScore((prev) => prev + 1);
+  //       setFeedback("✅ Correct! 🎉");
+  //     } else {
+  //       setFeedback(`❌ .   Correct Answer: ${res.data.correctAnswer}`);
+  //     }
+
+  //     setTimeout(() => {
+  //       if (currentIndex + 1 < questions.length) setCurrentIndex((prev) => prev + 1);
+  //       else setShowResult(true);
+  //     }, 1500);
+  //      const explanations = {};
+
+  // for (const item of [...answers, { id: current.id, question: current.question, answer: selected }]) {
+  //   const correct = response.data.correctAnswers?.[item.id];
+
+  //   if (String(item.answer) !== String(correct)) {
+  //     const explainRes = await api.post("/quiz/explain2", {
+  //       question: item.question,
+  //       correctAnswer: correct,
+  //       userAnswer: item.answer
+  //     });
+
+  //     explanations[item.id] = explainRes.data.explanation;
+  //   }
+  // }
+
+  // setAiExplanations(explanations);
+  //   } catch (err) {
+  //     console.error("Error submitting answer:", err);
+  //   }
+  // };
   const handleOptionClick = async (option) => {
-    if (isAnswered) return;
-    setIsAnswered(true);
+  if (isAnswered) return;
+  setIsAnswered(true);
 
-    try {
-      const res = await api.post("quiz/checkshape", {
-        userId: user._id,
-        answer: { id: currentQuestion.id, selectedOption: option },
-      });
+  try {
+    const res = await api.post("quiz/checkshape", {
+      userId: user._id,
+      answer: { id: currentQuestion.id, selectedOption: option },
+    });
 
-      if (res.data.isCorrect) {
-        setScore((prev) => prev + 1);
-        setFeedback("✅ Correct! 🎉");
+    if (res.data.isCorrect) {
+      setScore((prev) => prev + 1);
+      setFeedback("✅ Correct! 🎉");
+    } else {
+      setFeedback(`❌ Correct Answer: ${res.data.correctAnswer}`);
+
+      if(level==="primary") {
+      // 🔥 AI explanation ONLY for wrong answer
+    const explainRes = await api.post("/quiz/explain3", {
+  question: `Give edges, vertices, and cornersof all 2d and 3d shapes `,
+ 
+});
+
+
+      setAiExplanations((prev) => ({
+        ...prev,
+        [currentQuestion.id]: explainRes.data.explanation,
+      }));
+    }}
+
+    setTimeout(() => {
+      if (currentIndex + 1 < questions.length) {
+        setCurrentIndex((prev) => prev + 1);
+        setIsAnswered(false);
       } else {
-        setFeedback(`❌ .   Correct Answer: ${res.data.correctAnswer}`);
+        setShowResult(true);
       }
+    }, 1500);
 
-      setTimeout(() => {
-        if (currentIndex + 1 < questions.length) setCurrentIndex((prev) => prev + 1);
-        else setShowResult(true);
-      }, 1500);
-    } catch (err) {
-      console.error("Error submitting answer:", err);
-    }
-  };
+  } catch (err) {
+    console.error("Error submitting answer:", err);
+  }
+};
+
 
   /* ------------------ Result Screen ------------------ */
   if (showResult) {
@@ -117,6 +180,21 @@ export default function ShapesQuiz({ level, selectedLevel, user, addPointsToBack
         <p>
           Your Score: <strong style={{ color: "yellow" }}>{score} ⭐</strong>
         </p>
+{Object.keys(aiExplanations).length > 0 && (
+  <div style={{ marginTop: 20, textAlign: "left" }}>
+    <hr />
+    <h3>🤖 Explanations</h3>
+
+    {Object.entries(aiExplanations).map(([questionId, explanation]) => (
+      <div key={questionId} style={{ marginBottom: "1rem" }}>
+        <pre style={{ whiteSpace: "pre-wrap" }}>{explanation}</pre>
+      </div>
+    ))}
+  </div>
+)}
+
+
+       <hr />
         <button
           style={{
             marginTop: 20,

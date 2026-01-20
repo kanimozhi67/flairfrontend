@@ -36,7 +36,7 @@ const Robot = () => {
         justifyContent: "center",
         alignItems: "start",
         padding: "1rem",
-        background: "linear-gradient(135deg, #e977a9, #254ce7)",
+        background: "linear-gradient(135deg, #e977a9, #c725e7)",
           borderRadius: 24,
       }}
     >
@@ -45,8 +45,9 @@ const Robot = () => {
           width: "100%",
           maxWidth: 500,
           borderRadius: 24,
-          boxShadow: "0 10px 25px rgba(0,0,0,0.15)",
-              background: "linear-gradient(135deg, #ffecd2, #f0087c",  
+          background:"transparent",
+         // boxShadow: "0 10px 25px rgba(0,0,0,0.15)",
+            //  background: "linear-gradient(135deg, #ffecd2, #f0087c",  
              
             //  background: "linear-gradient(135deg, #ffecd2, #dd08f0",  
           

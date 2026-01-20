@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import api from "../api/axiosClient";
 
 const categories = [
+   { id: 10, name: "Flair AI Robot", path: "/quiz/robot" },
   { id: 1, name: "Addition & Subtraction", path: "/quiz/math" },
   { id: 2, name: "Sorting", path: "/quiz/sorting" },
   { id: 3, name: "Multiplication", path: "/quiz/multiplication" },
@@ -13,10 +14,10 @@ const categories = [
    { id: 7, name: "Shapes", path: "/quiz/shapes" },
   { id: 8, name: "Time", path: "/quiz/time" },
    { id: 9, name: "Fraction", path: "/quiz/fraction" },
-   { id: 10, name: "Flair AI Robot 🤖 ", path: "/quiz/robot" },
+  
 ];
 const categories2 = [
-     { id: 13, name: "Flair AI Robot   🤖 ", path: "/quiz/robot" },
+     { id: 13, name: "Flair AI Robot", path: "/quiz/robot" },
   { id: 1, name: "Addition & Subtraction", path: "/quiz/math" },
   { id: 2, name: "Sorting", path: "/quiz/sorting" },
   { id: 3, name: "Multiplication", path: "/quiz/multiplication" },
@@ -129,6 +130,7 @@ const QuizCategories = ({ setUser }) => {
      <Row gutter={[16, 16]} justify="center">
               {categories2.map((cat) => (
                 <Col key={cat.id} xs={24} sm={12} md={8}>
+                  {cat.name!=="Flair AI Robot" &&
                   <Button
                     type="primary"
                     block
@@ -146,7 +148,28 @@ const QuizCategories = ({ setUser }) => {
                     }
                   >
                     {cat.name}
+                  </Button>}
+                  {cat.name==="Flair AI Robot" && <>
+                  <Button
+                    type="primary"
+                    block
+                    size="large"
+                    style={{
+                      fontSize: "1.5rem",
+                      height: 100,
+                      borderRadius: 15,
+                       background: "linear-gradient(135deg, #f16795, #f0087c",
+                      color: "#27f5ea",
+                      fontWeight: "bold",
+                    }}
+                    onClick={() =>
+                      navigate(`${cat.path}?level=${level}`)
+                    }
+                  >
+               <span style={{fontSize:"3rem"}}>🤖</span> {cat.name}
                   </Button>
+                   <br></br>
+                  </> }
                 </Col>
               ))}
             </Row>
@@ -155,6 +178,7 @@ const QuizCategories = ({ setUser }) => {
             <Row gutter={[16, 16]} justify="center">
               {categories.map((cat) => (
                 <Col key={cat.id} xs={24} sm={12} md={8}>
+                  {cat.name!=="Flair AI Robot" &&
                   <Button
                     type="primary"
                     block
@@ -172,7 +196,27 @@ const QuizCategories = ({ setUser }) => {
                     }
                   >
                     {cat.name}
-                  </Button>
+                  </Button>}
+                  {cat.name==="Flair AI Robot" && <>
+                  <Button
+                    type="primary"
+                    block
+                    size="large"
+                    style={{
+                      fontSize: "1.5rem",
+                      height: 100,
+                      borderRadius: 15,
+                       background: "linear-gradient(135deg, #f16795, #f0087c",
+                      color: "#27f5ea",
+                      fontWeight: "bold",
+                    }}
+                    onClick={() =>
+                      navigate(`${cat.path}?level=${level}`)
+                    }
+                  >
+               <span style={{fontSize:"3rem"}}>🤖</span> {cat.name}
+                  </Button> <br></br>
+                  </> }
                 </Col>
               ))}
             </Row>)}

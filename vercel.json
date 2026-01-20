@@ -1,0 +1,6 @@
+{
+  "env": {
+    "DISABLE_ESLINT_PLUGIN": "true",
+    "CI": "false"
+  }
+}

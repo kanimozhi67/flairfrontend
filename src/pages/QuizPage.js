@@ -30,7 +30,8 @@ import TimeQuiz from "./TimeQuiz.js";
 import TimeOption from "./TimeOption.js";
 import Robot from "./Robot.js";
 
-const QuizPage = ({ user, setUser }) => {
+const QuizPage = ({ user, setUser,setCompletedLevel,setCompletedCategory,setCompletedSelectedLevel,
+  completedLevel,completedCategory,completedSelectedLevel,  setCompletedPoints }) => {
     const navigate = useNavigate();
    const { search } = useLocation();
   const [searchParams] = useSearchParams();
@@ -483,7 +484,33 @@ const categoryName = searchParams.get("category");
   };
 
   // Helper: send points to backend and update UI
-  const addPointsToBackend = async (points=0) => {
+const addPointsToBackend = async (points = 0) => {
+  // setCompletedLevel(prev => [
+  //   ...prev,
+  //   !level  ? "Task" : level,
+  // ]);
+
+  // setCompletedCategory(prev => [
+  //   ...prev,
+  //   category,
+  // ]);
+
+  // setCompletedSelectedLevel(prev => [
+  //   ...prev,
+  //   selectedLevel,
+  // ]);
+  // setCompletedPoints(prev => [
+  //   ...prev,
+  //   points,
+  // ]);
+await api.post("/users/completed", {
+  userId: user._id,
+  level:!level  ? "Task" : level,
+  category,
+  selectedLevel,
+  points,
+});
+
 
     if(points!==0){
 handleComplete(points);}

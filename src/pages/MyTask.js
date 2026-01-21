@@ -3,8 +3,10 @@ import { Card, Spin, Row, Col, Empty, Button, message } from "antd";
 import { Link } from "react-router-dom";
 import api from "../api/axiosClient";
 import { categoryRouteMap } from "../utils/categoryRouteMap";
+import CompletedTask from "./CompletedTask";
 
-const MyTask = ({user,todayTaskCount,setTodayTaskCount}) => {
+const MyTask = ({user,todayTaskCount,setTodayTaskCount,
+}) => {
  // console.log("user in MyTask" , user);
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -16,14 +18,14 @@ const MyTask = ({user,todayTaskCount,setTodayTaskCount}) => {
       {
         const res = await api.get("/users/todaytaskstudent");
       setTasks(res.data);
-      console.log(tasks);
+    
       setTodayTaskCount((res.data).length)
         }
       
         else{
       const res = await api.get("/users/todaytask");
       setTasks(res.data);
-       console.log((res.data).length)
+       
        setTodayTaskCount((res.data).length)
         }
     } catch (err) {
@@ -38,13 +40,15 @@ const MyTask = ({user,todayTaskCount,setTodayTaskCount}) => {
   }, []);
 
   if (loading) return <Spin size="large" />;
-  if (!tasks.length) return <Empty description="No tasks available" />;
+ // if (!tasks.length) return <Empty description="No tasks available" />;
 
   return (
+
     <div style={{  minHeight: "100vh", 
        // display: "flex", 
         background: "linear-gradient(135deg, #ffd194, #6a11cb)", 
         padding: 20 }}>
+          
     <Row gutter={[16, 16]}>
       {tasks.map((task) => (
         <Col xs={24} md={12} lg={8} key={task.userTaskId}>
@@ -99,6 +103,13 @@ const MyTask = ({user,todayTaskCount,setTodayTaskCount}) => {
         </Col>
       ))}
     </Row>
+
+
+    <CompletedTask 
+    user={user} 
+    
+    />
+  
     </div>
   );
 };

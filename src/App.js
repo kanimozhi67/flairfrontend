@@ -28,6 +28,10 @@ const App = () => {
   const [loadingUser, setLoadingUser] = useState(true);
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
+  const[completedLevel,setCompletedLevel]=useState([])
+  const[completedSelectedLevel,setCompletedSelectedLevel]=useState([])
+  const[completedCategory,setCompletedCategory]=useState([])
+  const[completedPoints,setCompletedPoints]=useState([])
 const[todayTaskCount,setTodayTaskCount]=useState(0);
   // Fetch tasks assigned to the user
   const fetchTasks = async () => {
@@ -150,6 +154,13 @@ const[todayTaskCount,setTodayTaskCount]=useState(0);
                   loading={loading}
                   tasks={tasks}
                   taskcompleted={taskCompleted}
+                   setCompletedLevel={setCompletedLevel}
+                  setCompletedCategory={setCompletedCategory}
+                  setCompletedSelectedLevel={setCompletedSelectedLevel}
+                     completedLevel={completedLevel}
+                  completedCategory={completedCategory}
+                  completedSelectedLevel={completedSelectedLevel}
+                  setCompletedPoints={setCompletedPoints}
                 />
               </PrivateRoute>
             }
@@ -165,6 +176,10 @@ const[todayTaskCount,setTodayTaskCount]=useState(0);
                   taskcompleted={taskCompleted}
                   todayTaskCount={todayTaskCount}
                   setTodayTaskCount={setTodayTaskCount}
+                  completedLevel={completedLevel}
+                  completedCategory={completedCategory}
+                  completedSelectedLevel={completedSelectedLevel}
+                   completedPoints={completedPoints}
                 />
               </PrivateRoute>
             }

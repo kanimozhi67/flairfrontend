@@ -485,30 +485,14 @@ const categoryName = searchParams.get("category");
 
   // Helper: send points to backend and update UI
 const addPointsToBackend = async (points = 0) => {
-  // setCompletedLevel(prev => [
-  //   ...prev,
-  //   !level  ? "Task" : level,
-  // ]);
-
-  // setCompletedCategory(prev => [
-  //   ...prev,
-  //   category,
-  // ]);
-
-  // setCompletedSelectedLevel(prev => [
-  //   ...prev,
-  //   selectedLevel,
-  // ]);
-  // setCompletedPoints(prev => [
-  //   ...prev,
-  //   points,
-  // ]);
+ console.log(user.role);
 await api.post("/users/completed", {
-  userId: user._id,
+  Id: user._id,
   level:!level  ? "Task" : level,
   category,
   selectedLevel,
   points,
+  role:user.role,
 });
 
 

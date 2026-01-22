@@ -33,6 +33,7 @@ const CompletedTask = ({ user }) => {
     try {
       const res = await api.get(`/users/completed/${user._id}`);
       setCompletedData(res.data.data);
+      console.log(res.data.data);
     } catch (err) {
       console.error(err);
     }
@@ -62,6 +63,12 @@ const CompletedTask = ({ user }) => {
       align: "center",
     },
     {
+      title: "Time",
+      dataIndex: "time",
+      key: "time",
+      align: "center",
+    },
+    {
       title: "🏆 Score",
       dataIndex: "completedPoints",
       key: "completedPoints",
@@ -76,6 +83,7 @@ const CompletedTask = ({ user }) => {
   completedLevel: completedData.completedLevel[i],
   completedCategory: completedData.completedCategory[i],
   completedSelectedLevel: completedData.completedSelectedLevel[i],
+time: completedData.time[i],
   completedPoints: completedData.completedPoints[i],
 }));
 
@@ -87,7 +95,7 @@ const CompletedTask = ({ user }) => {
         <Table
           columns={columns}
           dataSource={dataSource}
-          pagination={{ pageSize: 5 }}
+          pagination={{ pageSize: 10 }}
           bordered
           size="middle"
           scroll={{ x: true }}   // ✅ mobile friendly

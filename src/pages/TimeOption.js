@@ -180,16 +180,16 @@ const clocks2 = [
 
 // LEVEL 3 – Clock → Text (minutes)
 const clocks3 = [
-  { emoji: <SvgClock hour={3} minute={10} />, correct: "3:10", options: ["3:00", "3:10", "2:00"] },
-  { emoji: <SvgClock hour={6} minute={55} />, correct: "6:55", options: ["5:00", "6:55", "7:00"] },
-  { emoji: <SvgClock hour={5} minute={20} />, correct: "5:20", options: ["8:00", "9:00", "5:20"] },
-  { emoji: <SvgClock hour={1} minute={40} />, correct: "1:40", options: ["1:40", "3:00", "4:00"] },
-  { emoji: <SvgClock hour={8} minute={35} />, correct: "8:35", options: ["5:00", "8:35", "7:00"] },
-  { emoji: <SvgClock hour={2} minute={25} />, correct: "2:25", options: ["8:00", "9:00", "2:25"] },
-  { emoji: <SvgClock hour={4} minute={30} />, correct: "4:30", options: ["1:00", "3:00", "4:30"] },
-  { emoji: <SvgClock hour={7} minute={15} />, correct: "7:15", options: ["5:00", "8:00", "7:15"] },
+  { emoji: <SvgClock hour={3} minute={10} />, correct: "3:10", options: ["3:20", "3:10", "2:00"] },
+  { emoji: <SvgClock hour={6} minute={55} />, correct: "6:55", options: ["6:10", "6:55", "7:00"] },
+  { emoji: <SvgClock hour={5} minute={20} />, correct: "5:20", options: ["8:00", "9:20", "5:20"] },
+  { emoji: <SvgClock hour={1} minute={40} />, correct: "1:40", options: ["1:40", "3:00", "1:10"] },
+  { emoji: <SvgClock hour={8} minute={35} />, correct: "8:35", options: ["8:10", "8:35", "7:00"] },
+  { emoji: <SvgClock hour={2} minute={25} />, correct: "2:25", options: ["8:00", "2:10", "2:25"] },
+  { emoji: <SvgClock hour={4} minute={30} />, correct: "4:30", options: ["1:30", "3:00", "4:30"] },
+  { emoji: <SvgClock hour={7} minute={15} />, correct: "7:15", options: ["5:00", "7:10", "7:15"] },
   { emoji: <SvgClock hour={12} minute={0} />, correct: "12:00", options: ["8:00", "12:00", "10:00"] },
-  { emoji: <SvgClock hour={11} minute={55} />, correct: "11:55", options: ["8:00", "9:00", "11:55"] },
+  { emoji: <SvgClock hour={11} minute={55} />, correct: "11:55", options: ["8:55", "9:00", "11:55"] },
 ];
 
 /* -------------------- COMPONENT -------------------- */

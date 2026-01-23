@@ -153,8 +153,9 @@ const submitQuiz = async (answer) => {
         userAnswer: answer,
         level
       });
-
-    
+setAiExplanation(explainRes.data);
+setLoadingExplanation(false);
+    console.log(explainRes.data)
     } else {
       setAiExplanation(null);
     }
@@ -290,7 +291,10 @@ const submitQuiz = async (answer) => {
           )}
 
           {/* {submitted && correctAnswers && ( */}
-         {submitted && correctAnswers && userAnswer !== correctAnswers.correctAnswer && (
+        {submitted &&
+  correctAnswers &&
+  Number(userAnswer) !== Number(correctAnswers.correctAnswer) && (
+
   <div
     style={{
       marginTop: 16,
@@ -303,7 +307,14 @@ const submitQuiz = async (answer) => {
               <hr />
     <strong>🤖 Explanation</strong>
     <hr />
-    {loadingExplanation ? "Thinking… 🤔" : <pre>{aiExplanation}</pre>}
+   {loadingExplanation ? (
+  "Thinking… 🤔"
+) : (
+  <pre>
+    {aiExplanation?.explanation}
+ </pre>
+)}
+
   
 
 

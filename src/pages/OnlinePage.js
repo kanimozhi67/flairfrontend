@@ -60,9 +60,18 @@ const OnlinePage = () => {
             <Paragraph style={{ color: "#f0f0f0", fontSize: 20 }}>
               A fun and engaging early learning program to spark curiosity in young minds.
             </Paragraph>
-            <Button type="primary" shape="round">
+            {/* <Button type="primary" shape="round">
               Contact Us
-            </Button>
+            </Button> */}
+ <a href="tel:00971563512691" 
+ style={{backgroundColor:"wheat",fontWeight:"bold", padding:8,fontSize:16,borderRadius:20,}}
+ >
+  📞 Contact Us</a>&nbsp;&nbsp;&nbsp;
+   <a href="https://wa.me/00971563512691" target="_blank"
+    style={{backgroundColor:"wheat",fontWeight:"bold", padding:8,fontSize:16,borderRadius:20}}
+   >
+💬 Chat on WhatsApp
+</a>
           </Col>
         </Row>
       </div>
@@ -80,9 +89,18 @@ const OnlinePage = () => {
             <Paragraph style={{ color: "#fdfdfd", fontSize: 20 }}>
               A smart learning app that adapts to you—anytime, anywhere, for smarter results.
             </Paragraph>
-            <Button type="primary" shape="round">
+            {/* <Button type="primary" shape="round">
               Contact Us
-            </Button>
+            </Button> */}
+             <a href="tel:00971563512691" 
+ style={{backgroundColor:"wheat",fontWeight:"bold", padding:8,fontSize:16,borderRadius:20,}}
+ >
+  📞 Contact Us</a>&nbsp;&nbsp;&nbsp;
+   <a href="https://wa.me/00971563512691" target="_blank"
+    style={{backgroundColor:"wheat",fontWeight:"bold", padding:8,fontSize:16,borderRadius:20}}
+   >
+💬 Chat on WhatsApp
+</a>
           </Col>
           <Col xs={24} md={10}>
             <img

@@ -103,14 +103,20 @@ const urlSelectedLevel = Number(searchParams.get("selectedLevel"));
     border: "none",
     cursor: "pointer",
   };
+   const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 
   // --- speakLine helper (non-blocking) ---
   const speakLine = (text) => {
     if (!window.speechSynthesis) return;
     try {
       const utter = new SpeechSynthesisUtterance(text);
+      // utter.pitch = 1.8;
+      // utter.rate = 1.05;
+      //  utter.lang = "en-US";
+       utter.lang = "en-US";
+      utter.rate = isMobile ? 0.85 : 1.05;
       utter.pitch = 1.8;
-      utter.rate = 1.05;
+      utter.volume = 2;
       const voices = window.speechSynthesis.getVoices();
       utter.voice =
         voices.find((v) => /zira|female|child/i.test(v.name)) || voices[0];
@@ -878,7 +884,9 @@ category ={category}
             setResults={setResults}
 />
         ): category==="robot" ?(
-          <Robot />
+          <Robot 
+          user={user}
+          />
  ):(
             <QuizCard
               level={level}

@@ -104,7 +104,7 @@ const urlSelectedLevel = Number(searchParams.get("selectedLevel"));
     cursor: "pointer",
   };
   //  const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
- const isMobile = width < 768;
+ const isMobile = width < 767;
   // --- speakLine helper (non-blocking) ---
   const speakLine = (text) => {
     if (!window.speechSynthesis) return;
@@ -118,8 +118,9 @@ const urlSelectedLevel = Number(searchParams.get("selectedLevel"));
       utter.pitch = 1.8;
       utter.volume = 2;
       const voices = window.speechSynthesis.getVoices();
-      utter.voice =
-        voices.find((v) => /zira/i.test(v.name)) ;
+       utter.voice = isMobile ? voices.find((v) => /child/i.test(v.name)) : voices.find((v) => /zira/i.test(v.name));
+      // utter.voice =
+      //   voices.find((v) => /zira/i.test(v.name)) ;
       window.speechSynthesis.speak(utter);
     } catch (e) {
       // ignore speech errors

@@ -38,7 +38,7 @@ const [showMouth, setShowMouth] = useState(false);
       utterance.pitch = 1.8;
       utterance.volume = 2;
    const voices = window.speechSynthesis.getVoices();
-      utterance.voice = isMobile ? voices.find((v) => /child/i.test(v.name)) : voices.find((v) => /zira/i.test(v.name));;
+      utterance.voice = isMobile ? voices.find((v) => /child/i.test(v.name)) : voices.find((v) => /zira/i.test(v.name));
     //    voices.find((v) => /zira|child/i.test(v.name)) || voices[0];
         
       

@@ -16,7 +16,7 @@ const Robot = ({ user }) => {
 const [isSpeaking,setIsSpeaking]= useState(false);
 const [showMouth, setShowMouth] = useState(false);
  const { width, height } = useWindowSize();
- const isMobile = width < 768;
+ const isMobile = width < 767;
 
  // const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 
@@ -38,9 +38,9 @@ const [showMouth, setShowMouth] = useState(false);
       utterance.pitch = 1.8;
       utterance.volume = 2;
    const voices = window.speechSynthesis.getVoices();
-      utterance.voice =
+      utterance.voice = isMobile ? voices.find((v) => /child/i.test(v.name)) : voices.find((v) => /zira/i.test(v.name));;
     //    voices.find((v) => /zira|child/i.test(v.name)) || voices[0];
-        voices.find((v) => /zira/i.test(v.name));
+        
       
       utterance.onboundary = (event) => {
         if (event.name === "word") {

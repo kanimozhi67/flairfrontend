@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Form, Input, Button, Card, Typography, Spin } from "antd";
 import api from "../api/axiosClient";
 import Robo from "../images/robo.png";
+import { useWindowSize } from "react-use";
 
 const { Title, Text } = Typography;
 
@@ -14,7 +15,7 @@ const Robot = ({ user }) => {
   const [preTalk, setPreTalk] = useState(false);
 const [isSpeaking,setIsSpeaking]= useState(false);
 const [showMouth, setShowMouth] = useState(false);
-
+ const { width, height } = useWindowSize();
  const isMobile = width < 768;
 
  // const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);

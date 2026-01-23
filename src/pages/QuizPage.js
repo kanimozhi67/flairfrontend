@@ -103,8 +103,8 @@ const urlSelectedLevel = Number(searchParams.get("selectedLevel"));
     border: "none",
     cursor: "pointer",
   };
-   const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-
+  //  const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+ const isMobile = width < 768;
   // --- speakLine helper (non-blocking) ---
   const speakLine = (text) => {
     if (!window.speechSynthesis) return;
@@ -114,7 +114,7 @@ const urlSelectedLevel = Number(searchParams.get("selectedLevel"));
       // utter.rate = 1.05;
       //  utter.lang = "en-US";
        utter.lang = "en-US";
-      utter.rate = isMobile ? 0.85 : 1.05;
+      utter.rate = isMobile ? 0.90 : 1.05;
       utter.pitch = 1.8;
       utter.volume = 2;
       const voices = window.speechSynthesis.getVoices();

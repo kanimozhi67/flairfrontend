@@ -8,15 +8,15 @@ import { useWindowSize } from "react-use";
 const MotivationScreen = ({ message, onStart ,user}) => {
   const { width, height } = useWindowSize();
   const [showStartButton, setShowStartButton] = useState(false);
-  const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-  
+  // const isMobile = /Android|iPhone|iPod/i.test(navigator.userAgent);
+ const isMobile = width < 768;
  useEffect(() => {
   let utterance;
 
   const speakMotivation = () => {
     utterance = new SpeechSynthesisUtterance(`${user?.username} , You are ${message}! You can do it! `);
    utterance.lang = "en-US";
-      utterance.rate = isMobile ?  0.85 : 1.05;
+      utterance.rate = isMobile ?  0.90 : 1.05;
       utterance.pitch = 1.8;
       utterance.volume = 2;
 

@@ -15,9 +15,9 @@ const Robot = ({ user }) => {
 const [isSpeaking,setIsSpeaking]= useState(false);
 const [showMouth, setShowMouth] = useState(false);
 
+ const isMobile = width < 768;
 
-
-  const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+ // const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 
   /* 🎤 SPEAK TEXT (with pre-rotation) */
   const speakText = (text) => {
@@ -33,7 +33,7 @@ const [showMouth, setShowMouth] = useState(false);
 
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.lang = "en-US";
-      utterance.rate = isMobile ?  0.85 : 1.05;
+      utterance.rate = isMobile ?  0.90 : 1.05;
       utterance.pitch = 1.8;
       utterance.volume = 2;
    const voices = window.speechSynthesis.getVoices();

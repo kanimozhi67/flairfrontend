@@ -166,7 +166,7 @@ const QuizCategories = ({ setUser }) => {
                       navigate(`${cat.path}?level=${level}`)
                     }
                   >
-               <span style={{fontSize:"3rem"}}>🤖</span> {cat.name}
+            {cat.name}
                   </Button>
                    <br></br>
                   </> }
@@ -214,7 +214,7 @@ const QuizCategories = ({ setUser }) => {
                       navigate(`${cat.path}?level=${level}`)
                     }
                   >
-               <span style={{fontSize:"3rem"}}>🤖</span> {cat.name}
+                {cat.name}
                   </Button> <br></br>
                   </> }
                 </Col>

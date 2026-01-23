@@ -34,7 +34,7 @@ const [showMouth, setShowMouth] = useState(false);
 
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.lang = "en-US";
-      utterance.rate = isMobile ?  0.90 : 1.05;
+      utterance.rate =  1.05;
       utterance.pitch = 1.8;
       utterance.volume = 2;
    const voices = window.speechSynthesis.getVoices();

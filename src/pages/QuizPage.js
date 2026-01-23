@@ -119,7 +119,7 @@ const urlSelectedLevel = Number(searchParams.get("selectedLevel"));
       utter.volume = 2;
       const voices = window.speechSynthesis.getVoices();
       utter.voice =
-        voices.find((v) => /zira|female|child/i.test(v.name)) || voices[0];
+        voices.find((v) => /zira/i.test(v.name)) ;
       window.speechSynthesis.speak(utter);
     } catch (e) {
       // ignore speech errors

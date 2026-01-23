@@ -22,7 +22,8 @@ const MotivationScreen = ({ message, onStart ,user}) => {
 
     const voices = window.speechSynthesis.getVoices();
     // pick a suitable voice or fallback
-    utterance.voice = voices.find(v => v.name.toLowerCase().includes("zira") || v.name.toLowerCase().includes("child")) || voices[0];
+    //utterance.voice = voices.find(v => v.name.toLowerCase().includes("zira") || v.name.toLowerCase().includes("child")) || voices[0];
+    utterance.voice = voices.find(v => v.name.toLowerCase().includes("zira"));
 
     window.speechSynthesis.speak(utterance);
   };

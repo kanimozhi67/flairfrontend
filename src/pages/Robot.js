@@ -39,7 +39,9 @@ const [showMouth, setShowMouth] = useState(false);
       utterance.volume = 2;
    const voices = window.speechSynthesis.getVoices();
       utterance.voice =
-        voices.find((v) => /zira|female|child/i.test(v.name)) || voices[0];
+    //    voices.find((v) => /zira|child/i.test(v.name)) || voices[0];
+        voices.find((v) => /zira/i.test(v.name));
+      
       utterance.onboundary = (event) => {
         if (event.name === "word") {
           setMouthOpen(true);

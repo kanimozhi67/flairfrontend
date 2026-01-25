@@ -5,10 +5,13 @@ import gift from "../images/gift.png";
 import questimg from "../images/questions.png";
 import olymp from "../images/olym.png";
 import appc from "../images/appc.png";
+import { useNavigate } from "react-router-dom";
+
 
 const { Title, Paragraph } = Typography;
 
 const OnlinePage = () => {
+  const navigate=useNavigate();
   const sectionStyle = (color1, color2) => ({
     background: `linear-gradient(135deg, ${color1} 0%, ${color2} 100%)`,
     padding: "60px 20px",
@@ -126,9 +129,36 @@ const OnlinePage = () => {
             <Paragraph style={{ color: "#fff", marginTop: 12,fontSize:20 }}>
               Step-by-step curriculum for Olympiad aspirants.
             </Paragraph>
-            <Button type="primary" block shape="round" style={{fontSize:20, backgroundColor:"orange",padding: "5px 1px"}}>
+            {/* <Button type="primary" block shape="round" style={{fontSize:20,
+             backgroundColor:"orange",padding: "5px 1px"}}>
               Explore Olympiad
-            </Button>
+            </Button> */}
+      
+          <Button
+  onClick={() => navigate("/exploreolymp")}
+  style={{
+    backgroundColor: "#ff9800",
+    fontWeight: "bold",
+    padding: "8px 18px",
+    color: "white",
+    fontSize: 20,
+    borderRadius: 20,
+    border: "none",
+    boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
+    transition: "all 0.3s ease",
+  }}
+  onMouseEnter={(e) => {
+    e.currentTarget.style.transform = "scale(1.05)";
+    e.currentTarget.style.backgroundColor = "#fb8c00";
+  }}
+  onMouseLeave={(e) => {
+    e.currentTarget.style.transform = "scale(1)";
+    e.currentTarget.style.backgroundColor = "#ff9800";
+  }}
+>
+  🚀 Explore Olympiad
+</Button>
+
           </Col>
 
           <Col xs={24} md={8} style={{ textAlign: "center" }}>

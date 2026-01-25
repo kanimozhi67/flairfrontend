@@ -51,6 +51,23 @@ const [formData, setFormData] = useState({
   const scrollToOnline3 = () => {
     onlineRef3.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
+
+
+const btnheaderStyle= {
+          backgroundColor: "#ff9100",
+          fontWeight: "bold",
+          padding: "8px 18px",
+          color: "white",
+          fontSize: 16,
+          borderRadius: 20,
+          border: "none",
+          boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
+          transition: "all 0.3s ease",
+        }
+    
+      >
+
+
   useEffect(() => {
   const handler = (e) => {
     e.preventDefault();
@@ -201,12 +218,83 @@ const [formData, setFormData] = useState({
           </div>
   
     <div style={{ display: "flex", gap: 20, alignItems: "center" }}>
-  <Button type="text" style={{ color: "#fff", fontSize: 16 }} 
-    onClick={() => onlineRef.current?.scrollIntoView({ behavior: "smooth" })}>
+           <Button
+        onClick={() => navigate("/exploreolymp")}
+        style={{
+          backgroundColor: "#ff9100",
+          fontWeight: "bold",
+          padding: "8px 18px",
+          color: "white",
+          fontSize: 16,
+          borderRadius: 20,
+          border: "none",
+          boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
+          transition: "all 0.3s ease",
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.transform = "scale(1.05)";
+          e.currentTarget.style.backgroundColor = "#fb8c00";
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.transform = "scale(1)";
+          e.currentTarget.style.backgroundColor = "#ff9800";
+        }}
+      >
+        🚀 Explore Olympiad
+      </Button>
+      
+  <Button
+  //style={{ color: "#fff", fontSize: 16 }} 
+  //style={btnheaderStyle}
+  
+    onClick={() => onlineRef.current?.scrollIntoView({ behavior: "smooth" })}
+      style={{
+          backgroundColor: "#ff9100",
+          fontWeight: "bold",
+          padding: "8px 18px",
+          color: "white",
+          fontSize: 16,
+          borderRadius: 20,
+          border: "none",
+          boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
+          transition: "all 0.3s ease",
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.transform = "scale(1.05)";
+          e.currentTarget.style.backgroundColor = "#fb8c00";
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.transform = "scale(1)";
+          e.currentTarget.style.backgroundColor = "#ff9800";
+        }}
+      
+    >
     Online Class
   </Button>
-  <Button type="text" style={{ color: "#fff", fontSize: 16 }} 
-    onClick={() => contactRef.current?.scrollIntoView({ behavior: "smooth" })}>
+  <Button type="text"
+  // style={{ color: "#fff", fontSize: 16 }} 
+    onClick={() => contactRef.current?.scrollIntoView({ behavior: "smooth" })}
+      style={{
+          backgroundColor: "#ff9100",
+          fontWeight: "bold",
+          padding: "8px 18px",
+          color: "white",
+          fontSize: 16,
+          borderRadius: 20,
+          border: "none",
+          boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
+          transition: "all 0.3s ease",
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.transform = "scale(1.05)";
+          e.currentTarget.style.backgroundColor = "#fb8c00";
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.transform = "scale(1)";
+          e.currentTarget.style.backgroundColor = "#ff9800";
+        }}
+      
+    >
     Contact
   </Button>
   {user ? (
@@ -282,7 +370,30 @@ transform: "translateX(-50%)",        // ✅ FORCE full width
     gap: 12,
     alignItems: "center",
   }}
->
+>    <Button
+        onClick={() => navigate("/exploreolymp")}
+        style={{
+          backgroundColor: "transparent",
+         // fontWeight: "bold",
+          padding: "8px 18px",
+          color: "white",
+          fontSize: 16,
+          borderRadius: 20,
+          border: "1px solid white",
+          boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
+          transition: "all 0.3s ease",
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.transform = "scale(1.05)";
+          e.currentTarget.style.backgroundColor = "#fb8c00";
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.transform = "scale(1)";
+          e.currentTarget.style.backgroundColor = "transparent";
+        }}
+      >
+        🚀 Explore Olympiad
+      </Button>
   {!user && <SchoolLoginDropdown setUser={setUser} /> }  {/* Left */}
   {user &&
   <>

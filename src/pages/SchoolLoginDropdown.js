@@ -55,6 +55,15 @@ const SchoolLoginDropdown = ({ setUser }) => {
             zIndex: 1100,
             border: "1px solid #fff",
           }}
+             onMouseEnter={(e) => {
+          e.currentTarget.style.transform = "scale(1.05)";
+          e.currentTarget.style.backgroundColor = "#fb8c00";
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.transform = "scale(1)";
+          e.currentTarget.style.backgroundColor = "transparent";
+        }}
+      
         >
           🏫 School Login
         </Button>

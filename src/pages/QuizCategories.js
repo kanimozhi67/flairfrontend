@@ -158,7 +158,7 @@ const QuizCategories = ({ setUser }) => {
                       fontSize: "1.5rem",
                       height: 100,
                       borderRadius: 15,
-                       background: "linear-gradient(135deg, #f16795, #f0087c",
+                       background: "linear-gradient(135deg, #f16795, #f0087c)",
                       color: "#27f5ea",
                       fontWeight: "bold",
                     }}

@@ -278,14 +278,19 @@ const { Title, Text } = Typography;
 const olympiadList2 = [
   { img: olymp8, title: "Flair Robot 🤖", desc: "Explore how things work with AI" },
   { img: olymp2, title: "Go Ahead with Flair 🎯", desc: "Boost thinking skills" },
+  { img: olymp2, title: "Go Ahead with Flair 🎯", desc: "Boost thinking skills" },
   { img: olymp3, title: "Logic Olympiad 💡", desc: "Step by step explanation" },
 ];
 
 const olympiadList = [
   { img: olymp4, title: "Sudoku 🧩", desc: "Boost thinking skills" },
   { img: olymp9, title: "Number Series", desc: "Know numbers better" },
+  { img: olymp9, title: "Number Series", desc: "Know numbers better" },
+  { img: olymp10, title: "Logical Questions", desc: "Think smart & fast" },
   { img: olymp10, title: "Logical Questions", desc: "Think smart & fast" },
   { img: olymp11, title: "Puzzles", desc: "Sharpen your brain" },
+  { img: olymp11, title: "Puzzles", desc: "Sharpen your brain" },
+  { img: olymp12, title: "Reasoning", desc: "Fun challenges" },
   { img: olymp12, title: "Reasoning", desc: "Fun challenges" },
   { img: olymp5, title: "Handling Currency", desc: "Practical knowledge" },
 ];
@@ -300,7 +305,7 @@ const olympiadList3 = [
 
 const pageBg = {
   minHeight: "100vh",
-  background: "linear-gradient(135deg,#ad0797,#f50909)",
+  background: "linear-gradient(95deg, #7b2ff7, #f107a3)",
 };
 
 const sectionStyle = (c1, c2) => ({
@@ -403,10 +408,10 @@ export default function OlympiadExplore() {
          >
           <a href="tel:00971563512691" 
           style={{backgroundColor:"wheat",fontWeight:"bold", padding:8,fontSize:16,borderRadius:20,textDecoration:"none"}}
-          >📞 Contact Us</a> &nbsp;
-          <a href="https://wa.me/00971563512691" target="_blank"
-          style={{backgroundColor:"wheat",fontWeight:"bold", padding:8,fontSize:16,borderRadius:20,textDecoration:"none"}}
-          >💬 Chat on WhatsApp</a>&nbsp;
+          > 📞
+           {/* Contact Us */}
+           </a> &nbsp;
+        
           <Button type="primary" onClick={() => navigate("/")} 
          
          style={{color:"white",background:"transparent",border:"none",borderRadius:30,padding:8,}}>
@@ -417,25 +422,93 @@ export default function OlympiadExplore() {
       </div>
 <hr></hr>
       <div style={{ maxWidth: 800, margin: "auto", textAlign: "center" }}>
-        <Text style={{ color: "#fff", fontSize: 18 }}>
+        <Text style={{ color: "#fff", fontSize: 16 }}>
           Olympiads strengthen basics and build confidence.
         </Text>
        <br></br>
-         <Text style={{ fontSize: 18, color: "#fffcfc" }}>
-            Olympiads help children strengthen their basics in Mathematics,
-           Science, Reasoning, English, and General Knowledge. They improve
+         <Text style={{ fontSize: 16, color: "#fffcfc" }}>
+           Flair Olympiad help children strengthen their basics in Mathematics.<br></br>They improve
           thinking, problem-solving, and confidence from an early age.
         </Text>
       
   <br />
 
-          <Text style={{ fontSize: 18, color: "#fffcfc" }}>
+          <Text style={{ fontSize: 16, color: "#fffcfc" }}>
             Our{" "}
-            <strong style={{ color: "#7e1f07" }}>AI-powered learning bots</strong>{" "}
+            <strong style={{ color: "#c6ec6c" }}>AI-powered learning bots</strong>{" "}
             act like friendly tutors 🤖. They explain mistakes patiently and guide
             kids step-by-step until concepts become crystal clear.
         </Text>
       </div>
+<a
+  href="https://wa.me/+971"
+  target="_blank"
+  rel="noreferrer"
+  className="whatsapp-float"
+>
+  <img
+    src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"
+    alt="WhatsApp"
+    style={{ width: 26 }}
+  />
+  <span>Chat Now</span>
+
+  <style>
+    {`
+      .whatsapp-float {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: #25D366;
+        color: white;
+        padding: 10px 16px;
+        border-radius: 30px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 600;
+        text-decoration: none;
+        box-shadow: 0 6px 12px rgba(0,0,0,.25);
+        animation: slideIn .6s ease-out, pulse 1.5s infinite;
+        z-index: 9999;
+      }
+
+      .whatsapp-float:hover {
+        transform: scale(1.05);
+      }
+
+      @keyframes slideIn {
+        from {
+          transform: translateX(100px);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+
+      @keyframes pulse {
+        0% {
+          box-shadow: 0 0 0 0 rgba(37,211,102,.7);
+        }
+        70% {
+          box-shadow: 0 0 0 15px rgba(37,211,102,0);
+        }
+        100% {
+          box-shadow: 0 0 0 0;
+        }
+      }
+
+      /* Mobile only */
+      @media(min-width:769px){
+        .whatsapp-float {
+          display:none;
+        }
+      }
+    `}
+  </style>
+</a>
 
       <div style={sectionStyle("#8b5cf6", "#60a5fa")}>
         <Title style={{ color: "#fff" }} level={3}> 🚀 Smart AI Bot for Guidance</Title>
@@ -451,12 +524,12 @@ export default function OlympiadExplore() {
           display: "block",
           maxWidth: 900,
           margin: "0 auto",
-          fontSize: 18,
+          fontSize: 16,
           color: "#fffcfc",
           textAlign: "center",
         }}
       >
-        <strong style={{ color: "#380320" }}>Flair Olympiad</strong> focuses on
+        <strong style={{ color: "#70dd28" }}>Flair Olympiad</strong> focuses on
         concept clarity instead of memorization. Kids build strong fundamentals
         and gain confidence to face competitive exams happily 😊
       </Text>
@@ -477,8 +550,10 @@ export default function OlympiadExplore() {
         .headerBar{
           display:flex;
           justify-content:space-between;
+          padding:10px;
          padding-top:20px;
          padding-bottom:5px;
+         
           flex-wrap:wrap;
         }
 

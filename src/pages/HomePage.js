@@ -297,6 +297,77 @@ const btnheaderStyle= {
     >
     Contact
   </Button>
+
+  <a
+  href="https://wa.me/+971"
+  target="_blank"
+  rel="noreferrer"
+  className="whatsapp-float"
+>
+  <img
+    src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"
+    alt="WhatsApp"
+    style={{ width: 26 }}
+  />
+  <span>Book your class now</span>
+
+  <style>
+    {`
+      .whatsapp-float {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: #25D366;
+        color: white;
+        padding: 10px 16px;
+        border-radius: 30px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 600;
+        text-decoration: none;
+        box-shadow: 0 6px 12px rgba(0,0,0,.25);
+        animation: slideIn .6s ease-out, pulse 1.5s infinite;
+        z-index: 9999;
+      }
+
+      .whatsapp-float:hover {
+        transform: scale(1.05);
+      }
+
+      @keyframes slideIn {
+        from {
+          transform: translateX(100px);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+
+      @keyframes pulse {
+        0% {
+          box-shadow: 0 0 0 0 rgba(37,211,102,.7);
+        }
+        70% {
+          box-shadow: 0 0 0 15px rgba(37,211,102,0);
+        }
+        100% {
+          box-shadow: 0 0 0 0;
+        }
+      }
+
+      /* desktop only */
+      @media(max-width:769px){
+        .whatsapp-float {
+          display:none;
+        }
+      }
+    `}
+  </style>
+</a>
+
   {user ? (
     <>
     <Button size="small" onClick={handleLogout }>Logout</Button>
@@ -311,8 +382,28 @@ const btnheaderStyle= {
     </>
   ) : (
     <>
-      <Button onClick={() => { setIsLogin(false); setModalOpen(true); }}>Sign Up</Button>
-      <Button type="primary" onClick={() => { setIsLogin(true); setModalOpen(true); }}>Login</Button>
+      <Button onClick={() => { setIsLogin(false); setModalOpen(true); }}
+             style={{
+          backgroundColor: "#2600ff",
+          fontWeight: "bold",
+          padding: "8px 18px",
+          color: "white",
+          fontSize: 16,
+          borderRadius: 20,
+          border: "none",
+          boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
+          transition: "all 0.3s ease",
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.transform = "scale(1.05)";
+          e.currentTarget.style.backgroundColor = "#fb8c00";
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.transform = "scale(1)";
+          e.currentTarget.style.backgroundColor = "#3700ff";
+        }}
+        >Sign In</Button>
+      {/* <Button type="primary" onClick={() => { setIsLogin(true); setModalOpen(true); }}>Login</Button> */}
       <SchoolLoginDropdown setUser={setUser} />
     </>
   )}

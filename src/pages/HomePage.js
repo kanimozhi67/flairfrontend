@@ -461,15 +461,16 @@ transform: "translateX(-50%)",        // ✅ FORCE full width
     gap: 12,
     alignItems: "center",
   }}
->    <Button
+>   &nbsp;
+ <Button
         onClick={() => navigate("/exploreolymp")}
         style={{
           backgroundColor: "transparent",
          // fontWeight: "bold",
-          padding: "8px 18px",
+          padding: 5,
           color: "white",
-          fontSize: 16,
-          borderRadius: 20,
+          fontSize: 14,
+          borderRadius: 5,
           border: "1px solid white",
           boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
           transition: "all 0.3s ease",
@@ -483,7 +484,7 @@ transform: "translateX(-50%)",        // ✅ FORCE full width
           e.currentTarget.style.backgroundColor = "transparent";
         }}
       >
-        🚀 Explore Olympiad
+        🚀Explore Olympiad
       </Button>
   {!user && <SchoolLoginDropdown setUser={setUser} /> }  {/* Left */}
   {user &&

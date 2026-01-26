@@ -135,7 +135,9 @@ const SliderCard2 = ({ list }) => {
 export default function OlympiadExplore() {
   const navigate = useNavigate();
   const onlineRef3 = useRef(null);
-
+ const scrollToOnline3 = () => {
+    onlineRef3.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
   return (
     <div style={pageBg}>
       <div ref={onlineRef3} className="headerBar">
@@ -163,6 +165,30 @@ export default function OlympiadExplore() {
         <div
         // className="actions"
          >
+                  <Button
+  onClick={() => navigate("/exploresoft")}
+  style={{
+    backgroundColor: "#ff9800",
+    fontWeight: "bold",
+    padding: "8px 18px",
+    color: "white",
+    fontSize: 20,
+    borderRadius: 20,
+    border: "none",
+    boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
+    transition: "all 0.3s ease",
+  }}
+  onMouseEnter={(e) => {
+    e.currentTarget.style.transform = "scale(1.05)";
+    e.currentTarget.style.backgroundColor = "#fb8c00";
+  }}
+  onMouseLeave={(e) => {
+    e.currentTarget.style.transform = "scale(1)";
+    e.currentTarget.style.backgroundColor = "#ff9800";
+  }}
+>
+  🚀 Explore Software Courses
+</Button> &nbsp;
           <a href="tel:00971563512691" 
           style={{backgroundColor:"wheat",fontWeight:"bold", padding:8,fontSize:16,borderRadius:20,textDecoration:"none"}}
           > 📞
@@ -177,7 +203,7 @@ export default function OlympiadExplore() {
           
         </div>
       </div>
-<hr></hr>
+<hr></hr ><h2 style={{textAlign:"center"}}>Olympiad Courses </h2>
       <div style={{ maxWidth: 800, margin: "auto", textAlign: "center" }}>
         <Text style={{ color: "#fff", fontSize: 16 }}>
           Olympiads strengthen basics and build confidence.
@@ -198,7 +224,7 @@ export default function OlympiadExplore() {
         </Text>
       </div>
 <a
-  href="https://wa.me/+971"
+  href="https://wa.me/+971563512691"
   target="_blank"
   rel="noreferrer"
   className="whatsapp-float"
@@ -208,7 +234,7 @@ export default function OlympiadExplore() {
     alt="WhatsApp"
     style={{ width: 26 }}
   />
-  <span>Chat Now</span>
+  <span>Book Your Class Now</span>
 
   <style>
     {`
@@ -257,11 +283,7 @@ export default function OlympiadExplore() {
         }
       }
 
-      /* Mobile only */
-      @media(min-width:769px){
-        .whatsapp-float {
-          display:none;
-        }
+     
       }
     `}
   </style>
@@ -306,7 +328,9 @@ export default function OlympiadExplore() {
         <SliderCard2 list={olympiadList3} />
       </div>
 </div>
-      <ContactFooter />
+      <ContactFooter 
+         scrollToOnline3={scrollToOnline3}
+      />
 
       {/* RESPONSIVE CSS */}
       <style>{`

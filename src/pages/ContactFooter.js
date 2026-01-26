@@ -24,6 +24,12 @@ const ContactFooter = ({scrollToOnline3 }) => {
   try {
     await api.post("/admin/feedback", formData1);
     alert("your message sent successfully!");
+    setFormData1({
+      name: " ",
+      email: " ",
+      message: " ",
+    });
+
   } catch (error) {
     alert("Failed to send details");
   }
@@ -79,15 +85,17 @@ const ContactFooter = ({scrollToOnline3 }) => {
           <Space direction="vertical" size="middle" style={{ width: "100%" ,color:"black"}}>
                     <input
   placeholder="Name"
-  
+   value={formData1.name}
   onChange={(e) => setFormData1({ ...formData1, name: e.target.value })}
 />
             <input
   placeholder="Email"
+   value={formData1.email}
   onChange={(e) => setFormData1({ ...formData1, email: e.target.value })}
 />
 
             <TextArea rows={4} placeholder="Your Message"
+             value={formData1.message}
              onChange={(e) => setFormData1({ ...formData1, message: e.target.value })}
             />
             <Button
@@ -111,7 +119,8 @@ const ContactFooter = ({scrollToOnline3 }) => {
       >
         © 2025 Flair Olympiad. All rights reserved.
       </Paragraph>
-      <button style={{ float:"right", color:"blueviolet", fontWeight:"bold"}} onClick={scrollToOnline3}>GO TO TOP</button>
+      <button style={{ float:"left", color:"blueviolet", fontWeight:"bold",cursor:"pointer"}}
+       onClick={scrollToOnline3}>GO TO TOP</button>
     </div>
   );
 };

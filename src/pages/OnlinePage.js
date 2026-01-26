@@ -48,7 +48,7 @@ const OnlinePage = () => {
         <Row align="middle" gutter={[24, 24]}>
           <Col xs={24} md={10}>
             <img
-              src={gift}
+              src={questimg}
               alt="KG1-3"
               style={{ width: "100%", borderRadius: 20 }}
             />
@@ -66,15 +66,67 @@ const OnlinePage = () => {
             {/* <Button type="primary" shape="round">
               Contact Us
             </Button> */}
- <a href="tel:00971563512691" 
+ {/* <a href="tel:00971563512691" 
  style={{backgroundColor:"wheat",fontWeight:"bold", padding:8,fontSize:16,borderRadius:20,}}
  >
   📞 Contact Us</a>&nbsp;&nbsp;&nbsp;
-   <a href="https://wa.me/00971563512691" target="_blank"
+   <a href="https://wa.me/+971563512691" target="_blank"
     style={{backgroundColor:"wheat",fontWeight:"bold", padding:8,fontSize:16,borderRadius:20}}
    >
 💬 Chat on WhatsApp
-</a>
+</a> */}
+<div className="contact-buttons">
+  <a href="tel:00971563512691" className="contact-btn">
+    📞 Contact Us
+  </a>
+
+  <a href="https://wa.me/+971563512691" target="_blank" className="contact-btn">
+    💬 Chat on WhatsApp
+  </a>
+
+<style>{`
+.contact-buttons {
+  display: flex;
+  gap: 12px;
+  // justify-content: center;
+  // align-items: center;
+  flex-wrap: wrap;
+}
+
+.contact-btn {
+  background-color: wheat;
+  font-weight: bold;
+  padding: 10px 16px;
+  font-size: 16px;
+  border-radius: 20px;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+/* Tablet */
+@media (max-width: 768px) {
+  .contact-btn {
+    font-size: 14px;
+    padding: 8px 14px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .contact-buttons {
+    flex-direction: column;
+  }
+
+  .contact-btn {
+    width: 100%;
+    text-align: center;
+    font-size: 14px;
+  }
+}
+`}</style>
+</div>
+
+
           </Col>
         </Row>
       </div>
@@ -95,19 +147,21 @@ const OnlinePage = () => {
             {/* <Button type="primary" shape="round">
               Contact Us
             </Button> */}
-             <a href="tel:00971563512691" 
- style={{backgroundColor:"wheat",fontWeight:"bold", padding:8,fontSize:16,borderRadius:20,}}
- >
-  📞 Contact Us</a>&nbsp;&nbsp;&nbsp;
-   <a href="https://wa.me/00971563512691" target="_blank"
-    style={{backgroundColor:"wheat",fontWeight:"bold", padding:8,fontSize:16,borderRadius:20}}
-   >
-💬 Chat on WhatsApp
-</a>
+      
+<div className="contact-buttons">
+  <a href="tel:00971563512691" className="contact-btn">
+    📞 Contact Us
+  </a>
+
+  <a href="https://wa.me/+971563512691" target="_blank" className="contact-btn">
+    💬 Chat on WhatsApp
+  </a>
+
+</div>
           </Col>
           <Col xs={24} md={10}>
             <img
-              src={questimg}
+              src={gift}
               alt="Grade 4-12"
               style={{ width: "100%", borderRadius: 20 }}
             />
@@ -118,7 +172,7 @@ const OnlinePage = () => {
       {/* Olympiad / App Creator Section */}
       <div style={sectionStyle("#6cb8f7ff", "#740743ff")}>
         <Row gutter={[24, 24]} align="middle">
-          <Col xs={24} md={8} style={{ textAlign: "center" ,border:"3px solid wheat" ,padding:30,borderRadius:10 , 
+          <Col xs={24} md={9} style={{ textAlign: "center" ,border:"3px solid wheat" ,padding:10,borderRadius:10 , 
            
           }}>
             <img
@@ -161,16 +215,16 @@ const OnlinePage = () => {
 
           </Col>
 
-          <Col xs={24} md={8} style={{ textAlign: "center" }}>
-            <Title level={1} style={{ color: "#f5eaeaff",fontSize:28 , fontWeight:"bold"}}>
+          <Col xs={24} md={6} style={{ textAlign: "center" }}>
+            <Title level={1} style={{ color: "#f5eaeaff",fontSize:24 , fontWeight:"bold"}}>
               FLAIR OLYMPIAD'S
             </Title>
-            <Title level={2} style={{ color: "#faf5f7ff" ,fontSize:20 , fontWeight:"bold"}}>
+            <Title level={2} style={{ color: "#faf5f7ff" ,fontSize:18 , fontWeight:"bold"}}>
               ADVANCED LEVEL
             </Title>
           </Col>
 
-          <Col xs={24} md={8} style={{ textAlign: "center",border:"3px solid wheat" ,padding:30,borderRadius:10 , }}>
+          <Col xs={24} md={9} style={{ textAlign: "center",border:"3px solid wheat" ,padding:10,borderRadius:10 , }}>
             <img
               src={appc}
               alt="App Creator"
@@ -179,7 +233,9 @@ const OnlinePage = () => {
             <Paragraph style={{ color: "#fff", marginTop: 12,fontSize:20 }}>
               Intensive coaching plan for aspiring app creators.
             </Paragraph>
-            <Button type="primary" block shape="round" style={{fontSize:20, backgroundColor:"orange",padding: "5px 1px"}}>
+            <Button type="primary" block shape="round" 
+            onClick={()=>{navigate("/exploresoft")}}
+            style={{fontSize:20, backgroundColor:"orange",padding: "5px 1px"}}>
               Explore Software Courses
             </Button>
           </Col>

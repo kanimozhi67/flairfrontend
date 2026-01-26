@@ -107,6 +107,13 @@ const btnheaderStyle= {
   try {
     await api.post("/admin/joinform", formData);
     alert("Details sent successfully!");
+    setFormData({ name: "",
+  email: "",
+  mobile: "",
+  grade: "",
+  country: "",
+
+})
   } catch (error) {
     alert("Failed to send details");
   }
@@ -210,20 +217,20 @@ const btnheaderStyle= {
               padding: "6px 12px",
               borderRadius: 12,
               fontWeight: "bold",
-              fontSize: 24,
+              fontSize: 20,
             }}
           >
-            <img src={logo} alt="logo" style={{ width: 40, marginRight: 8 }} />
+            <img src={logo} alt="logo" style={{ width: 40, marginRight: 8 ,display:"flex",flexWrap:"nowrap" }} />
             FLAIR OLYMPIAD
           </div>
   
-    <div style={{ display: "flex", gap: 20, alignItems: "center" }}>
+    <div style={{ display: "flex", gap: 20, alignItems: "center", flexWrap:"wrap",justifyContent:"end"}}>
            <Button
         onClick={() => navigate("/exploreolymp")}
         style={{
           backgroundColor: "#ff9100",
           fontWeight: "bold",
-          padding: "8px 18px",
+          padding: 5,
           color: "white",
           fontSize: 16,
           borderRadius: 20,
@@ -240,7 +247,7 @@ const btnheaderStyle= {
           e.currentTarget.style.backgroundColor = "#ff9800";
         }}
       >
-        🚀 Explore Olympiad
+        🚀Explore Olympiad
       </Button>
       
   <Button
@@ -251,7 +258,7 @@ const btnheaderStyle= {
       style={{
           backgroundColor: "#ff9100",
           fontWeight: "bold",
-          padding: "8px 18px",
+          padding: 8,
           color: "white",
           fontSize: 16,
           borderRadius: 20,
@@ -277,7 +284,7 @@ const btnheaderStyle= {
       style={{
           backgroundColor: "#ff9100",
           fontWeight: "bold",
-          padding: "8px 18px",
+          padding: 8,
           color: "white",
           fontSize: 16,
           borderRadius: 20,
@@ -382,7 +389,7 @@ const btnheaderStyle= {
     </>
   ) : (
     <>
-      <Button onClick={() => { setIsLogin(false); setModalOpen(true); }}
+      {/* <Button onClick={() => { setIsLogin(false); setModalOpen(true); }}
              style={{
           backgroundColor: "#2600ff",
           fontWeight: "bold",
@@ -402,8 +409,28 @@ const btnheaderStyle= {
           e.currentTarget.style.transform = "scale(1)";
           e.currentTarget.style.backgroundColor = "#3700ff";
         }}
-        >Sign In</Button>
-      {/* <Button type="primary" onClick={() => { setIsLogin(true); setModalOpen(true); }}>Login</Button> */}
+        >Sign Up</Button> */}
+      <Button type="primary" onClick={() => { setIsLogin(true); setModalOpen(true); }}
+      style={{
+          backgroundColor: "#2600ff",
+          fontWeight: "bold",
+          padding: "8px 18px",
+          color: "white",
+          fontSize: 16,
+          borderRadius: 20,
+          border: "none",
+          boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
+          transition: "all 0.3s ease",
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.transform = "scale(1.05)";
+          e.currentTarget.style.backgroundColor = "#fb8c00";
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.transform = "scale(1)";
+          e.currentTarget.style.backgroundColor = "#3700ff";
+        }}
+      >Sign in</Button>
       <SchoolLoginDropdown setUser={setUser} />
     </>
   )}
@@ -535,7 +562,12 @@ transform: "translateX(-50%)",        // ✅ FORCE full width
               }}
             >
               <div style={{ color: "#fff", textAlign: "center", fontWeight: 800, fontSize: 18, lineHeight: 1.15 }}>
-                Flair<br />Olympiad
+          <button style={{background:"transparent",border:"none",cursor:"pointer"}}
+          onClick={() => {
+        setIsLogin(true);
+        setModalOpen(true);
+      }}
+          >     Flair<br />Olympiad</button> 
               </div>
             </div>
           </div>
@@ -671,67 +703,67 @@ transform: "translateX(-50%)",        // ✅ FORCE full width
             }}
           >
             <h2 style={{ fontSize: isMobile ? 22 : 28, fontWeight: "bold" }}>Join FLAIR OLYMPIAD</h2>
-            {/* <p style={{ fontSize: isMobile ? 12 : 16, marginBottom: 20 }}>Enter your details to get started:</p>
-            <form style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-              <input placeholder="Name" style={inputStyle} />
-              <input placeholder="Email" style={inputStyle} />
-              <input placeholder="Mobile No" style={inputStyle} />
-                 <Select placeholder="Grade">
-              {["KG1","KG2","Grade1","Grade2","Grade3","Grade4","Grade5","Grade6","Grade7","Grade8","Grade9","Grade10","Grade11","Grade12"].map((item, i) => <Option key={i}>{item}</Option>)}
-            </Select>
-
-            <Select placeholder="Country">
-              {["US", "UAE", "India","Other"].map((city) => <Option key={city}>{city}</Option>)}
-            </Select>
-              <Button type="primary" style={{ borderRadius: 10 }}>Submit</Button>
-            </form> */}
+          
             <p style={{ fontSize: isMobile ? 12 : 16, marginBottom: 20 }}>Enter your details to get started:</p>
-            <form style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-            <input
+         <form style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+
+<input
   placeholder="Name"
   style={inputStyle}
+  value={formData.name}
   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
 />
 
 <input
   placeholder="Email"
   style={inputStyle}
+  value={formData.email}
   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
 />
 
 <input
   placeholder="Mobile No"
   style={inputStyle}
+  value={formData.mobile}
   onChange={(e) => setFormData({ ...formData, mobile: e.target.value })}
 />
-
+<label style={{fontSize:14,color:"gray"}}>SELECT GRADE</label>
 <Select
   placeholder="Grade"
+  value={formData.grade}
   onChange={(value) => setFormData({ ...formData, grade: value })}
 >
-  {["KG1","KG2","Grade1","Grade2","Grade3","Grade4","Grade5","Grade6","Grade7","Grade8","Grade9","Grade10","Grade11","Grade12"]
-    .map((item) => (
-      <Option key={item} value={item}>{item}</Option>
+  {[
+    "KG1","KG2","Grade1","Grade2","Grade3","Grade4",
+    "Grade5","Grade6","Grade7","Grade8","Grade9",
+    "Grade10","Grade11","Grade12"
+  ].map((item) => (
+    <Option key={item} value={item}>{item}</Option>
   ))}
 </Select>
-
+<label style={{fontSize:14,color:"gray"}}>SELECT COUNTRY</label>
 <Select
-  placeholder="Country"
+  placeholder="Select Country"
+  value={formData.country}
   onChange={(value) => setFormData({ ...formData, country: value })}
 >
   {["US", "UAE", "India", "Other"].map((c) => (
     <Option key={c} value={c}>{c}</Option>
   ))}
 </Select>
+
 <Button
   type="primary"
   style={{ borderRadius: 10 }}
-  onClick={()=>handleSubmitJoinform()}
+  onClick={handleSubmitJoinform}
 >
   Submit
 </Button>
 
 </form>
+
+
+
           </div>
         </div>
       )}

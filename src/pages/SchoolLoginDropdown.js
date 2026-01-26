@@ -53,6 +53,7 @@ const SchoolLoginDropdown = ({ setUser }) => {
             background: "none",
             color: "#fff",
             zIndex: 1100,
+            paddingLeft:0,
             border: "1px solid #fff",
           }}
              onMouseEnter={(e) => {
@@ -65,7 +66,7 @@ const SchoolLoginDropdown = ({ setUser }) => {
         }}
       
         >
-          🏫 School Login
+          🏫School Login
         </Button>
       </Popover>
 

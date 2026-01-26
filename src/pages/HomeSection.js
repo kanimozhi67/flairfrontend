@@ -72,7 +72,7 @@ const HomeSection = () => {
           <img
             src={das}
             alt="Dashboard"
-            style={{ width: centerSize / 1.7, marginBottom: 10 }}
+            style={{ width: centerSize / 1.7, marginBottom: 0 }}
           />
           <Title level={4} style={{ margin: 0, fontSize: centerSize / 15 }}>
             Student Dashboard

@@ -23,6 +23,7 @@ import SchoolAdminRoute from "./components/SchoolAdminRoute";
 import TeacherDashboard from "./pages/teacher/TeacherDashboard";
 import PaymentWrapper from "./pages/PaymentWrapper";
 import OlympiadExplore from "./pages/OlympiadExplore";
+import ExploreSoftware from "./pages/ExploreSoftware";
 
 const App = () => {
   const [user, setUser] = useState(null);
@@ -102,6 +103,7 @@ const[todayTaskCount,setTodayTaskCount]=useState(0);
       
         <Route path="/auth/signup" element={<Signup setUser={setUser} />} />
           <Route path="/exploreolymp"  element={<OlympiadExplore  /> }  />
+          <Route path="/exploresoft"  element={<ExploreSoftware  /> }  />
 
         {/* Protected routes */}
         <Route element={<Layout user={user} setUser={setUser} todayTaskCount={todayTaskCount} />}>

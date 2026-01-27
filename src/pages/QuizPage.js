@@ -266,7 +266,10 @@ boxShadow: "0 12px 30px rgba(255, 160, 140, 0.45)",
         len = 9;
       } else if (category === "math" && selectedLevel === 3) {
         len = 3;
-      } else {
+      }else if (level === "primary" && category === "shapes" && selectedLevel === 3) {
+      len=6;
+      }
+      else {
         len = 5;
       }
       break;

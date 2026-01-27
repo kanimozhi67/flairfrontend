@@ -225,7 +225,7 @@ const quizData = [
 /* ---------- MAIN COMPONENT ---------- */
 
 
-export default function AngleQuiz() {
+export default function AngleQuiz({addPointsToBackend}) {
   const shuffle = (arr) => [...arr].sort(() => Math.random() - 0.5);
 
   const [shuffledQuiz, setShuffledQuiz] = useState(() =>
@@ -249,7 +249,11 @@ export default function AngleQuiz() {
   const next = () => {
     setSelected(null);
     if (index + 1 < shuffledQuiz.length) setIndex(index + 1);
-    else setFinished(true);
+    else
+      {
+        setFinished(true);
+        addPointsToBackend(score);
+      } 
   };
 
   const restart = () => {

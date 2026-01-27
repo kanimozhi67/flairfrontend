@@ -34,10 +34,10 @@ const SchoolAdminLogin = ({ setUser, onSuccess }) => {
     try {
       const res = await schooladminlogin(values);
 
-     if (!res?.token || !res?.admin) {
-        message.error(res?.message || "Login failed");
-        return;
-      }
+    //  if (!res?.token || !res?.admin) {
+    //     message.error(res?.message || "Login failed");
+    //     return;
+    //   }
 localStorage.setItem("token", res.token);
       // Save token & teacher in localStorage
     localStorage.setItem("user", JSON.stringify(res.admin));

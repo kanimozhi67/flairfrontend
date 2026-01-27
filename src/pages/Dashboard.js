@@ -46,6 +46,7 @@ console.log(resLeaderboard.data.top5)
 
       // 4️⃣ Fetch school leaderboard (only students)
      const resSchoolLeaderboard = await api.get(`/quiz/progress/schoolleaderbd?userId=${userId}`);
+     console.log(resSchoolLeaderboard)
 const schoolTop5 = (resSchoolLeaderboard.data.top5 || []).filter(
   (u) => u.studentId && u.username !== "Unknown"
 );

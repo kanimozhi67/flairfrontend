@@ -511,7 +511,7 @@ transform: "translateX(-50%)",        // ✅ FORCE full width
           e.currentTarget.style.backgroundColor = "transparent";
         }}
       >
-        🚀Explore Olympiad
+        🚀Explore 
       </Button>
   {!user && <SchoolLoginDropdown setUser={setUser} /> }  {/* Left */}
   {user &&

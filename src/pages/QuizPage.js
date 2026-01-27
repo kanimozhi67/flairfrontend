@@ -29,6 +29,7 @@ import Fraction from "./Fraction.js";
 import TimeQuiz from "./TimeQuiz.js";
 import TimeOption from "./TimeOption.js";
 import Robot from "./Robot.js";
+import AngleQuiz from "./AngleQuiz.js";
 
 const QuizPage = ({ user, setUser,setCompletedLevel,setCompletedCategory,setCompletedSelectedLevel,
   completedLevel,completedCategory,completedSelectedLevel,  setCompletedPoints }) => {
@@ -793,6 +794,7 @@ boxShadow: "0 12px 30px rgba(255, 160, 140, 0.45)",}}>
           ) : category === "puzzles" && selectedLevel===1 ? (
             <div style={{ fontSize: "28px", fontWeight: "bold" }}>
               <Puzzle
+              level={level}
                 selectedLevel={selectedLevel}
                 user={user}
                 puzzleId={puzzleId}
@@ -843,8 +845,18 @@ boxShadow: "0 12px 30px rgba(255, 160, 140, 0.45)",}}>
             addPointsToBackend={addPointsToBackend}
             setResults={setResults}
 />
-        ): category=== "shapes" ? (
+        ): category=== "shapes"   && selectedLevel !== 3 ?  (
 <ShapesQuiz
+user={user}
+     level={level}
+     selectedLevel={selectedLevel}
+            addPointsToBackend={addPointsToBackend}
+            setResults={setResults}
+/>
+
+        ):
+       category=== "shapes"  && selectedLevel === 3 ?  (
+<AngleQuiz
 user={user}
      level={level}
      selectedLevel={selectedLevel}

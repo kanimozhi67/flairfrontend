@@ -66,9 +66,9 @@ const Layout = ({ user, setUser,todayTaskCount }) => {
       ? [{ key: "admin", label: "🛠", path: "/admin" }]
       : user?.role === "SchoolAdmin" 
       ? [{ key: "schooladmin", label: "🛠S", path: "/schooladmin" }]
+       : user?.role === "Teacher" 
+       ? [{ key: "teacher", label: "🛠T", path: "/teacher" }]
       : [
-        
-       
       //  { key: "task", label: "🎯 ", path: "/task" },
 {
   key: "task",

@@ -3,7 +3,7 @@ import { Card, Row, Col, InputNumber, Button, message } from "antd";
 import api from "../api/axiosClient";
 import { IconMap } from "antd/es/result";
 
-export default function Puzzle({
+export default function Puzzle({level,
   selectedLevel,
   user,
   answers,
@@ -59,16 +59,14 @@ useEffect(() => {
      setClicked(false);
      setSubmitted(false);
       try {
+        const endpoint =
+      level === "primary"? "/quiz/puzzlep" : "/quiz/puzzle" ;
       
-        const res = await api.get("/quiz/puzzle");
+    const res = await api.get(endpoint);
+   
         addData(res);
        
-// else if(selectedLevel ===2){
-//         const res = await api.get("/quiz/puzzlelevel2");
-//        addData(res); }
-//    else {
-//         const res = await api.get("/quiz/puzzlelevel3");
-//          addData(res); }
+
 
        
       

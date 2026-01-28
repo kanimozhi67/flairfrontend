@@ -848,7 +848,7 @@ boxShadow: "0 12px 30px rgba(255, 160, 140, 0.45)",}}>
             addPointsToBackend={addPointsToBackend}
             setResults={setResults}
 />
-        ): category=== "shapes"   && selectedLevel !== 3 ?  (
+        ): category=== "shapes"   && ((level === "kindergarten" ) || (level==="primary"  && selectedLevel !== 3 ) )?  (
 <ShapesQuiz
 user={user}
      level={level}
@@ -858,7 +858,7 @@ user={user}
 />
 
         ):
-       category=== "shapes"  && selectedLevel === 3 ?  (
+       category=== "shapes" && level==="primary"  && selectedLevel === 3 ?  (
 <AngleQuiz
 user={user}
      level={level}

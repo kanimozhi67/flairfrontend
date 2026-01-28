@@ -209,12 +209,7 @@ export default function OlympiadExplore() {
           Olympiads strengthen basics and build confidence.
         </Text>
        <br></br>
-         <Text style={{ fontSize: 16, color: "#fffcfc" }}>
-           Flair Olympiad help children strengthen their basics in Mathematics.<br></br>They improve
-          thinking, problem-solving, and confidence from an early age.
-        </Text>
-      
-  <br />
+     
 
           <Text style={{ fontSize: 16, color: "#fffcfc" }}>
             Our{" "}
@@ -304,7 +299,17 @@ export default function OlympiadExplore() {
         <Title style={{ color: "#fff" }} level={3}> 🚀 Smart AI Bot for Guidance</Title>
         <SliderCard2 list={olympiadList2} />
       </div>
-
+    <Text style={{   display: "block",
+          maxWidth: 900,
+          margin: "0 auto",
+          fontSize: 16,
+          color: "#fffcfc",
+          textAlign: "center",}}>
+           🌈 Flair Olympiad help children strengthen their basics in Mathematics.<br></br>They improve
+          thinking, problem-solving, and confidence from an early age.
+        </Text>
+      
+  <br />
       <div style={sectionStyle("#fb923c", "#f472b6")}>
         <Title style={{ color: "#fff" }} level={3}>  🚀 Challenging Puzzles ,Fun Math and Riddles</Title>
         <SliderCard2 list={olympiadList} />
@@ -319,7 +324,7 @@ export default function OlympiadExplore() {
           textAlign: "center",
         }}
       >
-        <strong style={{ color: "#f5dd09" }}>Flair Olympiad</strong> focuses on
+        <strong style={{ color: "#d4d4ce" }}>Flair Olympiad</strong> focuses on
         concept clarity instead of memorization. Kids build strong fundamentals
         and gain confidence to face competitive exams happily 😊
       </Text>

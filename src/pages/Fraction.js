@@ -119,7 +119,10 @@ export default function Fraction({ category, level, selectedLevel, user, addPoin
   //   }
   // };
 const finishQuiz = async () => {
-  const response = await api.post("/quiz/checkfraction", {
+
+  const endpoint=  ( category==="fraction" && level==="primary" && (selectedLevel==="1" || selectedLevel==="3")
+  ? "/quiz/checkfraction2":"/quiz/checkfraction2");
+  const response = await api.post(endpoint, {
     userId: user?._id || "demo-user",
     answers: [...answers, { id: current.id, question: current.question, answer: selected }]
   });
